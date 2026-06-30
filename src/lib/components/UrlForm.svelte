@@ -31,7 +31,7 @@
 		return tokenize(page.url.searchParams.get('urls') ?? '').join('\n');
 	}
 
-	let input = $state(urlsFromQuery());
+	let input = $state(urlsFromQuery() || "https://github.com/sveltejs, https://vite.dev, https://nodejs.dev, https://docker.com");
 	let loading = $state(false);
 	let error = $state<string | null>(null);
 
@@ -115,8 +115,8 @@
 			id="urls"
 			class="url-form__textarea"
 			bind:value={input}
+			defaultValue="https://mtv.com&#10;https://docker.com"
 			rows="4"
-			placeholder="https://ogp.me&#10;https://svelte.dev"
 			disabled={loading}
 		></textarea>
 	</div>
@@ -172,6 +172,7 @@
 	}
 
 	.url-form__textarea {
+		box-sizing: border-box;
 		width: 100%;
 		resize: vertical;
 		min-height: 6rem;

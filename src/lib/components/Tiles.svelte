@@ -10,30 +10,108 @@
 	}
 	let { urls }: { urls: URL[] } = $props();
 
-	// Which tile currently has its description revealed (touch devices)
 	let activeUrl = $state<string | null>(null);
 
 	function toggle(url: string) {
 		activeUrl = activeUrl === url ? null : url;
 	}
-</script>
 
+	const IMAGE_RE = /\.(jpe?g|png|gif|webp|avif|svg)(\?.*)?$/i;
+	const VIDEO_RE = /\.(mp4|webm|ogv|ogg|mov|m4v)(\?.*)?$/i;
+
+	type Category = 'img' | 'video' | 'other';
+
+	type TileView = {
+		kind: 'image' | 'video' | 'og';
+		category: Category;
+		src: string;
+		alt: string;
+		title: string;
+		desc: string;
+	};
+
+	const toHttps = (u: string) => u.replace(/^http:\/\//i, 'https://');
+
+	function tileView(item: URL): TileView {
+		const fromUrl = {
+			title: item.url.slice(0, 18),
+			desc: item.url
+		};
+
+		if (VIDEO_RE.test(item.url)) {
+			return {
+				kind: 'video',
+				category: 'video',
+				src: `${toHttps(item.url)}#t=0.1`,
+				alt: 'video',
+				...fromUrl
+			};
+		}
+
+		if (IMAGE_RE.test(item.url)) {
+			return {
+				kind: 'image',
+				category: 'img',
+				src: toHttps(item.url),
+				alt: 'img',
+				...fromUrl
+			};
+		}
+
+		if (!item.ogImg?.src) {
+			return {
+				kind: 'image',
+				category: 'other',
+				src: toHttps(item.url),
+				alt: 'other',
+				...fromUrl
+			};
+		}
+
+		return {
+			kind: 'og',
+			category: 'other',
+			src: item.ogImg.src || toHttps(item.url),
+			alt: item.ogImg.alt || 'other',
+			title: item.title,
+			desc: item.desc
+		};
+	}
+</script>
 <ul class="tiles" role="list">
 	{#each urls as item (item.url)}
+		{@const view = tileView(item)}
 		<li class="tiles__item" class:is-active={activeUrl === item.url}>
-			<a class="tiles__link" href={item.url} target="_blank">
-				<img
-					class="tiles__image"
-					src={item.ogImg.src}
-					alt={item.ogImg.alt}
-					loading="lazy"
-					decoding="async"
-					draggable="false"
-				/>
-				<span class="tiles__title">{item.title}</span>
+			<a class="tiles__link" href={item.url} target="_blank" rel="noopener">
+				{#if view.kind === 'video'}
+	<video
+		class="tiles__image"
+		src={view.src}
+		muted
+		loop
+		autoplay
+		playsinline
+		preload="metadata"
+		aria-label={view.alt}
+		onerror={(e) => ((e.currentTarget as HTMLVideoElement).style.opacity = '0.15')}
+	></video>
+				{:else}
+					<img
+						class="tiles__image"
+						src={view.src}
+						alt={view.alt}
+						loading="lazy"
+						decoding="async"
+						draggable="false"
+						referrerpolicy="no-referrer"
+						onerror={(e) => ((e.currentTarget as HTMLImageElement).style.opacity = '0.15')}
+					/>
+				{/if}
+
+				<span class="tiles__title">{view.title}</span>
 				<span class="tiles__desc">
-					<span class="tiles__desc-title">{item.title}</span>
-					<span class="tiles__desc-text">{item.desc}</span>
+					<span class="tiles__desc-title">{view.title}</span>
+					<span class="tiles__desc-text">{view.desc}</span>
 				</span>
 			</a>
 
@@ -45,12 +123,10 @@
 				onclick={() => toggle(item.url)}
 			>
 				{#if activeUrl === item.url}
-					<!-- close icon -->
 					<svg viewBox="0 0 24 24" aria-hidden="true">
 						<path d="M6 6l12 12M18 6L6 18" />
 					</svg>
 				{:else}
-					<!-- info icon -->
 					<svg viewBox="0 0 24 24" aria-hidden="true">
 						<circle cx="12" cy="12" r="9" />
 						<line x1="12" y1="11" x2="12" y2="16" />
@@ -91,7 +167,8 @@
 		display: block;
 		transition:
 			transform 350ms ease,
-			filter 350ms ease;
+			filter 350ms ease,
+			opacity 350ms ease;
 	}
 
 	.tiles__title {
@@ -116,14 +193,11 @@
 		inset: 0;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;   /* left */
-		justify-content: flex-start; /* top */
+		align-items: flex-start;
+		justify-content: flex-start;
 		padding: 1.5rem;
 		color: #fff;
-		font-size: 0.85rem;
-		font-weight: 300;
-		line-height: 1.5;
-		text-align: left;          /* left-aligned text */
+		text-align: left;
 		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 		opacity: 0;
@@ -131,6 +205,7 @@
 		pointer-events: none;
 		overflow: hidden;
 		transition: opacity 350ms ease;
+		width: 80%;
 	}
 
 	.tiles__desc-title {
@@ -140,17 +215,18 @@
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 		margin-bottom: 0.5rem;
+		overflow-wrap: anywhere;
 	}
 
 	.tiles__desc-text {
 		font-size: 0.85rem;
 		font-weight: 300;
 		line-height: 1.5;
+		overflow-wrap: anywhere;
 	}
-	
-	/* ── Info / close toggle button (touch only) ── */
+
 	.tiles__info {
-		display: none; /* hidden by default; shown on touch devices below */
+		display: none;
 		position: absolute;
 		top: 0.75rem;
 		right: 0.75rem;
@@ -190,7 +266,6 @@
 		outline-offset: 3px;
 	}
 
-	/* ── Active state (set by the button on touch) ── */
 	.tiles__item.is-active .tiles__image {
 		transform: scale(1.05);
 		filter: blur(6px) brightness(0.4);
@@ -202,7 +277,6 @@
 		opacity: 1;
 	}
 
-	/* ── Desktop / pointer devices: hover reveals description ── */
 	@media (hover: hover) and (pointer: fine) {
 		.tiles__link:hover .tiles__image,
 		.tiles__link:focus-visible .tiles__image {
@@ -219,7 +293,6 @@
 		}
 	}
 
-	/* ── Touch devices (mobile/tablet): show the info button ── */
 	@media (hover: none) {
 		.tiles__info {
 			display: inline-flex;
