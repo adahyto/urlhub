@@ -14,8 +14,8 @@
 
 	type TileView = {
 		// og: picture from the page; image: the link is a picture; video: a video file;
-		// text: no picture (or the link failed), the site's name instead
-		kind: 'og' | 'image' | 'video' | 'text';
+		// text: no picture (or the link failed), the site's name instead; pending: still being fetched
+		kind: 'og' | 'image' | 'video' | 'text' | 'pending';
 		src: string;
 		alt: string;
 		title: string;
@@ -33,6 +33,9 @@
 	function tileView(item: TileUrl): TileView {
 		const fromUrl = { title: hostOf(item.url), desc: item.url };
 
+		if (item.pending) {
+			return { kind: 'pending', src: '', alt: '', title: hostOf(item.url), desc: item.url };
+		}
 		if (item.error) {
 			return { kind: 'text', src: '', alt: '', title: hostOf(item.url), desc: `${item.url} — ${item.error}` };
 		}
@@ -57,7 +60,13 @@
 <ul class="tiles" role="list">
 	{#each urls as item (item.url)}
 		{@const view = tileView(item)}
-		<li class="tiles__item" class:is-active={activeUrl === item.url} class:has-error={item.error}>
+		<li
+			class="tiles__item"
+			class:is-active={activeUrl === item.url}
+			class:has-error={item.error}
+			class:is-pending={item.pending}
+			aria-busy={item.pending}
+		>
 			<a class="tiles__link" href={item.url} target="_blank" rel="noopener">
 				{#if view.kind === 'video'}
 					<video
@@ -71,6 +80,8 @@
 						aria-label={view.alt}
 						onerror={(e) => ((e.currentTarget as HTMLVideoElement).style.opacity = '0.15')}
 					></video>
+				{:else if view.kind === 'pending'}
+					<span class="tiles__placeholder tiles__placeholder--pending" aria-hidden="true">{hostOf(item.url)}</span>
 				{:else if view.kind === 'text'}
 					<span class="tiles__placeholder" aria-hidden="true">{hostOf(item.url)}</span>
 				{:else}
@@ -175,6 +186,20 @@
 		transition:
 			filter 350ms ease,
 			opacity 350ms ease;
+	}
+
+	/* Waiting for its details: the site's name on a soft shimmer */
+	.tiles__placeholder--pending {
+		color: #9a9a9a;
+		background: linear-gradient(110deg, #ececec 30%, #f7f7f7 50%, #ececec 70%);
+		background-size: 200% 100%;
+		animation: tiles-shimmer 1.2s linear infinite;
+	}
+
+	@keyframes tiles-shimmer {
+		to {
+			background-position: -200% 0;
+		}
 	}
 
 	.tiles__item.has-error .tiles__placeholder {
