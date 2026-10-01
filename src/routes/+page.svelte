@@ -1,9 +1,8 @@
 <script lang="ts">
-    import Tiles from '$lib/components/Tiles.svelte';
-    import UrlForm from '$lib/components/UrlForm.svelte';
-    import type { TileUrl } from '$lib/types';
-    let urls = $state<TileUrl[]>([]);
-    const autoFetch = true;
+	import Tiles from '$lib/components/Tiles.svelte';
+	import UrlForm from '$lib/components/UrlForm.svelte';
+	import type { TileUrl } from '$lib/types';
+	let urls = $state<TileUrl[]>([]);
 </script>
 
 <svelte:head>
@@ -13,10 +12,9 @@
 		content="Paste links and see them as tiles: picture, title and description of each page, YouTube duration."
 	/>
 </svelte:head>
-<br>
+<br />
 <UrlForm bind:urls autoFetch />
-<br>
+<br />
 {#if urls.length > 0}
 	<Tiles {urls} />
 {/if}
-

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import type { ApiResponse, ApiUrl, TileUrl } from '$lib/types';
 
 	interface Props {
@@ -21,7 +22,8 @@
 	}: Props = $props();
 
 	const MAX_URLS = 200;
-	const EXAMPLES = 'https://github.com/sveltejs, https://vite.dev, https://nodejs.org, https://docker.com';
+	const EXAMPLES =
+		'https://github.com/sveltejs, https://vite.dev, https://nodejs.org, https://docker.com';
 
 	// Links start at "http(s)://"; anything between them (spaces, commas, the "-" of old shared links) is dropped
 	function tokenize(raw: string): string[] {
@@ -103,11 +105,13 @@
 	async function fetchUrls() {
 		const list = tokenize(input);
 		if (list.length === 0) return fail('Please enter at least one URL.');
-		if (list.length > MAX_URLS) return fail(`At most ${MAX_URLS} links at once (found ${list.length}).`);
+		if (list.length > MAX_URLS)
+			return fail(`At most ${MAX_URLS} links at once (found ${list.length}).`);
 
 		// The address can be shared: URLSearchParams encodes "&", "?" and "#" inside the links
-		const params = new URLSearchParams(page.url.searchParams);
+		const params = new SvelteURLSearchParams(page.url.searchParams);
 		params.set('urls', list.join(' '));
+		// eslint-disable-next-line svelte/no-navigation-without-resolve -- same page (pathname already resolved), only ?urls= changes
 		goto(`${page.url.pathname}?${params}`, { replaceState: true, keepFocus: true, noScroll: true });
 
 		loading = true;
@@ -126,7 +130,9 @@
 				// Errors (limits) come as one JSON, and so would a whole answer from an API that does not stream
 				const data = await res.json().catch(() => null);
 				if (!res.ok || !data?.urls) {
-					throw new Error(data?.error || `The link service answered with an error (${res.status}).`);
+					throw new Error(
+						data?.error || `The link service answered with an error (${res.status}).`
+					);
 				}
 				urls = (data as ApiResponse).urls.map(toTileUrl);
 			}
@@ -157,17 +163,13 @@
 		}
 	});
 </script>
+
 <form onsubmit={handleSubmit} class="url-form" novalidate>
 	<div class="url-form__field">
 		<label class="url-form__label" for="urls">Enter URLs</label>
 		<span class="url-form__hint">Separate with spaces, commas, or new lines</span>
 
-		<textarea
-			id="urls"
-			class="url-form__textarea"
-			bind:value={input}
-			rows="4"
-			disabled={loading}
+		<textarea id="urls" class="url-form__textarea" bind:value={input} rows="4" disabled={loading}
 		></textarea>
 	</div>
 
@@ -198,7 +200,12 @@
 		width: 100%;
 		max-width: 40rem;
 		margin-inline: auto;
-		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
 	}
 
 	.url-form__field {
@@ -308,7 +315,7 @@
 	}
 
 	.url-form__error {
-        width: 100%;
+		width: 100%;
 		margin: 0;
 		padding: 0.75rem 1rem;
 		font-size: 0.8rem;
