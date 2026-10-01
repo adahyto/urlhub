@@ -1,42 +1,19 @@
-# sv
+# urlhub
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Paste links and see them as tiles: the picture, title and description of each page, the duration and channel of
+YouTube videos, and what went wrong with a link that could not be read. The address of the page holds the links
+(`?urls=...`), so a result can be shared; shared links load by themselves.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+Runs on the server at http://51.75.116.68:98 (SvelteKit, adapter-node). Link details come from
+[ldb-api](https://github.com/adahyto/ldb-api): the browser posts the links to this app's `/api/json`
+(`src/routes/api/json/+server.ts`), and the app's server passes them on to ldb-api at `LDB_API_URL`
+(set in `docker-compose.yaml`; without it, the public address of ldb-api).
 
 ```sh
-# recreate this project
-npx sv@0.16.1 create --template minimal --types ts --add prettier eslint sveltekit-adapter="adapter:node" --install npm app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
+npm install
+npm run dev       # http://localhost:5173
+npm run check     # types
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Deploy on the server: `git pull && sudo docker compose up -d --build`.

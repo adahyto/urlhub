@@ -11,5 +11,10 @@ services:
     logging: *logging
     build:
       context: ./
+    # The app's server calls ldb-api (src/routes/api/json/+server.ts) through the port it publishes on this host
+    environment:
+      - LDB_API_URL=http://host.docker.internal:84/json
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "98:3000"
