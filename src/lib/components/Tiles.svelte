@@ -1,14 +1,7 @@
 <script lang="ts">
-	interface URL {
-		url: string;
-		title: string;
-		desc: string;
-		ogImg: {
-			src: string;
-			alt: string;
-		};
-	}
-	let { urls }: { urls: URL[] } = $props();
+	import type { TileUrl } from '$lib/types';
+
+	let { urls }: { urls: TileUrl[] } = $props();
 
 	let activeUrl = $state<string | null>(null);
 
@@ -19,82 +12,67 @@
 	const IMAGE_RE = /\.(jpe?g|png|gif|webp|avif|svg)(\?.*)?$/i;
 	const VIDEO_RE = /\.(mp4|webm|ogv|ogg|mov|m4v)(\?.*)?$/i;
 
-	type Category = 'img' | 'video' | 'other';
-
 	type TileView = {
-		kind: 'image' | 'video' | 'og';
-		category: Category;
+		// og: picture from the page; image: the link is a picture; video: a video file;
+		// text: no picture (or the link failed), the site's name instead
+		kind: 'og' | 'image' | 'video' | 'text';
 		src: string;
 		alt: string;
 		title: string;
 		desc: string;
 	};
 
-	const toHttps = (u: string) => u.replace(/^http:\/\//i, 'https://');
+	const hostOf = (u: string) => {
+		try {
+			return new URL(u).hostname.replace(/^www\./, '');
+		} catch {
+			return u;
+		}
+	};
 
-	function tileView(item: URL): TileView {
-		const fromUrl = {
-			title: item.url.slice(0, 18),
-			desc: item.url
-		};
+	function tileView(item: TileUrl): TileView {
+		const fromUrl = { title: hostOf(item.url), desc: item.url };
 
+		if (item.error) {
+			return { kind: 'text', src: '', alt: '', title: hostOf(item.url), desc: `${item.url} — ${item.error}` };
+		}
 		if (VIDEO_RE.test(item.url)) {
-			return {
-				kind: 'video',
-				category: 'video',
-				src: `${toHttps(item.url)}#t=0.1`,
-				alt: 'video',
-				...fromUrl
-			};
+			return { kind: 'video', src: `${item.url}#t=0.1`, alt: 'video', ...fromUrl };
 		}
-
-		if (IMAGE_RE.test(item.url)) {
-			return {
-				kind: 'image',
-				category: 'img',
-				src: toHttps(item.url),
-				alt: 'img',
-				...fromUrl
-			};
+		if (item.type === 'image' || IMAGE_RE.test(item.url)) {
+			return { kind: 'image', src: item.ogImg.src || item.url, alt: item.ogImg.alt || '', ...fromUrl };
 		}
-
-		if (!item.ogImg?.src) {
-			return {
-				kind: 'image',
-				category: 'other',
-				src: toHttps(item.url),
-				alt: 'other',
-				...fromUrl
-			};
+		if (!item.ogImg.src) {
+			return { kind: 'text', src: '', alt: '', title: item.title || hostOf(item.url), desc: item.desc || item.url };
 		}
-
 		return {
 			kind: 'og',
-			category: 'other',
-			src: item.ogImg.src || toHttps(item.url),
-			alt: item.ogImg.alt || 'other',
-			title: item.title,
-			desc: item.desc
+			src: item.ogImg.src,
+			alt: item.ogImg.alt || '',
+			title: item.title || hostOf(item.url),
+			desc: [item.channel, item.desc].filter(Boolean).join(' — ') || item.url
 		};
 	}
 </script>
 <ul class="tiles" role="list">
 	{#each urls as item (item.url)}
 		{@const view = tileView(item)}
-		<li class="tiles__item" class:is-active={activeUrl === item.url}>
+		<li class="tiles__item" class:is-active={activeUrl === item.url} class:has-error={item.error}>
 			<a class="tiles__link" href={item.url} target="_blank" rel="noopener">
 				{#if view.kind === 'video'}
-	<video
-		class="tiles__image"
-		src={view.src}
-		muted
-		loop
-		autoplay
-		playsinline
-		preload="metadata"
-		aria-label={view.alt}
-		onerror={(e) => ((e.currentTarget as HTMLVideoElement).style.opacity = '0.15')}
-	></video>
+					<video
+						class="tiles__image"
+						src={view.src}
+						muted
+						loop
+						autoplay
+						playsinline
+						preload="metadata"
+						aria-label={view.alt}
+						onerror={(e) => ((e.currentTarget as HTMLVideoElement).style.opacity = '0.15')}
+					></video>
+				{:else if view.kind === 'text'}
+					<span class="tiles__placeholder" aria-hidden="true">{hostOf(item.url)}</span>
 				{:else}
 					<img
 						class="tiles__image"
@@ -106,6 +84,13 @@
 						referrerpolicy="no-referrer"
 						onerror={(e) => ((e.currentTarget as HTMLImageElement).style.opacity = '0.15')}
 					/>
+				{/if}
+
+				{#if item.duration}
+					<span class="tiles__duration">{item.duration}</span>
+				{/if}
+				{#if item.error}
+					<span class="tiles__error">{item.error}</span>
 				{/if}
 
 				<span class="tiles__title">{view.title}</span>
@@ -169,6 +154,64 @@
 			transform 350ms ease,
 			filter 350ms ease,
 			opacity 350ms ease;
+	}
+
+	/* A link without a picture, or one that failed: the site's name on a soft background */
+	.tiles__placeholder {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1.5rem;
+		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-size: 1.4rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: #1a1a1a;
+		text-align: center;
+		overflow-wrap: anywhere;
+		background: linear-gradient(135deg, #f3f3f3, #dcdcdc);
+		transition:
+			filter 350ms ease,
+			opacity 350ms ease;
+	}
+
+	.tiles__item.has-error .tiles__placeholder {
+		color: #8a2a20;
+		background: linear-gradient(135deg, #fbeeee, #f1d6d3);
+	}
+
+	.tiles__duration,
+	.tiles__error {
+		position: absolute;
+		top: 0.75rem;
+		left: 0.75rem;
+		z-index: 2;
+		padding: 0.15rem 0.5rem;
+		border-radius: 0.35rem;
+		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: #fff;
+		background: rgba(0, 0, 0, 0.7);
+		font-variant-numeric: tabular-nums;
+		pointer-events: none;
+	}
+
+	.tiles__error {
+		background: #c0392b;
+	}
+
+	.tiles__item.is-active .tiles__placeholder {
+		filter: blur(6px) brightness(0.4);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.tiles__link:hover .tiles__placeholder,
+		.tiles__link:focus-visible .tiles__placeholder {
+			filter: blur(6px) brightness(0.4);
+		}
 	}
 
 	.tiles__title {

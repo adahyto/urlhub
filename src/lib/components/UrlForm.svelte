@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import type { ApiResponse, TileUrl } from '$lib/types';
-    import { goto } from '$app/navigation';
 
 	interface Props {
 		endpoint?: string;
@@ -12,26 +12,30 @@
 	}
 
 	let {
-		endpoint = 'http://51.75.116.68:84/json',
+		// This app's own server passes the links on to ldb-api (src/routes/api/json/+server.ts)
+		endpoint = '/api/json',
 		urls = $bindable([]),
 		onResults,
 		onError,
 		autoFetch = false
 	}: Props = $props();
 
+	const MAX_URLS = 200;
+	const EXAMPLES = 'https://github.com/sveltejs, https://vite.dev, https://nodejs.org, https://docker.com';
+
+	// Links start at "http(s)://"; anything between them (spaces, commas, the "-" of old shared links) is dropped
 	function tokenize(raw: string): string[] {
-		return raw
+		const links = raw
 			.replace(/%20/gi, ' ')
 			.split(/(?=https?:\/\/)/i)
 			.map((s) => s.replace(/^[\s,;-]+|[\s,;-]+$/g, '').trim())
 			.filter(Boolean);
+		return [...new Set(links)];
 	}
 
-	function urlsFromQuery(): string {
-		return tokenize(page.url.searchParams.get('urls') ?? '').join('\n');
-	}
+	const linksInAddress = page.url.searchParams.get('urls') ?? '';
 
-	let input = $state(urlsFromQuery() || "https://github.com/sveltejs, https://vite.dev, https://nodejs.dev, https://docker.com");
+	let input = $state(tokenize(linksInAddress).join('\n') || EXAMPLES);
 	let loading = $state(false);
 	let error = $state<string | null>(null);
 
@@ -48,59 +52,64 @@
 			}
 			return {
 				url: item.url,
+				type: item.type ?? 'page',
 				title: item.title,
 				desc: item.desc,
-				ogImg: { src, alt: item.ogImg?.ogImgAlt ?? '' }
+				ogImg: { src, alt: item.ogImg?.ogImgAlt ?? '' },
+				channel: item.channel ?? '',
+				duration: item.duration ?? '',
+				error: item.error ?? ''
 			};
 		});
 	}
 
+	function fail(message: string) {
+		error = message;
+		onError?.(message);
+	}
+
 	async function fetchUrls() {
-	const list = tokenize(input);
-	if (list.length === 0) {
-		error = 'Please enter at least one URL.';
-		onError?.(error);
-		return;
+		const list = tokenize(input);
+		if (list.length === 0) return fail('Please enter at least one URL.');
+		if (list.length > MAX_URLS) return fail(`At most ${MAX_URLS} links at once (found ${list.length}).`);
+
+		// The address can be shared: URLSearchParams encodes "&", "?" and "#" inside the links
+		const params = new URLSearchParams(page.url.searchParams);
+		params.set('urls', list.join(' '));
+		goto(`${page.url.pathname}?${params}`, { replaceState: true, keepFocus: true, noScroll: true });
+
+		loading = true;
+		error = null;
+		try {
+			const res = await fetch(endpoint, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				body: JSON.stringify({ urls: list })
+			});
+			const data = await res.json().catch(() => null);
+			if (!res.ok || !data?.urls) {
+				throw new Error(data?.error || `The link service answered with an error (${res.status}).`);
+			}
+			const result = toTileUrls(data as ApiResponse);
+			urls = result;
+			onResults?.(result);
+		} catch (err) {
+			urls = [];
+			fail(err instanceof Error ? err.message : 'Something went wrong.');
+		} finally {
+			loading = false;
+		}
 	}
 
-	const urlsParam = list.map((u) => encodeURI(u)).join('-');
-	goto(`${page.url.pathname}?urls=${urlsParam}`, {
-		replaceState: true,
-		keepFocus: true,
-		noScroll: true
-	});
-
-	loading = true;
-	error = null;
-
-	try {
-		const encoded = list.map((u) => encodeURI(u)).join('%20');
-		const requestUrl = `${endpoint}?urls=${encoded}`;
-
-		const res = await fetch(requestUrl, { headers: { Accept: 'application/json' } });
-		if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
-
-		const data: ApiResponse = await res.json();
-		const result = toTileUrls(data);
-
-		urls = result;
-		onResults?.(result);
-	} catch (err) {
-		error = err instanceof Error ? err.message : 'Something went wrong.';
-		urls = [];
-		onError?.(error);
-	} finally {
-		loading = false;
-	}
-}
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
 		fetchUrls();
 	}
 
+	// Only shared links (?urls=...) load by themselves; the examples wait for a click
 	let didAutoFetch = false;
 	$effect(() => {
-		if (autoFetch && !didAutoFetch && input.trim()) {
+		if (autoFetch && !didAutoFetch && linksInAddress && input.trim()) {
 			didAutoFetch = true;
 			fetchUrls();
 		}
@@ -115,7 +124,6 @@
 			id="urls"
 			class="url-form__textarea"
 			bind:value={input}
-			defaultValue="https://mtv.com&#10;https://docker.com"
 			rows="4"
 			disabled={loading}
 		></textarea>
