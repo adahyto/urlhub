@@ -37,16 +37,33 @@
 			return { kind: 'pending', src: '', alt: '', title: hostOf(item.url), desc: item.url };
 		}
 		if (item.error) {
-			return { kind: 'text', src: '', alt: '', title: hostOf(item.url), desc: `${item.url} — ${item.error}` };
+			return {
+				kind: 'text',
+				src: '',
+				alt: '',
+				title: hostOf(item.url),
+				desc: `${item.url} — ${item.error}`
+			};
 		}
 		if (VIDEO_RE.test(item.url)) {
 			return { kind: 'video', src: `${item.url}#t=0.1`, alt: 'video', ...fromUrl };
 		}
 		if (item.type === 'image' || IMAGE_RE.test(item.url)) {
-			return { kind: 'image', src: item.ogImg.src || item.url, alt: item.ogImg.alt || '', ...fromUrl };
+			return {
+				kind: 'image',
+				src: item.ogImg.src || item.url,
+				alt: item.ogImg.alt || '',
+				...fromUrl
+			};
 		}
 		if (!item.ogImg.src) {
-			return { kind: 'text', src: '', alt: '', title: item.title || hostOf(item.url), desc: item.desc || item.url };
+			return {
+				kind: 'text',
+				src: '',
+				alt: '',
+				title: item.title || hostOf(item.url),
+				desc: item.desc || item.url
+			};
 		}
 		return {
 			kind: 'og',
@@ -57,6 +74,7 @@
 		};
 	}
 </script>
+
 <ul class="tiles" role="list">
 	{#each urls as item (item.url)}
 		{@const view = tileView(item)}
@@ -67,7 +85,7 @@
 			class:is-pending={item.pending}
 			aria-busy={item.pending}
 		>
-			<a class="tiles__link" href={item.url} target="_blank" rel="noopener">
+			<a class="tiles__link" href={item.url} target="_blank" rel="external noopener">
 				{#if view.kind === 'video'}
 					<video
 						class="tiles__image"
@@ -81,7 +99,9 @@
 						onerror={(e) => ((e.currentTarget as HTMLVideoElement).style.opacity = '0.15')}
 					></video>
 				{:else if view.kind === 'pending'}
-					<span class="tiles__placeholder tiles__placeholder--pending" aria-hidden="true">{hostOf(item.url)}</span>
+					<span class="tiles__placeholder tiles__placeholder--pending" aria-hidden="true"
+						>{hostOf(item.url)}</span
+					>
 				{:else if view.kind === 'text'}
 					<span class="tiles__placeholder" aria-hidden="true">{hostOf(item.url)}</span>
 				{:else}
@@ -175,7 +195,12 @@
 		align-items: center;
 		justify-content: center;
 		padding: 1.5rem;
-		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
 		font-size: 1.4rem;
 		font-weight: 600;
 		letter-spacing: 0.02em;
@@ -215,7 +240,12 @@
 		z-index: 2;
 		padding: 0.15rem 0.5rem;
 		border-radius: 0.35rem;
-		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
 		font-size: 0.75rem;
 		font-weight: 600;
 		color: #fff;
@@ -251,7 +281,12 @@
 		pointer-events: none;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 		z-index: 2;
-		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
 		text-transform: uppercase;
 		transition: opacity 350ms ease;
 	}
@@ -267,7 +302,12 @@
 		color: #fff;
 		text-align: left;
 		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
 		opacity: 0;
 		z-index: 3;
 		pointer-events: none;

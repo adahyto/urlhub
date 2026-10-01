@@ -1,0 +1,67 @@
+# Runs on every pull request and on pushes to main: lint, type check and production build, then the Docker image
+# started as on the server with a quick check that it answers.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to the same branch or PR cancels the run still in progress
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-and-build:
+    name: Lint, types and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint (Prettier and ESLint)
+        run: npm run lint
+
+      - name: Types (svelte-check)
+        run: npm run check
+
+      - name: Production build
+        run: npm run build
+
+  # Scratch files of the checks below go to $RUNNER_TEMP, outside the checkout
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Start it as on the server
+        run: docker compose up -d --build
+
+      - name: The page answers
+        run: |
+          for _ in $(seq 1 60); do curl -sf -o "$RUNNER_TEMP/page.html" http://localhost:98/ && break; sleep 1; done
+          grep -q '<title>urlhub' "$RUNNER_TEMP/page.html"
+
+      # There is no ldb-api here: the app's /api/json must still answer with a JSON error instead of failing
+      - name: The API route answers without ldb-api
+        run: |
+          code=$(curl -s -o "$RUNNER_TEMP/answer.json" -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
+            -d '{"urls":["https://example.com"]}' http://localhost:98/api/json)
+          cat "$RUNNER_TEMP/answer.json"
+          test "$code" = 502
+          grep -q '"error"' "$RUNNER_TEMP/answer.json"
+
+      - name: Logs
+        if: failure()
+        run: docker compose logs

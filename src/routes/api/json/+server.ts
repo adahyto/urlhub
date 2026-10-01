@@ -37,7 +37,10 @@ export const POST: RequestHandler = async ({ request, fetch, getClientAddress })
 			signal: AbortSignal.timeout(300_000)
 		});
 	} catch {
-		return json({ error: 'The link service cannot be reached. Try again in a moment.' }, { status: 502 });
+		return json(
+			{ error: 'The link service cannot be reached. Try again in a moment.' },
+			{ status: 502 }
+		);
 	}
 	return new Response(response.body, {
 		status: response.status,

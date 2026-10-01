@@ -17,3 +17,6 @@ npm run build
 ```
 
 Deploy on the server: `git pull && sudo docker compose up -d --build`.
+
+CI (`.github/workflows/ci.yml`) runs `npm run lint`, `npm run check` and the build on every pull request, and
+starts the image to check that the page and `/api/json` answer.
