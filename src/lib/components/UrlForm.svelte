@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import type { ApiResponse, TileUrl } from '$lib/types';
+	import type { ApiResponse, ApiUrl, TileUrl } from '$lib/types';
 
 	interface Props {
 		endpoint?: string;
@@ -38,29 +38,61 @@
 	let input = $state(tokenize(linksInAddress).join('\n') || EXAMPLES);
 	let loading = $state(false);
 	let error = $state<string | null>(null);
+	const ready = $derived(urls.filter((u) => !u.pending).length);
 
-	function toTileUrls(data: ApiResponse): TileUrl[] {
-		return data.urls.map((item) => {
-			const raw = item.ogImg?.ogImg ?? '';
-			let src = '';
-			if (raw) {
-				try {
-					src = new URL(raw, item.url).href;
-				} catch {
-					src = raw;
-				}
+	function toTileUrl(item: ApiUrl): TileUrl {
+		const raw = item.ogImg?.ogImg ?? '';
+		let src = '';
+		if (raw) {
+			try {
+				src = new URL(raw, item.url).href;
+			} catch {
+				src = raw;
 			}
-			return {
-				url: item.url,
-				type: item.type ?? 'page',
-				title: item.title,
-				desc: item.desc,
-				ogImg: { src, alt: item.ogImg?.ogImgAlt ?? '' },
-				channel: item.channel ?? '',
-				duration: item.duration ?? '',
-				error: item.error ?? ''
-			};
-		});
+		}
+		return {
+			url: item.url,
+			type: item.type ?? 'page',
+			title: item.title,
+			desc: item.desc,
+			ogImg: { src, alt: item.ogImg?.ogImgAlt ?? '' },
+			channel: item.channel ?? '',
+			duration: item.duration ?? '',
+			error: item.error ?? ''
+		};
+	}
+
+	const waiting = (url: string): TileUrl => ({
+		url,
+		type: 'page',
+		title: '',
+		desc: '',
+		ogImg: { src: '', alt: '' },
+		channel: '',
+		duration: '',
+		error: '',
+		pending: true
+	});
+
+	/** Reads ldb-api's answer line by line (NDJSON), calling onResult as each link is ready */
+	async function readStream(res: Response, onResult: (index: number, item: ApiUrl) => void) {
+		const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
+		let buffered = '';
+		let done = false;
+		for (;;) {
+			const chunk = await reader.read();
+			if (chunk.done) break;
+			buffered += chunk.value;
+			const lines = buffered.split('\n');
+			buffered = lines.pop() ?? '';
+			for (const line of lines.filter(Boolean)) {
+				const message = JSON.parse(line);
+				if (message.result) onResult(message.index, message.result);
+				if (message.error) throw new Error(message.error);
+				if (message.done) done = true;
+			}
+		}
+		if (!done) throw new Error('The answer was cut off. Fetch again to complete the tiles.');
 	}
 
 	function fail(message: string) {
@@ -80,22 +112,32 @@
 
 		loading = true;
 		error = null;
+		// Every tile appears at once and fills in as its link is ready
+		urls = list.map(waiting);
 		try {
 			const res = await fetch(endpoint, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				headers: { 'Content-Type': 'application/json', Accept: 'application/x-ndjson' },
 				body: JSON.stringify({ urls: list })
 			});
-			const data = await res.json().catch(() => null);
-			if (!res.ok || !data?.urls) {
-				throw new Error(data?.error || `The link service answered with an error (${res.status}).`);
+			if (/ndjson/.test(res.headers.get('content-type') ?? '')) {
+				await readStream(res, (index, item) => (urls[index] = toTileUrl(item)));
+			} else {
+				// Errors (limits) come as one JSON, and so would a whole answer from an API that does not stream
+				const data = await res.json().catch(() => null);
+				if (!res.ok || !data?.urls) {
+					throw new Error(data?.error || `The link service answered with an error (${res.status}).`);
+				}
+				urls = (data as ApiResponse).urls.map(toTileUrl);
 			}
-			const result = toTileUrls(data as ApiResponse);
-			urls = result;
-			onResults?.(result);
+			onResults?.(urls);
 		} catch (err) {
-			urls = [];
-			fail(err instanceof Error ? err.message : 'Something went wrong.');
+			const message = err instanceof Error ? err.message : 'Something went wrong.';
+			// Tiles already filled stay; the rest say they were not fetched
+			urls = urls.some((u) => !u.pending)
+				? urls.map((u) => (u.pending ? { ...u, pending: false, error: 'not fetched' } : u))
+				: [];
+			fail(message);
 		} finally {
 			loading = false;
 		}
@@ -132,7 +174,7 @@
 	<button type="submit" class="url-form__submit" disabled={loading}>
 		{#if loading}
 			<span class="url-form__spinner" aria-hidden="true"></span>
-			<span>Loading…</span>
+			<span>Loading… {ready} / {urls.length}</span>
 		{:else}
 			<span>Fetch</span>
 		{/if}

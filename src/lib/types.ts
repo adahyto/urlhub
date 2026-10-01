@@ -33,4 +33,6 @@ export interface TileUrl {
 	channel: string;
 	duration: string;
 	error: string;
+	/** Still being fetched */
+	pending?: boolean;
 }
