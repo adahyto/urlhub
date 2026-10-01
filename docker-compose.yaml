@@ -1,5 +1,14 @@
+# Docker keeps container logs until the container is removed; cap them by size
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   nodeserver:
+    restart: always
+    logging: *logging
     build:
       context: ./
     ports:
