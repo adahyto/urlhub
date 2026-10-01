@@ -38,6 +38,7 @@ jobs:
       - name: Production build
         run: npm run build
 
+  # Scratch files of the checks below go to $RUNNER_TEMP, outside the checkout
   docker:
     name: Docker image
     runs-on: ubuntu-latest
@@ -49,17 +50,17 @@ jobs:
 
       - name: The page answers
         run: |
-          for _ in $(seq 1 60); do curl -sf -o page.html http://localhost:98/ && break; sleep 1; done
-          grep -q '<title>urlhub' page.html
+          for _ in $(seq 1 60); do curl -sf -o "$RUNNER_TEMP/page.html" http://localhost:98/ && break; sleep 1; done
+          grep -q '<title>urlhub' "$RUNNER_TEMP/page.html"
 
       # There is no ldb-api here: the app's /api/json must still answer with a JSON error instead of failing
       - name: The API route answers without ldb-api
         run: |
-          code=$(curl -s -o answer.json -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
+          code=$(curl -s -o "$RUNNER_TEMP/answer.json" -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
             -d '{"urls":["https://example.com"]}' http://localhost:98/api/json)
-          cat answer.json
+          cat "$RUNNER_TEMP/answer.json"
           test "$code" = 502
-          grep -q '"error"' answer.json
+          grep -q '"error"' "$RUNNER_TEMP/answer.json"
 
       - name: Logs
         if: failure()
