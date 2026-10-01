@@ -9,7 +9,7 @@ const apiUrl = () => env.LDB_API_URL || 'http://51.75.116.68:84/json';
 const MAX_URLS = 200;
 
 /** POST { urls: string[] } -> ldb-api's answer, { urls: [...] } or { error } */
-export const POST: RequestHandler = async ({ request, fetch }) => {
+export const POST: RequestHandler = async ({ request, fetch, getClientAddress }) => {
 	const body = await request.json().catch(() => null);
 	const urls = body?.urls;
 	if (!Array.isArray(urls) || !urls.every((u) => typeof u === 'string')) {
@@ -23,7 +23,11 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 	try {
 		response = await fetch(apiUrl(), {
 			method: 'POST',
-			headers: { 'content-type': 'application/json' },
+			headers: {
+				'content-type': 'application/json',
+				// ldb-api limits links per visitor; without this every urlhub visitor would share one limit
+				'x-forwarded-for': getClientAddress()
+			},
 			body: JSON.stringify({ urls, advanced: false }),
 			// ldb-api reads up to 200 links, 5 at a time, 10 s each at worst
 			signal: AbortSignal.timeout(300_000)
