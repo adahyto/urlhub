@@ -170,9 +170,9 @@ test('on a phone the table does not scroll sideways', async ({ page }) => {
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
-test('the status page shows the three apps up', async ({ page }) => {
+test('the status page shows urlhub and ldb-api up', async ({ page }) => {
 	await page.goto('/status');
-	await expect(page.locator('.check')).toHaveCount(3);
+	await expect(page.locator('.check')).toHaveCount(2);
 	await expect(page.locator('.check--down')).toHaveCount(0);
 	await expect(page.getByText('Links per hour, last 24 hours')).toBeVisible();
 });

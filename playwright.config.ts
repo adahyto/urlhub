@@ -31,9 +31,7 @@ export default defineConfig({
 			env: {
 				PORT: String(APP_PORT),
 				HOST: '127.0.0.1',
-				LDB_API_URL: `http://127.0.0.1:${API_PORT}/json`,
-				// /status checks ldb-gui too; the fake API answers for it
-				LDB_GUI_URL: `http://127.0.0.1:${API_PORT}/`
+				LDB_API_URL: `http://127.0.0.1:${API_PORT}/json`
 			},
 			reuseExistingServer: !process.env.CI
 		}
