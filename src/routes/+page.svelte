@@ -10,7 +10,7 @@
 	import RecentMenu from '$lib/components/RecentMenu.svelte';
 	import Menu from '$lib/components/Menu.svelte';
 	import { RecentQueries, type Recent } from '$lib/history.svelte';
-	import { LinkQuery, asCsv, asJson } from '$lib/query.svelte';
+	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
 	import type { Row, View } from '$lib/types';
 	import { has, useI18n, type Key } from '$lib/i18n';
@@ -62,8 +62,8 @@
 		);
 	const shows = (r: Row) =>
 		only === 'all' ||
-		(only === 'failed' && !!r.error) ||
-		(only === 'ok' && !r.error && !r.pending) ||
+		(only === 'failed' && isFailed(r)) ||
+		(only === 'ok' && !isFailed(r) && !r.pending) ||
 		(only === 'warnings' && !!r.warnings?.length);
 
 	const shown = $derived.by(() => {
@@ -324,6 +324,8 @@
 						<p class="toolbar__summary">
 							{summary}{#if query.failed}<span class="toolbar__failed"
 									>{i18n.t('toolbar.failed', { count: query.failed })}</span
+								>{/if}{#if query.blocked}<span class="toolbar__blocked"
+									>{i18n.t('toolbar.blocked', { count: query.blocked })}</span
 								>{/if}{filtered}
 						</p>
 						{#if query.failed && !query.loading}
@@ -552,6 +554,11 @@
 
 	.toolbar__failed {
 		color: var(--error);
+	}
+
+	.toolbar__blocked {
+		font-weight: 400;
+		color: var(--muted);
 	}
 
 	.toolbar__retry,

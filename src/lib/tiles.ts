@@ -20,6 +20,7 @@ export function toTileUrl(item: Row): TileUrl {
 		channel: item.channel ?? '',
 		duration: item.duration ?? '',
 		error: item.error ?? '',
+		site: item.siteName ?? '',
 		pending: item.pending
 	};
 }
