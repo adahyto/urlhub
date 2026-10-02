@@ -62,6 +62,13 @@ jobs:
           test "$code" = 502
           grep -q '"error"' "$RUNNER_TEMP/answer.json"
 
+      # Without ldb-api, /status still answers and shows it as down
+      - name: Health and status pages answer
+        run: |
+          curl -sf http://localhost:98/health | grep -q '"status":"ok"'
+          curl -sf -o "$RUNNER_TEMP/status.html" http://localhost:98/status
+          grep -q 'check--down' "$RUNNER_TEMP/status.html"
+
       - name: Logs
         if: failure()
         run: docker compose logs
