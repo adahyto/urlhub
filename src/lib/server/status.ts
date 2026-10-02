@@ -46,10 +46,9 @@ export interface Status {
 	api: ApiHealth | null;
 }
 
-// ldb-api's /health sits next to its /json; ldb-gui is checked through the port it publishes on this host
+// ldb-api's /health sits next to its /json
 const apiHealthUrl = () =>
 	new URL('/health', env.LDB_API_URL || 'http://51.75.116.68:84/json').href;
-const guiUrl = () => env.LDB_GUI_URL || 'http://51.75.116.68:94/';
 
 const TIMEOUT_MS = 5_000;
 // Every viewer of /status reloads it every 30 s: ask the others at most this often, whoever is looking
@@ -77,21 +76,17 @@ const check = async (name: string, url: string): Promise<{ check: Check; respons
 };
 
 const gather = async (): Promise<Status> => {
-	const [api, gui] = await Promise.all([
-		check('ldb-api', apiHealthUrl()),
-		check('ldb-gui', guiUrl())
-	]);
-	gui.response?.body?.cancel().catch(() => {});
+	const api = await check('ldb-api', apiHealthUrl());
 	let health: ApiHealth | null = null;
 	if (api.response?.ok) health = await api.response.json().catch(() => null);
 	else api.response?.body?.cancel().catch(() => {});
 	const self: Check = { name: 'urlhub', url: '/health', ok: true, detail: 'this page', ms: 0 };
-	return { checkedAt: new Date().toISOString(), checks: [self, api.check, gui.check], api: health };
+	return { checkedAt: new Date().toISOString(), checks: [self, api.check], api: health };
 };
 
 let last: { at: number; status: Promise<Status> } | null = null;
 
-/** The state of the three apps, asked again at most every FRESH_MS */
+/** The state of urlhub and ldb-api, asked again at most every FRESH_MS */
 export const getStatus = (): Promise<Status> => {
 	if (!last || Date.now() - last.at > FRESH_MS) last = { at: Date.now(), status: gather() };
 	return last.status;

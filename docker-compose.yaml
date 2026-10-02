@@ -12,10 +12,9 @@ services:
     build:
       context: ./
     # The app's server calls ldb-api (src/routes/api/json/+server.ts) through the port it publishes on this host;
-    # /status also checks ldb-api's /health next to it and ldb-gui (src/lib/server/status.ts)
+    # /status also checks ldb-api's /health next to it (src/lib/server/status.ts)
     environment:
       - LDB_API_URL=http://host.docker.internal:84/json
-      - LDB_GUI_URL=http://host.docker.internal:94/
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:

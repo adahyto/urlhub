@@ -19,7 +19,7 @@ the list, and the list is never sent anywhere. Storing on a device needs consent
 (ePrivacy art. 5(3), in Poland art. 399 Prawo komunikacji elektronicznej); the switch is that request, so no
 consent banner is needed. The app sets no cookies.
 
-`/status` shows whether urlhub, ldb-api and ldb-gui answer, and ldb-api's counts (no links).
+`/status` shows whether urlhub and ldb-api answer, and ldb-api's counts (no links).
 
 Runs on the server at http://51.75.116.68:98 (SvelteKit, adapter-node). Link details come from
 [ldb-api](https://github.com/adahyto/ldb-api): the browser posts the text as typed to this app's `/api/json`
