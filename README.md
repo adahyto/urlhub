@@ -36,5 +36,14 @@ npm run build
 
 Deploy on the server: `git pull && sudo docker compose up -d --build`.
 
-CI (`.github/workflows/ci.yml`) runs `npm run lint`, `npm run check` and the build on every pull request, and
-starts the image to check that the page and `/api/json` answer.
+CI (`.github/workflows/ci.yml`) runs `npm run lint`, `npm run check` and the build on every pull request,
+starts the image to check that the page and `/api/json` answer, and runs the end-to-end tests.
+
+End-to-end tests (`tests/e2e/`, Playwright, Chromium) build the app and run it against a fake ldb-api
+(`tests/e2e/fake-ldb-api.mjs`: answers from the link's path, `/slow`, `/dead`, `/flaky`, `/video`, ...), so they
+need no network and give the same result every time:
+
+```sh
+npx playwright install chromium   # once
+npm run test:e2e
+```
