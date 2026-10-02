@@ -53,16 +53,35 @@
 		}
 	}
 
-	// The file is read here, in the browser; its text joins the field and ldb-api finds the links in it
+	// The file is read here, in the browser; ldb-api finds the links in it (/api/links) and only those join the
+	// field. Without the server the whole text goes in: the preview finds the links in it anyway.
 	async function addFile(event: Event) {
 		const input = event.currentTarget as HTMLInputElement;
 		const file = input.files?.[0];
 		input.value = '';
 		if (!file) return;
-		const added = await file.text();
-		text = [text.trim(), added.trim()].filter(Boolean).join('\n');
-		notice = i18n.t('form.fileAdded', { count: roughCount(added), file: file.name });
-		setTimeout(() => (notice = ''), 2500);
+		const content = await file.text();
+		let added = content.trim();
+		let count = roughCount(content);
+		try {
+			const res = await fetch('/api/links', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ text: content })
+			});
+			if (res.ok) {
+				const found: { urls: string[] } = await res.json();
+				added = found.urls.join('\n');
+				count = found.urls.length;
+			}
+		} catch {
+			// keep the whole text
+		}
+		text = [text.trim(), added].filter(Boolean).join('\n');
+		notice = count
+			? i18n.t('form.fileAdded', { count, file: file.name })
+			: i18n.t('form.fileEmpty', { file: file.name });
+		setTimeout(() => (notice = ''), 4000);
 	}
 </script>
 

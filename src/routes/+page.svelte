@@ -105,6 +105,8 @@
 		// Tiles show the basic details only, so they do not ask for the heavier advanced ones
 		const asked = advanced && view !== 'tiles';
 		query.run(text, asked, (urls) => {
+			// The field shows what the set holds: the links found, not the text they were pasted in
+			text = urls.join('\n');
 			updateAddress(urls);
 			recent.add(urls, view, asked);
 		});

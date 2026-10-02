@@ -161,6 +161,12 @@ http
 			attempts = new Map();
 			return send(res, 200, { ok: true });
 		}
+		if (req.method === 'POST' && pathname === '/json/links') {
+			let raw = '';
+			for await (const chunk of req) raw += chunk;
+			const urls = findLinks(JSON.parse(raw || '{}').text);
+			return send(res, 200, { total: urls.length, urls });
+		}
 		if (req.method !== 'POST' || pathname !== '/json') return send(res, 200, { ok: true });
 
 		let raw = '';

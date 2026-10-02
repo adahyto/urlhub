@@ -6,7 +6,7 @@
 	},
 	"form": {
 		"label": "Linki",
-		"hint": "Oddziel linki spacjami, przecinkami lub nowymi liniami · Ctrl + Enter pokazuje podgląd",
+		"hint": "Wklej linki albo tekst z linkami; urlhub sam je znajdzie · Ctrl + Enter pokazuje podgląd",
 		"links": {
 			"one": "{count} link",
 			"few": "{count} linki",
@@ -16,18 +16,19 @@
 		"atMost": " — najwyżej {max} naraz",
 		"addFile": "Dodaj linki z pliku .txt",
 		"fileAdded": {
-			"one": "Dodano {count} link z pliku {file}",
-			"few": "Dodano {count} linki z pliku {file}",
-			"many": "Dodano {count} linków z pliku {file}",
-			"other": "Dodano {count} linku z pliku {file}"
+			"one": "Znaleziono {count} link w pliku {file}",
+			"few": "Znaleziono {count} linki w pliku {file}",
+			"many": "Znaleziono {count} linków w pliku {file}",
+			"other": "Znaleziono {count} linku w pliku {file}"
 		},
 		"advanced": "Dodaje ostrzeżenia SEO, słowa kluczowe, Open Graph, canonical, robots oraz linki i nagłówki każdej strony; widać je w tabeli i JSON.",
 		"fetch": "Pokaż podgląd",
 		"loading": "Wczytuję… {ready} / {total}",
 		"stop": "Zatrzymaj",
-		"placeholder": "Wklej linki – oddziel je spacjami, przecinkami lub nowymi liniami",
+		"placeholder": "Wklej linki albo dowolny tekst z linkami, np. maila czy notatkę – urlhub sam je znajdzie",
 		"example": "Wypróbuj przykład",
-		"advancedShort": "Sprawdź SEO"
+		"advancedShort": "Sprawdź SEO",
+		"fileEmpty": "W pliku {file} nie ma linków."
 	},
 	"views": {
 		"label": "Widok",
@@ -350,7 +351,7 @@
 		"label": "Do czego służy urlhub",
 		"tiles": {
 			"title": "Zestaw linków w jednym miejscu",
-			"text": "Wklej linki do produktów, filmów czy artykułów – każdy pokaże się z obrazkiem, tytułem i opisem, a filmy z czasem trwania."
+			"text": "Wklej linki do produktów, filmów czy artykułów – albo cały tekst, np. maila, a urlhub sam znajdzie w nim linki. Każdy pokaże się z obrazkiem, tytułem i opisem."
 		},
 		"seo": {
 			"title": "Porządkuj i porównuj",
@@ -370,7 +371,7 @@
 		},
 		"links": {
 			"title": "Linki, które wpisujesz",
-			"text": "Wpisane linki trafiają do naszego serwera, który pobiera opisane nimi strony albo pyta o nie serwisy, do których prowadzą (YouTube, Vimeo, Spotify, SoundCloud, TikTok, X, Wikipedia, GitHub). Strony i serwisy widzą przy tym adres naszego serwera, nie Twój. Wyniki są przez krótki czas (do 30 minut, filmy do godziny) przechowywane w pamięci serwera i znikają przy jego restarcie. Robimy to, żeby pokazać podgląd, o który prosisz (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO). Podanie linków jest dobrowolne, ale bez nich serwis nie ma czego pokazać. Nie wpisuj linków, które same zawierają dane, których nie chcesz przekazywać, np. adresów z hasłem lub tokenem."
+			"text": "Wpisane linki trafiają do naszego serwera, który pobiera opisane nimi strony albo pyta o nie serwisy, do których prowadzą (YouTube, Vimeo, Spotify, SoundCloud, TikTok, X, Wikipedia, GitHub). Strony i serwisy widzą przy tym adres naszego serwera, nie Twój. Wyniki są przez krótki czas (do 30 minut, filmy do godziny) przechowywane w pamięci serwera i znikają przy jego restarcie. Jeśli wkleisz albo wczytasz z pliku cały tekst (np. maila), trafia on na serwer tylko po to, żeby znaleźć w nim linki; sam tekst nie jest nigdzie zapisywany. Robimy to, żeby pokazać podgląd, o który prosisz (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO). Podanie linków jest dobrowolne, ale bez nich serwis nie ma czego pokazać. Nie wpisuj linków, które same zawierają dane, których nie chcesz przekazywać, np. adresów z hasłem lub tokenem."
 		},
 		"pictures": {
 			"title": "Obrazki podglądów",
