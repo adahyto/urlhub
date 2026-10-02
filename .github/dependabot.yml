@@ -1,0 +1,29 @@
+# Weekly update PRs for npm packages, Docker base images and GitHub Actions; CI checks each one.
+# Minor and patch updates come grouped in one PR per ecosystem, major versions one PR each.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    target-branch: main
+    schedule:
+      interval: weekly
+    groups:
+      npm-minor:
+        update-types: [minor, patch]
+  - package-ecosystem: docker
+    directories:
+      - "/"
+    target-branch: main
+    schedule:
+      interval: weekly
+    groups:
+      docker-minor:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: "/"
+    target-branch: main
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor:
+        update-types: [minor, patch]
