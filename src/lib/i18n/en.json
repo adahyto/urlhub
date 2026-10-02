@@ -1,12 +1,12 @@
 {
 	"meta": {
 		"title": "urlhub – link previews",
-		"description": "Paste links and see them as tiles or a table: picture, title and description of each page, YouTube duration, SEO warnings.",
+		"description": "Paste links and see what's behind each one: picture, title, description, video duration. Check pages for SEO and share the list with one link.",
 		"statusTitle": "urlhub – status"
 	},
 	"form": {
-		"label": "Enter URLs",
-		"hint": "Separate with spaces, commas, or new lines · Ctrl + Enter fetches",
+		"label": "Links",
+		"hint": "Separate links with spaces, commas or new lines · Ctrl + Enter shows the preview",
 		"links": {
 			"one": "{count} link",
 			"other": "{count} links"
@@ -17,13 +17,13 @@
 			"one": "{count} link added from {file}",
 			"other": "{count} links added from {file}"
 		},
-		"advanced": "Advanced: SEO warnings, keywords, Open Graph, canonical, robots, links and headings of each page",
-		"fetch": "Fetch",
+		"advanced": "Adds SEO warnings, keywords, Open Graph, canonical, robots and the links and headings of each page; they show in the table and JSON.",
+		"fetch": "Preview",
 		"loading": "Loading… {ready} / {total}",
 		"stop": "Stop",
-		"placeholder": "Paste links, separated by spaces, commas or new lines",
+		"placeholder": "Paste links – separate them with spaces, commas or new lines",
 		"example": "Try an example",
-		"advancedShort": "Advanced (SEO)"
+		"advancedShort": "Check SEO"
 	},
 	"views": {
 		"label": "View",
@@ -38,11 +38,11 @@
 		},
 		"failed": ", {count} failed",
 		"shown": " · {count} shown",
-		"filter": "Filter by text, link or error",
-		"filterLabel": "Filter",
+		"filter": "Search titles, links and errors",
+		"filterLabel": "Search",
 		"show": "Show",
 		"all": "All links",
-		"ok": "Without errors",
+		"ok": "Working",
 		"failedOnly": "Failed only",
 		"warnings": "With SEO warnings",
 		"type": "Type",
@@ -54,10 +54,10 @@
 		"downloadJson": "Download JSON",
 		"downloadCsv": "Download CSV",
 		"shortLink": "Short link",
-		"shortLinkHint": "Keeps the list on the server; unused for 90 days, it is deleted",
+		"shortLinkHint": "The list stays on the server; if nobody opens it for 90 days, it is deleted",
 		"retryShort": "Retry",
 		"copyLink": "Copy link",
-		"copyLinkHint": "The address with the whole list",
+		"copyLinkHint": "A long address with the whole list",
 		"export": "Export",
 		"csvHint": "Opens in Excel and Google Sheets"
 	},
@@ -66,7 +66,7 @@
 		"linkCopied": "Link copied: it opens these results",
 		"removed": "Removed {name}",
 		"undo": "Undo",
-		"fetchAgain": "Fetch again to get the advanced details.",
+		"fetchAgain": "Preview again to check SEO.",
 		"shortLinkCopied": "Short link copied: {url} · The list is kept on the server; unused for 90 days, it is deleted.",
 		"shortLinkFailed": "The short link could not be made. Try again in a minute."
 	},
@@ -74,8 +74,8 @@
 		"empty": "No links found. Links start with http:// or https://.",
 		"tooMany": "At most {max} links per request, got {count}.",
 		"rateLimited": "Too many links from your address. Try again in a few minutes.",
-		"unreachable": "The link service cannot be reached. Try again in a moment.",
-		"service": "The link service answered with an error ({status}).",
+		"unreachable": "The preview server cannot be reached. Try again in a moment.",
+		"service": "The preview server answered with an error ({status}). Try again.",
 		"cutoff": "The answer was cut off. Fetch again to complete the list.",
 		"network": "The connection was lost. Check it and fetch again."
 	},
@@ -106,7 +106,7 @@
 			"one": "{count} link",
 			"other": "{count} links"
 		},
-		"advanced": ", advanced",
+		"advanced": ", with SEO",
 		"remove": "Remove from recent queries",
 		"clear": "Clear all",
 		"empty": "Nothing yet: your next queries will show up here.",
@@ -144,7 +144,7 @@
 			"info": "Note"
 		},
 		"noWarnings": "No SEO warnings",
-		"hint": "Fetch with the advanced option for SEO warnings, headings and more.",
+		"hint": "Tick “Check SEO” and preview again to see SEO warnings, headings and more.",
 		"yes": "yes",
 		"facts": {
 			"finalUrl": "Final address",
@@ -297,7 +297,7 @@
 		}
 	},
 	"header": {
-		"tagline": "Link previews as tiles, a table or JSON",
+		"tagline": "Paste links and see what's behind each one",
 		"nav": "Language"
 	},
 	"footer": {
@@ -306,16 +306,16 @@
 	"features": {
 		"label": "What urlhub does",
 		"tiles": {
-			"title": "Tiles, table, JSON",
-			"text": "Picture, title and description of each page, video durations, GitHub stars."
+			"title": "See what's behind a link",
+			"text": "Picture, title and description of each page, video durations and GitHub stars – as tiles, a table or JSON to download."
 		},
 		"seo": {
-			"title": "SEO warnings",
-			"text": "With the advanced option: missing description, title too long, noindex, redirect chains."
+			"title": "Check pages for SEO",
+			"text": "Tick “Check SEO” to see what is missing: a description, a picture for sharing, a heading – and whether anything blocks search engines."
 		},
 		"share": {
-			"title": "Sharing",
-			"text": "A link with the whole list or a short /c/… link, with a preview in messengers."
+			"title": "Share with one link",
+			"text": "Send a link with the whole list or a short /c/… link – messengers show a preview."
 		}
 	},
 	"privacy": {

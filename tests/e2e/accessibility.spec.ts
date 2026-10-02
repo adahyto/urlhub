@@ -29,7 +29,7 @@ async function expectAccessible(page: Page, within?: string) {
 }
 
 const settled = (page: Page) =>
-	expect(page.getByRole('button', { name: /^(Fetch|Pobierz)$/ })).toBeEnabled();
+	expect(page.getByRole('button', { name: /^(Preview|Pokaż podgląd)$/ })).toBeEnabled();
 
 test('the empty page, light and dark', async ({ page }) => {
 	await page.goto('/');
@@ -97,8 +97,8 @@ test('one announcement when a query starts and one when it ends, not one per res
 	page
 }) => {
 	await page.goto('/');
-	await page.getByLabel('Enter URLs').fill(`${link('/a')} ${link('/b')} ${link('/c')}`);
-	await page.getByRole('button', { name: 'Fetch' }).click();
+	await page.getByLabel('Links', { exact: true }).fill(`${link('/a')} ${link('/b')} ${link('/c')}`);
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	const announcer = page.locator('p.sr-only[role="status"]');
 	await expect(announcer).toHaveText('Done: 3 links, 0 failed.');
 	await expect(page.locator('.toolbar__summary')).not.toHaveAttribute('aria-live');
