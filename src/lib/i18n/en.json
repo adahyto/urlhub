@@ -7,7 +7,10 @@
 	"form": {
 		"label": "Enter URLs",
 		"hint": "Separate with spaces, commas, or new lines · Ctrl + Enter fetches",
-		"links": { "one": "{count} link", "other": "{count} links" },
+		"links": {
+			"one": "{count} link",
+			"other": "{count} links"
+		},
 		"atMost": " — at most {max} at once",
 		"addFile": "Add links from a .txt file",
 		"fileAdded": {
@@ -19,9 +22,17 @@
 		"loading": "Loading… {ready} / {total}",
 		"stop": "Stop"
 	},
-	"views": { "label": "View", "tiles": "Tiles", "table": "Table", "json": "JSON" },
+	"views": {
+		"label": "View",
+		"tiles": "Tiles",
+		"table": "Table",
+		"json": "JSON"
+	},
 	"toolbar": {
-		"links": { "one": "{count} link", "other": "{count} links" },
+		"links": {
+			"one": "{count} link",
+			"other": "{count} links"
+		},
 		"failed": ", {count} failed",
 		"shown": " · {count} shown",
 		"filter": "Filter by text, link or error",
@@ -39,14 +50,18 @@
 		"retry": "Retry {count} failed",
 		"copyJson": "Copy JSON",
 		"downloadJson": "Download JSON",
-		"downloadCsv": "Download CSV"
+		"downloadCsv": "Download CSV",
+		"shortLink": "Short link",
+		"shortLinkHint": "Keeps the list on the server; unused for 90 days, it is deleted"
 	},
 	"notices": {
 		"jsonCopied": "JSON copied",
 		"linkCopied": "Link copied: it opens these results",
 		"removed": "Removed {name}",
 		"undo": "Undo",
-		"fetchAgain": "Fetch again to get the advanced details."
+		"fetchAgain": "Fetch again to get the advanced details.",
+		"shortLinkCopied": "Short link copied: {url} · The list is kept on the server; unused for 90 days, it is deleted.",
+		"shortLinkFailed": "The short link could not be made. Try again in a minute."
 	},
 	"errors": {
 		"empty": "No links found. Links start with http:// or https://.",
@@ -81,7 +96,10 @@
 		"title": "Recent queries",
 		"remember": "Remember recent queries on this device",
 		"note": "Kept only in this browser, never sent anywhere. Turning this off deletes them.",
-		"links": { "one": "{count} link", "other": "{count} links" },
+		"links": {
+			"one": "{count} link",
+			"other": "{count} links"
+		},
 		"advanced": ", advanced",
 		"remove": "Remove from recent queries",
 		"clear": "Clear all",
@@ -113,7 +131,11 @@
 	},
 	"details": {
 		"warnings": "SEO warnings",
-		"levels": { "error": "Error", "warning": "Warning", "info": "Note" },
+		"levels": {
+			"error": "Error",
+			"warning": "Warning",
+			"info": "Note"
+		},
 		"noWarnings": "No SEO warnings",
 		"hint": "Fetch with the advanced option for SEO warnings, headings and more.",
 		"yes": "yes",
@@ -139,7 +161,9 @@
 			"images": "Images"
 		}
 	},
-	"json": { "label": "Results as JSON" },
+	"json": {
+		"label": "Results as JSON"
+	},
 	"seo": {
 		"noindex": "Search engines are told not to index this page (noindex).",
 		"title-missing": "The page has no title.",
@@ -188,7 +212,10 @@
 		"upFor": "Up for {time} · Node {node} · counts start again at every restart",
 		"lastHour": "Last hour",
 		"last24h": "Last 24 hours",
-		"links": { "one": "link", "other": "links" },
+		"links": {
+			"one": "link",
+			"other": "links"
+		},
 		"requestsLine": "{requests} requests · {failed} failed ({percent}) · {cached} from memory",
 		"cancelledLine": "{cancelled} cancelled · {refused} refused (limits)",
 		"perHour": "Links per hour, last 24 hours",
@@ -210,12 +237,24 @@
 		"quotaLabel": "YouTube quota used today",
 		"quotaProblem": "⚠ {problem}: videos come from oEmbed for now",
 		"noKey": "⚠ No API key: videos come from oEmbed (no description or duration)",
-		"apiCalls": { "one": "{count} API call", "other": "{count} API calls" },
-		"oembed": { "one": "{count} oEmbed request", "other": "{count} oEmbed requests" },
+		"apiCalls": {
+			"one": "{count} API call",
+			"other": "{count} API calls"
+		},
+		"oembed": {
+			"one": "{count} oEmbed request",
+			"other": "{count} oEmbed requests"
+		},
 		"lastHourCalls": "{calls} and {oembed} in the last hour",
 		"memory": "Memory",
-		"pages": { "one": "{count} page", "other": "{count} pages" },
-		"videos": { "one": "{count} video", "other": "{count} videos" },
+		"pages": {
+			"one": "{count} page",
+			"other": "{count} pages"
+		},
+		"videos": {
+			"one": "{count} video",
+			"other": "{count} videos"
+		},
 		"memoryLine": "{pages} ({size} of 64 MB) for 30 min · {videos} for 1 h",
 		"noApi": "⚠ ldb-api does not answer, so there are no counts to show.",
 		"duration": {
@@ -223,5 +262,10 @@
 			"hours": "{hours} h {minutes} min",
 			"minutes": "{minutes} min"
 		}
+	},
+	"errorPage": {
+		"shortLinkTitle": "This short link does not exist",
+		"shortLinkText": "It may have expired: short links unused for 90 days are deleted. Ask whoever shared it for a new one.",
+		"other": "Something went wrong."
 	}
 }

@@ -338,3 +338,50 @@ test.describe('in Polish', () => {
 		);
 	});
 });
+
+test('a short link opens the same list, and the same list gets the same link', async ({
+	page,
+	context
+}) => {
+	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+	await page.goto(`/?urls=${encodeURIComponent(`${link('/a?x=1&y=2')} ${link('/b')}`)}&view=table`);
+	await expect(summary(page)).toHaveText('2 links');
+	await page.getByRole('button', { name: 'Short link' }).click();
+	await expect(page.getByRole('status')).toContainText(
+		'Short link copied: http://127.0.0.1:4173/c/'
+	);
+	await expect(page.getByRole('status')).toContainText('unused for 90 days, it is deleted');
+	const short = new URL(await page.evaluate(() => navigator.clipboard.readText()));
+	expect(short.pathname).toMatch(/^\/c\/[0-9A-Za-z]{8}$/);
+
+	// Only the list is kept: no address, no time beyond the file's own
+	const id = short.pathname.slice(3);
+	const stored = JSON.parse(await readFile(`test-results/data/collections/${id}.json`, 'utf8'));
+	expect(stored).toEqual({
+		urls: [link('/a?x=1&y=2'), link('/b')],
+		view: 'table',
+		advanced: false,
+		lang: 'en'
+	});
+
+	await page.getByRole('button', { name: 'Short link' }).click();
+	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(short.href);
+
+	await page.goto(short.pathname);
+	await expect(page.locator('tbody tr')).toHaveCount(2);
+	const opened = new URL(page.url()).searchParams;
+	expect([opened.get('urls'), opened.get('view'), opened.get('lang')]).toEqual([
+		`${link('/a?x=1&y=2')} ${link('/b')}`,
+		'table',
+		'en'
+	]);
+});
+
+test('an unknown short link says what happened, in both languages', async ({ page }) => {
+	const response = await page.goto('/c/AAAAAAAA');
+	expect(response?.status()).toBe(404);
+	await expect(page.getByRole('heading')).toHaveText('This short link does not exist');
+	await page.goto('/c/AAAAAAAA?lang=pl');
+	await expect(page.getByRole('heading')).toHaveText('Ten krótki link nie istnieje');
+	expect((await page.goto('/c/not-an-id!'))?.status()).toBe(404);
+});
