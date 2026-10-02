@@ -5,6 +5,11 @@ description of each page, its site and icon, the author, date and duration of vi
 GitHub stars, and what went wrong with a link that could not be read. With the advanced option (table and JSON)
 each page also gets SEO warnings, keywords, Open Graph, canonical, robots, its links and headings.
 
+The table sorts by title, issues, type or duration, opens each row's details (SEO warnings with their level,
+final address, status, canonical, robots, headings, GitHub stars and licence, ...), filters by text, failures,
+SEO warnings, type or site, and exports CSV (opens in Excel with Polish letters intact). Failed links can be
+fetched again on their own.
+
 The address of the page holds the links, the view and the option (`?urls=...&view=table&advanced=1`), so a
 result can be shared; shared links load by themselves. Results fill in as each link is ready; Stop cancels.
 
