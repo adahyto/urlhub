@@ -8,14 +8,14 @@ import { API_PORT } from '../../playwright.config';
 const API = `http://127.0.0.1:${API_PORT}`;
 const link = (path: string) => `https://example.test${path}`;
 
-const field = (page: Page) => page.getByLabel('Enter URLs');
+const field = (page: Page) => page.getByLabel('Links', { exact: true });
 const summary = (page: Page) => page.locator('.toolbar__summary');
 const lastRequest = async (page: Page) =>
 	(await (await page.request.get(`${API}/__requests`)).json()).at(-1);
 
 async function fetchLinks(page: Page, text: string) {
 	await field(page).fill(text);
-	await page.getByRole('button', { name: 'Fetch' }).click();
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 }
 
 test.beforeEach(async ({ request }) => {
@@ -47,7 +47,7 @@ test('results fill in as they come, and Stop marks the rest', async ({ page }) =
 	await expect(page.getByRole('button', { name: /Loading… 1 \/ 3/ })).toBeVisible();
 	await page.getByRole('button', { name: 'Stop' }).click();
 	await expect(page.locator('.tiles__error')).toHaveText(['stopped', 'stopped']);
-	await expect(page.getByRole('button', { name: 'Fetch' })).toBeEnabled();
+	await expect(page.getByRole('button', { name: 'Preview', exact: true })).toBeEnabled();
 });
 
 test('a failed link says why, and Retry asks again for the failed ones only', async ({ page }) => {
@@ -119,8 +119,8 @@ test('the table: advanced details, filters, sorting, JSON and CSV', async ({ pag
 	const address = new URL(page.url()).searchParams;
 	expect([address.get('view'), address.get('advanced')]).toEqual([null, null]);
 	// Asking for the SEO details from the tiles opens the table, where they show
-	await page.getByLabel('Advanced (SEO)').uncheck();
-	await page.getByLabel('Advanced (SEO)').check();
+	await page.getByLabel('Check SEO').uncheck();
+	await page.getByLabel('Check SEO').check();
 	await expect(page.getByRole('button', { name: 'Table', exact: true })).toHaveAttribute(
 		'aria-pressed',
 		'true'
@@ -134,7 +134,7 @@ test('more than 200 links: the form says so and the request is refused clearly',
 	const many = Array.from({ length: 201 }, (_, i) => link(`/${i}`)).join('\n');
 	await field(page).fill(many);
 	await expect(page.getByText('201 links — at most 200 at once')).toBeVisible();
-	await page.getByRole('button', { name: 'Fetch' }).click();
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.getByRole('alert')).toHaveText('At most 200 links per request, got 201.');
 });
 
@@ -261,7 +261,7 @@ test('the list can be edited: remove with undo, move with buttons and by draggin
 	await page.getByRole('button', { name: /Title and details/ }).click();
 	await page.getByRole('button', { name: /Title and details/ }).click();
 	await expect(page.getByRole('button', { name: 'Move down' })).toHaveCount(3);
-	await page.getByPlaceholder('Filter by text, link or error').fill('/c');
+	await page.getByPlaceholder('Search titles, links and errors').fill('/c');
 	await expect(page.getByRole('button', { name: 'Move down' })).toHaveCount(0);
 	await expect(page.locator('tbody').getByRole('button', { name: 'Remove' })).toHaveCount(1);
 });
@@ -301,11 +301,11 @@ test.describe('in Polish', () => {
 	}) => {
 		await page.goto('/');
 		await expect(page.locator('html')).toHaveAttribute('lang', 'pl');
-		await expect(page.getByLabel('Wpisz linki')).toBeVisible();
+		await expect(page.getByLabel('Linki', { exact: true })).toBeVisible();
 		await page
-			.getByLabel('Wpisz linki')
+			.getByLabel('Linki', { exact: true })
 			.fill([link('/a'), link('/b'), link('/c'), link('/d'), link('/dead')].join(' '));
-		await page.getByRole('button', { name: 'Pobierz' }).click();
+		await page.getByRole('button', { name: 'Pokaż podgląd', exact: true }).click();
 		await expect(summary(page)).toHaveText('5 linków, nieudane: 1');
 		await expect(page.locator('.tiles__error')).toHaveText('nie ma takiego serwera');
 
@@ -329,7 +329,7 @@ test.describe('in Polish', () => {
 		await page.goto(`/?urls=${link('/a')}`);
 		await expect(summary(page)).toHaveText('1 link');
 		await page.getByRole('link', { name: 'EN' }).click();
-		await expect(page.getByRole('button', { name: 'Fetch' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Preview', exact: true })).toBeVisible();
 		await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 		await expect(summary(page)).toHaveText('1 link');
 		expect(new URL(page.url()).searchParams.get('lang')).toBe('en');
@@ -338,16 +338,16 @@ test.describe('in Polish', () => {
 		expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
 
 		await page.goto('/?lang=en');
-		await expect(page.getByRole('button', { name: 'Fetch' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Preview', exact: true })).toBeVisible();
 	});
 
 	test('too many links are refused in Polish', async ({ page }) => {
 		await page.goto('/');
 		await page
-			.getByLabel('Wpisz linki')
+			.getByLabel('Linki', { exact: true })
 			.fill(Array.from({ length: 201 }, (_, i) => link(`/${i}`)).join('\n'));
 		await expect(page.getByText('201 linków — najwyżej 200 naraz')).toBeVisible();
-		await page.getByRole('button', { name: 'Pobierz' }).click();
+		await page.getByRole('button', { name: 'Pokaż podgląd', exact: true }).click();
 		await expect(page.getByRole('alert')).toHaveText(
 			'Najwyżej 200 linków w jednym zapytaniu, a jest 201.'
 		);
@@ -443,7 +443,7 @@ test('the empty page explains itself, and "Try an example" fetches working examp
 	page
 }) => {
 	await page.goto('/?lang=pl');
-	await expect(page.getByLabel('Wpisz linki')).toHaveValue('');
+	await expect(page.getByLabel('Linki', { exact: true })).toHaveValue('');
 	await expect(
 		page.getByRole('list', { name: 'Co robi urlhub' }).getByRole('listitem')
 	).toHaveCount(3);

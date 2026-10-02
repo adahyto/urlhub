@@ -1,12 +1,12 @@
 {
 	"meta": {
 		"title": "urlhub – podgląd linków",
-		"description": "Wklej linki i zobacz je jako kafelki albo tabelę: obrazek, tytuł i opis każdej strony, czas trwania filmów, ostrzeżenia SEO.",
+		"description": "Wklej linki i zobacz, co jest pod każdym z nich: obrazek, tytuł, opis, czas trwania filmów. Sprawdź SEO stron i udostępnij listę jednym linkiem.",
 		"statusTitle": "urlhub – stan"
 	},
 	"form": {
-		"label": "Wpisz linki",
-		"hint": "Oddziel spacjami, przecinkami lub nowymi liniami · Ctrl + Enter pobiera",
+		"label": "Linki",
+		"hint": "Oddziel linki spacjami, przecinkami lub nowymi liniami · Ctrl + Enter pokazuje podgląd",
 		"links": {
 			"one": "{count} link",
 			"few": "{count} linki",
@@ -21,13 +21,13 @@
 			"many": "Dodano {count} linków z pliku {file}",
 			"other": "Dodano {count} linku z pliku {file}"
 		},
-		"advanced": "Zaawansowane: ostrzeżenia SEO, słowa kluczowe, Open Graph, canonical, robots, linki i nagłówki każdej strony",
-		"fetch": "Pobierz",
-		"loading": "Pobieram… {ready} / {total}",
+		"advanced": "Dodaje ostrzeżenia SEO, słowa kluczowe, Open Graph, canonical, robots oraz linki i nagłówki każdej strony; widać je w tabeli i JSON.",
+		"fetch": "Pokaż podgląd",
+		"loading": "Wczytuję… {ready} / {total}",
 		"stop": "Zatrzymaj",
-		"placeholder": "Wklej linki, oddzielone spacjami, przecinkami lub nowymi liniami",
+		"placeholder": "Wklej linki – oddziel je spacjami, przecinkami lub nowymi liniami",
 		"example": "Wypróbuj przykład",
-		"advancedShort": "Zaawansowane (SEO)"
+		"advancedShort": "Sprawdź SEO"
 	},
 	"views": {
 		"label": "Widok",
@@ -44,11 +44,11 @@
 		},
 		"failed": ", nieudane: {count}",
 		"shown": " · widoczne: {count}",
-		"filter": "Szukaj w tekście, linkach i błędach",
+		"filter": "Szukaj w tytułach, linkach i błędach",
 		"filterLabel": "Szukaj",
 		"show": "Pokaż",
 		"all": "Wszystkie linki",
-		"ok": "Bez błędów",
+		"ok": "Działające",
 		"failedOnly": "Tylko nieudane",
 		"warnings": "Z ostrzeżeniami SEO",
 		"type": "Rodzaj",
@@ -60,10 +60,10 @@
 		"downloadJson": "Pobierz JSON",
 		"downloadCsv": "Pobierz CSV",
 		"shortLink": "Krótki link",
-		"shortLinkHint": "Zapisuje listę na serwerze; nieużywana przez 90 dni znika",
+		"shortLinkHint": "Lista zostaje na serwerze; nieotwierana przez 90 dni znika",
 		"retryShort": "Ponów",
 		"copyLink": "Kopiuj link",
-		"copyLinkHint": "Adres z całą listą",
+		"copyLinkHint": "Długi adres z całą listą",
 		"export": "Eksport",
 		"csvHint": "Otwiera się w Excelu i Arkuszach Google"
 	},
@@ -72,7 +72,7 @@
 		"linkCopied": "Skopiowano link: otwiera te wyniki",
 		"removed": "Usunięto: {name}",
 		"undo": "Cofnij",
-		"fetchAgain": "Pobierz ponownie, żeby zobaczyć szczegóły zaawansowane.",
+		"fetchAgain": "Pokaż podgląd ponownie, żeby sprawdzić SEO.",
 		"shortLinkCopied": "Skopiowano krótki link: {url} · Lista zostaje na serwerze; nieużywana przez 90 dni znika.",
 		"shortLinkFailed": "Nie udało się utworzyć krótkiego linku. Spróbuj za minutę."
 	},
@@ -80,8 +80,8 @@
 		"empty": "Nie znaleziono linków. Linki zaczynają się od http:// lub https://.",
 		"tooMany": "Najwyżej {max} linków w jednym zapytaniu, a jest {count}.",
 		"rateLimited": "Za dużo linków z Twojego adresu. Spróbuj ponownie za kilka minut.",
-		"unreachable": "Usługa linków jest niedostępna. Spróbuj za chwilę.",
-		"service": "Usługa linków zwróciła błąd ({status}).",
+		"unreachable": "Nie udało się połączyć z serwerem podglądów. Spróbuj za chwilę.",
+		"service": "Serwer podglądów zwrócił błąd ({status}). Spróbuj ponownie.",
 		"cutoff": "Odpowiedź się urwała. Pobierz ponownie, żeby uzupełnić listę.",
 		"network": "Połączenie zostało przerwane. Sprawdź je i pobierz ponownie."
 	},
@@ -114,7 +114,7 @@
 			"many": "{count} linków",
 			"other": "{count} linku"
 		},
-		"advanced": ", zaawansowane",
+		"advanced": ", z SEO",
 		"remove": "Usuń z ostatnich zapytań",
 		"clear": "Wyczyść wszystko",
 		"empty": "Jeszcze nic: tu pojawią się Twoje następne zapytania.",
@@ -134,7 +134,7 @@
 		"issues": "Problemy",
 		"type": "Rodzaj",
 		"duration": "Czas",
-		"fetching": "Pobieram…",
+		"fetching": "Wczytuję…",
 		"nothing": "Nic nie pasuje do filtra.",
 		"details": "Szczegóły",
 		"hideDetails": "Ukryj szczegóły",
@@ -152,7 +152,7 @@
 			"info": "Informacja"
 		},
 		"noWarnings": "Brak ostrzeżeń SEO",
-		"hint": "Pobierz z opcją zaawansowaną, żeby zobaczyć ostrzeżenia SEO, nagłówki i więcej.",
+		"hint": "Zaznacz „Sprawdź SEO” i pokaż podgląd ponownie, żeby zobaczyć ostrzeżenia SEO, nagłówki i więcej.",
 		"yes": "tak",
 		"facts": {
 			"finalUrl": "Adres końcowy",
@@ -322,10 +322,10 @@
 		"skip": "Przejdź do wyników",
 		"results": "Wyniki",
 		"fetching": {
-			"one": "Pobieram {count} link…",
-			"few": "Pobieram {count} linki…",
-			"many": "Pobieram {count} linków…",
-			"other": "Pobieram {count} linku…"
+			"one": "Wczytuję {count} link…",
+			"few": "Wczytuję {count} linki…",
+			"many": "Wczytuję {count} linków…",
+			"other": "Wczytuję {count} linku…"
 		},
 		"done": {
 			"one": "Gotowe: {count} link, nieudane: {failed}.",
@@ -335,7 +335,7 @@
 		}
 	},
 	"header": {
-		"tagline": "Podgląd linków jako kafelki, tabela albo JSON",
+		"tagline": "Wklej linki i zobacz, co jest pod każdym z nich",
 		"nav": "Język"
 	},
 	"footer": {
@@ -344,16 +344,16 @@
 	"features": {
 		"label": "Co robi urlhub",
 		"tiles": {
-			"title": "Kafelki, tabela, JSON",
-			"text": "Obrazek, tytuł i opis każdej strony, czas trwania filmów, gwiazdki z GitHuba."
+			"title": "Zobacz, co jest pod linkiem",
+			"text": "Obrazek, tytuł i opis każdej strony, czas trwania filmów i gwiazdki z GitHuba – jako kafelki, tabela albo JSON do pobrania."
 		},
 		"seo": {
-			"title": "Ostrzeżenia SEO",
-			"text": "Z opcją zaawansowaną: brakujący opis, za długi tytuł, noindex, łańcuchy przekierowań."
+			"title": "Sprawdź SEO stron",
+			"text": "Zaznacz „Sprawdź SEO”, a zobaczysz, czego brakuje: opisu, obrazka do udostępniania, nagłówka – i czy coś nie blokuje wyszukiwarek."
 		},
 		"share": {
-			"title": "Udostępnianie",
-			"text": "Link z całą listą albo krótki link /c/…, z podglądem w komunikatorach."
+			"title": "Udostępnij jednym linkiem",
+			"text": "Wyślij link z całą listą albo krótki link /c/… – w komunikatorach pokaże się podgląd."
 		}
 	},
 	"privacy": {
