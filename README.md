@@ -23,9 +23,9 @@ The interface is in English and Polish (`src/lib/i18n/en.json`, `pl.json`; forms
 stored on the device. SEO warnings and link errors from ldb-api are translated by their code (warnings with their
 `params`). `npm run check` fails when pl.json misses a key of en.json; an end-to-end test compares placeholders.
 
-The page has one column: a header (name, Status, PL | EN), the field with Fetch and **Recent ▾** next to it,
+The page has one column: a header (name, PL | EN), the field with Fetch and **Recent ▾** next to it,
 the results with **Share ▾** (copy the link, or a short link) and **Export ▾** (copy JSON, download JSON or CSV),
-and a footer. An empty field offers **Try an example**: six working links (YouTube, Vimeo, GitHub, Wikipedia and
+and a footer with the status page. An empty field offers **Try an example**: six working links (YouTube, Vimeo, GitHub, Wikipedia and
 kosmos.info.pl in the page's language, Spotify). The duration and issues columns show only when a row fills them.
 Menus open with Enter, move with ↑ ↓ and close with Escape (`src/lib/components/Menu.svelte`).
 

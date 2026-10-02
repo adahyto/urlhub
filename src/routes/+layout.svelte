@@ -42,9 +42,6 @@
 		</svelte:element>
 		<p class="site-header__tagline">{t('header.tagline')}</p>
 		<nav class="site-header__nav" aria-label={t('header.nav')}>
-			<a href={hrefTo('/status')} aria-current={page.route.id === '/status' ? 'page' : undefined}
-				>{t('header.status')}</a
-			>
 			<span class="lang">
 				{#each LANGS as lang (lang)}
 					<a
@@ -67,7 +64,6 @@
 <footer class="site-footer">
 	<div class="shell site-footer__inner">
 		<a href={hrefTo('/status')}>{t('footer.status')}</a>
-		<a href="https://github.com/adahyto/urlhub" rel="external noopener">{t('footer.code')}</a>
 		<span>{t('footer.privacy')}</span>
 	</div>
 </footer>
