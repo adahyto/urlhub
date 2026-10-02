@@ -98,7 +98,8 @@ function details(url, advanced) {
 		const warning = {
 			code: 'title-too-long',
 			level: 'warning',
-			message: 'Title is 72 characters (aim for at most 60).'
+			message: 'Title is 72 characters (aim for at most 60).',
+			params: { length: 72, max: 60 }
 		};
 		return { ...base, ...more, warnings: [warning] };
 	}

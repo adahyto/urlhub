@@ -3,7 +3,10 @@ export interface SeoWarning {
 	/** Stable: "title-too-long", "noindex", ... */
 	code: string;
 	level: 'error' | 'warning' | 'info';
+	/** In English; GUIs translate by code with params */
 	message: string;
+	/** The numbers and addresses of the message: length, min, max, count, canonical, chain, seconds, limit */
+	params?: Record<string, string | number | string[]>;
 }
 
 /** One link as ldb-api describes it (see its readme); advanced fields only with advanced: true */

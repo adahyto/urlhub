@@ -1,17 +1,17 @@
 <script lang="ts">
 	import type { Row } from '$lib/types';
+	import { useI18n } from '$lib/i18n';
+	import { seoWarning } from '$lib/i18n/messages';
+	import type en from '$lib/i18n/en.json';
 
 	let { item, advanced }: { item: Row; advanced: boolean } = $props();
 
-	const LEVELS = {
-		error: { icon: '✕', label: 'Error' },
-		warning: { icon: '!', label: 'Warning' },
-		info: { icon: 'i', label: 'Note' }
-	};
+	const i18n = useI18n();
+	const ICONS = { error: '✕', warning: '!', info: 'i' };
 
 	const date = (iso?: string) => {
 		const time = Date.parse(iso ?? '');
-		return Number.isNaN(time) ? '' : new Date(time).toLocaleString();
+		return Number.isNaN(time) ? '' : new Date(time).toLocaleString(i18n.locale);
 	};
 
 	// htmlTags hold each element's HTML; the panel shows its text
@@ -37,29 +37,30 @@
 			.filter((h) => h.count)
 	);
 
+	type FactKey = keyof (typeof en)['details']['facts'];
 	const facts = $derived(
 		[
-			['Final address', item.finalUrl && item.finalUrl !== item.url ? item.finalUrl : ''],
-			['HTTP status', item.status ?? ''],
-			['Response time', item.responseMs != null ? `${item.responseMs} ms` : ''],
-			['Language', item.lang],
-			['Published', date(item.published)],
-			['Author', item.author],
-			['Canonical', item.canonical],
-			['Robots', item.robots],
-			['Keywords', item.keywords],
-			['Open Graph title', item.ogTitle !== item.title ? item.ogTitle : ''],
-			['Description', item.ogDesc && item.ogDesc !== item.desc ? item.ogDesc : ''],
-			['Stars', item.extra?.stars],
-			['Forks', item.extra?.forks],
-			['License', item.extra?.license],
-			['Last push', date(item.extra?.updatedAt)],
-			['Archived', item.extra?.archived ? 'yes' : ''],
-			['Homepage', item.extra?.homepage],
-			['Links on the page', item.urls?.length || ''],
-			['Images', item.htmlTags?.img?.length || '']
+			['finalUrl', item.finalUrl && item.finalUrl !== item.url ? item.finalUrl : ''],
+			['status', item.status ?? ''],
+			['responseTime', item.responseMs != null ? `${item.responseMs} ms` : ''],
+			['lang', item.lang],
+			['published', date(item.published)],
+			['author', item.author],
+			['canonical', item.canonical],
+			['robots', item.robots],
+			['keywords', item.keywords],
+			['ogTitle', item.ogTitle !== item.title ? item.ogTitle : ''],
+			['description', item.ogDesc && item.ogDesc !== item.desc ? item.ogDesc : ''],
+			['stars', item.extra?.stars],
+			['forks', item.extra?.forks],
+			['license', item.extra?.license],
+			['lastPush', date(item.extra?.updatedAt)],
+			['archived', item.extra?.archived ? i18n.t('details.yes') : ''],
+			['homepage', item.extra?.homepage],
+			['links', item.urls?.length || ''],
+			['images', item.htmlTags?.img?.length || '']
 		].filter(([, value]) => value !== '' && value !== undefined && value !== null) as [
-			string,
+			FactKey,
 			string | number
 		][]
 	);
@@ -67,23 +68,23 @@
 
 <div class="details">
 	{#if item.warnings?.length}
-		<ul class="details__warnings" aria-label="SEO warnings">
+		<ul class="details__warnings" aria-label={i18n.t('details.warnings')}>
 			{#each item.warnings as w (w.code)}
 				<li class="details__warning details__warning--{w.level}">
-					<span class="details__icon" aria-hidden="true">{LEVELS[w.level].icon}</span>
-					<span class="details__level">{LEVELS[w.level].label}</span>
-					<span>{w.message}</span>
+					<span class="details__icon" aria-hidden="true">{ICONS[w.level]}</span>
+					<span class="details__level">{i18n.t(`details.levels.${w.level}`)}</span>
+					<span>{seoWarning(i18n.t, w)}</span>
 				</li>
 			{/each}
 		</ul>
 	{:else if advanced && item.type === 'page' && !item.service && !item.error}
-		<p class="details__ok">✓ No SEO warnings</p>
+		<p class="details__ok">✓ {i18n.t('details.noWarnings')}</p>
 	{/if}
 
 	{#if facts.length}
 		<dl class="details__facts">
 			{#each facts as [label, value] (label)}
-				<dt>{label}</dt>
+				<dt>{i18n.t(`details.facts.${label}`)}</dt>
 				<dd>{value}</dd>
 			{/each}
 		</dl>
@@ -97,7 +98,7 @@
 	{/each}
 
 	{#if !advanced && item.type === 'page' && !item.service}
-		<p class="details__hint">Fetch with the advanced option for SEO warnings, headings and more.</p>
+		<p class="details__hint">{i18n.t('details.hint')}</p>
 	{/if}
 </div>
 
@@ -143,7 +144,7 @@
 
 	.details__level {
 		flex: none;
-		width: 4.2rem;
+		width: 5.5rem;
 		font-weight: 600;
 	}
 

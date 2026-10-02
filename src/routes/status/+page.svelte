@@ -3,6 +3,9 @@
 	import { invalidateAll } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
+	import { useI18n } from '$lib/i18n';
+
+	const i18n = useI18n();
 
 	let { data }: PageProps = $props();
 	let status = $derived(data.status);
@@ -27,20 +30,29 @@
 		};
 	});
 
-	const number = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+	const number = $derived(
+		new Intl.NumberFormat(i18n.locale, { notation: 'compact', maximumFractionDigits: 1 })
+	);
 	const time = (iso: string) =>
-		mounted ? new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+		mounted
+			? new Date(iso).toLocaleTimeString(i18n.locale, { hour: '2-digit', minute: '2-digit' })
+			: '';
 	const hour = (iso: string) =>
-		mounted ? new Date(iso).toLocaleTimeString([], { hour: '2-digit' }) : '';
-	const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+		mounted ? new Date(iso).toLocaleTimeString(i18n.locale, { hour: '2-digit' }) : '';
 	const percent = (part: number, whole: number) =>
 		whole ? `${Math.round((part / whole) * 100)}%` : '–';
-	const megabytes = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+	const megabytes = (bytes: number) =>
+		`${(bytes / 1024 / 1024).toLocaleString(i18n.locale, { maximumFractionDigits: 1, minimumFractionDigits: 1 })} MB`;
 	const uptime = (seconds: number) => {
 		const days = Math.floor(seconds / 86400);
 		const hours = Math.floor((seconds % 86400) / 3600);
 		const minutes = Math.floor((seconds % 3600) / 60);
-		return days ? `${days} d ${hours} h` : hours ? `${hours} h ${minutes} min` : `${minutes} min`;
+		const t = i18n.t;
+		return days
+			? t('status.duration.days', { days, hours })
+			: hours
+				? t('status.duration.hours', { hours, minutes })
+				: t('status.duration.minutes', { minutes });
 	};
 
 	let peak = $derived(Math.max(0, ...(api?.hours ?? []).map((h) => h.links)));
@@ -52,16 +64,14 @@
 </script>
 
 <svelte:head>
-	<title>urlhub – status</title>
+	<title>{i18n.t('meta.statusTitle')}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <main class="status">
 	<header class="status__header">
-		<h1 class="status__title">Status</h1>
-		<p class="status__muted">
-			Checked at {time(status.checkedAt)} · refreshes every 30 s · counts only, no links
-		</p>
+		<h1 class="status__title">{i18n.t('status.title')}</h1>
+		<p class="status__muted">{i18n.t('status.checked', { time: time(status.checkedAt) })}</p>
 	</header>
 
 	<ul class="status__checks" role="list">
@@ -69,8 +79,12 @@
 			<li class="check" class:check--down={!item.ok}>
 				<span class="check__icon" aria-hidden="true">{item.ok ? '✓' : '✕'}</span>
 				<span class="check__name">{item.name}</span>
-				<span class="check__state">{item.ok ? 'up' : 'down'}</span>
-				<span class="status__muted">{item.detail}{item.ms ? ` · ${item.ms} ms` : ''}</span>
+				<span class="check__state">{i18n.t(item.ok ? 'status.up' : 'status.down')}</span>
+				<span class="status__muted"
+					>{item.detail === 'this page' ? i18n.t('status.thisPage') : item.detail}{item.ms
+						? ` · ${item.ms} ms`
+						: ''}</span
+				>
 			</li>
 		{/each}
 	</ul>
@@ -79,33 +93,36 @@
 		<section class="status__section" aria-labelledby="counts">
 			<h2 id="counts" class="status__heading">ldb-api</h2>
 			<p class="status__muted">
-				Up for {uptime(api.uptimeSeconds)} · Node {api.node} · counts start again at every restart
+				{i18n.t('status.upFor', { time: uptime(api.uptimeSeconds), node: api.node })}
 			</p>
 			<div class="tiles">
-				{#each [['Last hour', api.lastHour], ['Last 24 hours', api.last24h]] as const as [label, c] (label)}
+				{#each [['status.lastHour', api.lastHour], ['status.last24h', api.last24h]] as const as [label, c] (label)}
 					<div class="tile">
-						<p class="tile__label">{label}</p>
+						<p class="tile__label">{i18n.t(label)}</p>
 						<p class="tile__value">
-							{number.format(c.links)} <span class="tile__unit">links</span>
+							{number.format(c.links)}
+							<span class="tile__unit">{i18n.t('status.links', { count: c.links })}</span>
 						</p>
 						<p class="tile__detail">
-							{c.requests} requests · {c.failed} failed ({percent(c.failed, c.links)}) · {c.cached}
-							from memory
+							{i18n.t('status.requestsLine', {
+								requests: c.requests,
+								failed: c.failed,
+								percent: percent(c.failed, c.links),
+								cached: c.cached
+							})}
 						</p>
-						<p class="tile__detail">{c.cancelled} cancelled · {c.refused} refused (limits)</p>
+						<p class="tile__detail">
+							{i18n.t('status.cancelledLine', { cancelled: c.cancelled, refused: c.refused })}
+						</p>
 					</div>
 				{/each}
 			</div>
 		</section>
 
 		<section class="status__section" aria-labelledby="hours">
-			<h2 id="hours" class="status__heading">Links per hour, last 24 hours</h2>
+			<h2 id="hours" class="status__heading">{i18n.t('status.perHour')}</h2>
 			<div class="chart">
-				<div
-					class="chart__plot"
-					role="img"
-					aria-label="Links per hour; the same numbers are in the table below"
-				>
+				<div class="chart__plot" role="img" aria-label={i18n.t('status.chartLabel')}>
 					{#each api.hours as h, i (h.start)}
 						<button
 							type="button"
@@ -115,7 +132,11 @@
 							onmouseleave={() => (active = null)}
 							onfocus={() => (active = i)}
 							onblur={() => (active = null)}
-							aria-label="{time(h.start)}: {h.links} links, {h.failed} failed"
+							aria-label={i18n.t('status.barLabel', {
+								time: time(h.start),
+								links: h.links,
+								failed: h.failed
+							})}
 						>
 							<span class="chart__bar" style:height="{(h.links / maxLinks) * 100}%"></span>
 						</button>
@@ -129,8 +150,8 @@
 							class:chart__tip--right={active < 4}
 						>
 							<strong>{time(h.start)}</strong><br />
-							{h.links} links · {h.failed} failed<br />
-							{h.requests} requests · {h.cached} from memory
+							{i18n.t('status.tipLinks', { links: h.links, failed: h.failed })}<br />
+							{i18n.t('status.tipRequests', { requests: h.requests, cached: h.cached })}
 						</div>
 					{/if}
 				</div>
@@ -139,17 +160,17 @@
 						<span>{i % 6 === 0 || i === api.hours.length - 1 ? hour(h.start) : ''}</span>
 					{/each}
 				</div>
-				<p class="status__muted">Busiest hour: {peak} links</p>
+				<p class="status__muted">{i18n.t('status.busiest', { count: peak })}</p>
 			</div>
 			<details class="status__table">
-				<summary>Table</summary>
+				<summary>{i18n.t('status.table')}</summary>
 				<table>
 					<thead>
-						<tr
-							><th>Hour</th><th>Requests</th><th>Links</th><th>Failed</th><th>From memory</th><th
-								>Cancelled</th
-							></tr
-						>
+						<tr>
+							{#each ['hour', 'requests', 'links', 'failed', 'cached', 'cancelled'] as const as column (column)}
+								<th>{i18n.t(`status.columns.${column}`)}</th>
+							{/each}
+						</tr>
 					</thead>
 					<tbody>
 						{#each [...api.hours].reverse() as h (h.start)}
@@ -167,16 +188,16 @@
 			<h2 id="youtube" class="status__heading">YouTube Data API</h2>
 			{#if api.youtube.apiKey}
 				<p class="tile__detail">
-					{api.youtube.unitsUsed.toLocaleString('en')} of {api.youtube.dailyUnits.toLocaleString(
-						'en'
-					)}
-					units today ({percent(api.youtube.unitsUsed, api.youtube.dailyUnits)}) · the day starts
-					again at midnight Pacific Time
+					{i18n.t('status.quota', {
+						used: api.youtube.unitsUsed.toLocaleString(i18n.locale),
+						daily: api.youtube.dailyUnits.toLocaleString(i18n.locale),
+						percent: percent(api.youtube.unitsUsed, api.youtube.dailyUnits)
+					})}
 				</p>
 				<div
 					class="meter meter--{quotaLevel}"
 					role="meter"
-					aria-label="YouTube quota used today"
+					aria-label={i18n.t('status.quotaLabel')}
 					aria-valuemin={0}
 					aria-valuemax={api.youtube.dailyUnits}
 					aria-valuenow={api.youtube.unitsUsed}
@@ -184,32 +205,33 @@
 					<span class="meter__fill" style:width="{Math.min(100, quota * 100)}%"></span>
 				</div>
 				{#if api.youtube.problem}
-					<p class="status__problem">⚠ {api.youtube.problem}: videos come from oEmbed for now</p>
+					<p class="status__problem">
+						{i18n.t('status.quotaProblem', { problem: api.youtube.problem })}
+					</p>
 				{/if}
 			{:else}
-				<p class="status__problem">
-					⚠ No API key: videos come from oEmbed (no description or duration)
-				</p>
+				<p class="status__problem">{i18n.t('status.noKey')}</p>
 			{/if}
 			<p class="status__muted">
-				{plural(api.lastHour.youtubeApiCalls, 'API call')} and {plural(
-					api.lastHour.youtubeOembed,
-					'oEmbed request'
-				)}
-				in the last hour
+				{i18n.t('status.lastHourCalls', {
+					calls: i18n.t('status.apiCalls', { count: api.lastHour.youtubeApiCalls }),
+					oembed: i18n.t('status.oembed', { count: api.lastHour.youtubeOembed })
+				})}
 			</p>
 		</section>
 
 		<section class="status__section" aria-labelledby="cache">
-			<h2 id="cache" class="status__heading">Memory</h2>
+			<h2 id="cache" class="status__heading">{i18n.t('status.memory')}</h2>
 			<p class="tile__detail">
-				{plural(api.cache.pages.entries, 'page')} ({megabytes(api.cache.pages.bytes)} of 64 MB) for 30
-				min ·
-				{plural(api.cache.videos.entries, 'video')} for 1 h
+				{i18n.t('status.memoryLine', {
+					pages: i18n.t('status.pages', { count: api.cache.pages.entries }),
+					size: megabytes(api.cache.pages.bytes),
+					videos: i18n.t('status.videos', { count: api.cache.videos.entries })
+				})}
 			</p>
 		</section>
 	{:else}
-		<p class="status__problem">⚠ ldb-api does not answer, so there are no counts to show.</p>
+		<p class="status__problem">{i18n.t('status.noApi')}</p>
 	{/if}
 
 	<p class="status__muted"><a href={resolve('/')}>← urlhub</a></p>

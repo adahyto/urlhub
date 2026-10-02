@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { useI18n } from '$lib/i18n';
+
 	let { json }: { json: string } = $props();
+
+	const i18n = useI18n();
 </script>
 
 <!-- A region that scrolls: focusable, so the keyboard can scroll it too (WCAG 2.1.1) -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<pre class="json" role="region" tabindex="0" aria-label="Results as JSON">{json}</pre>
+<pre class="json" role="region" tabindex="0" aria-label={i18n.t('json.label')}>{json}</pre>
 
 <style>
 	.json {

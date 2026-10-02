@@ -1,5 +1,9 @@
 <script lang="ts">
 	import type { TileUrl } from '$lib/types';
+	import { useI18n } from '$lib/i18n';
+	import { linkError } from '$lib/i18n/messages';
+
+	const i18n = useI18n();
 
 	interface Props {
 		urls: TileUrl[];
@@ -62,11 +66,11 @@
 				src: '',
 				alt: '',
 				title: hostOf(item.url),
-				desc: `${item.url} — ${item.error}`
+				desc: `${item.url} — ${linkError(i18n.t, item.error)}`
 			};
 		}
 		if (VIDEO_RE.test(item.url)) {
-			return { kind: 'video', src: `${item.url}#t=0.1`, alt: 'video', ...fromUrl };
+			return { kind: 'video', src: `${item.url}#t=0.1`, alt: i18n.t('tiles.video'), ...fromUrl };
 		}
 		if (item.type === 'image' || IMAGE_RE.test(item.url)) {
 			return {
@@ -162,7 +166,7 @@
 					<span class="tiles__duration">{item.duration}</span>
 				{/if}
 				{#if item.error}
-					<span class="tiles__error">{item.error}</span>
+					<span class="tiles__error">{linkError(i18n.t, item.error)}</span>
 				{/if}
 
 				<span class="tiles__title">{view.title}</span>
@@ -177,25 +181,31 @@
 					{#if movable}
 						<button
 							type="button"
-							aria-label="Move earlier"
+							aria-label={i18n.t('tiles.earlier')}
 							disabled={i === 0}
 							onclick={() => onmove?.(item.url, -1)}>←</button
 						>
 						<button
 							type="button"
-							aria-label="Move later"
+							aria-label={i18n.t('tiles.later')}
 							disabled={i === urls.length - 1}
 							onclick={() => onmove?.(item.url, 1)}>→</button
 						>
 					{/if}
-					<button type="button" aria-label="Remove" onclick={() => onremove?.(item.url)}>×</button>
+					<button
+						type="button"
+						aria-label={i18n.t('tiles.remove')}
+						onclick={() => onremove?.(item.url)}>×</button
+					>
 				</span>
 			{/if}
 
 			<button
 				type="button"
 				class="tiles__info"
-				aria-label={activeUrl === item.url ? 'Hide description' : 'Show description'}
+				aria-label={i18n.t(
+					activeUrl === item.url ? 'tiles.hideDescription' : 'tiles.showDescription'
+				)}
 				aria-expanded={activeUrl === item.url}
 				onclick={() => toggle(item.url)}
 			>
