@@ -7,6 +7,8 @@
 	import ResultsTable from '$lib/components/ResultsTable.svelte';
 	import JsonView from '$lib/components/JsonView.svelte';
 	import UrlForm from '$lib/components/UrlForm.svelte';
+	import RecentList from '$lib/components/RecentList.svelte';
+	import { RecentQueries, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
 	import type { Row, View } from '$lib/types';
@@ -26,6 +28,7 @@
 	const viewInAddress = params.get('view');
 
 	const query = new LinkQuery();
+	const recent = new RecentQueries();
 	// Old shared links put "-" between the links; one per line reads better (ldb-api splits them either way)
 	let text = $state(linksInAddress.replace(/[\s,;-]+(?=https?:\/\/)/gi, '\n').trim() || EXAMPLES);
 	let view = $state<View>(
@@ -87,7 +90,20 @@
 		only = 'all';
 		kind = '';
 		// Tiles show the basic details only, so they do not ask for the heavier advanced ones
-		query.run(text, advanced && view !== 'tiles', (urls) => updateAddress(urls));
+		const asked = advanced && view !== 'tiles';
+		query.run(text, asked, (urls) => {
+			updateAddress(urls);
+			recent.add(urls, view, asked);
+		});
+	}
+
+	/** A recent query comes back with its links, view and option, and is fetched again */
+	function reopen(entry: Recent) {
+		text = entry.urls.join('\n');
+		view = entry.view;
+		advanced = entry.advanced;
+		fetchLinks();
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 
 	function show(next: View) {
@@ -126,6 +142,7 @@
 
 	// Only shared links (?urls=...) load by themselves; the examples wait for a click
 	onMount(() => {
+		recent.load();
 		if (linksInAddress.trim()) fetchLinks();
 		return () => query.stop();
 	});
@@ -151,6 +168,8 @@
 		onsubmit={fetchLinks}
 		onstop={() => query.stop()}
 	/>
+
+	<RecentList {recent} onopen={reopen} />
 
 	{#if query.rows.length}
 		<div class="toolbar">
