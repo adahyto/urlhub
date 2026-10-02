@@ -307,13 +307,24 @@
 		border-radius: 0.6rem;
 	}
 
+	/* The browser's own arrow sits against the edge; this one keeps the same space as the text on the left */
 	.toolbar__select {
-		padding: 0.4rem 0.5rem;
+		appearance: none;
+		padding: 0.45rem 2rem 0.45rem 0.75rem;
 		font: inherit;
 		font-size: 0.8rem;
-		background: #fff;
+		color: #1a1a1a;
+		background: #fff
+			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+			no-repeat right 0.75rem center;
 		border: 1px solid #e2e2e2;
 		border-radius: 0.6rem;
+		cursor: pointer;
+	}
+
+	.toolbar__select:focus-visible {
+		outline: 2px solid #1a1a1a;
+		outline-offset: 2px;
 	}
 
 	.toolbar__actions {
