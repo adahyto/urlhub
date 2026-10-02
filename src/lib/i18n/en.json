@@ -298,12 +298,10 @@
 	},
 	"header": {
 		"tagline": "Link previews as tiles, a table or JSON",
-		"nav": "Site",
-		"status": "Status"
+		"nav": "Language"
 	},
 	"footer": {
 		"status": "Service status",
-		"code": "Code on GitHub",
 		"privacy": "No cookies; history only when switched on"
 	},
 	"features": {

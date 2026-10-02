@@ -336,12 +336,10 @@
 	},
 	"header": {
 		"tagline": "Podgląd linków jako kafelki, tabela albo JSON",
-		"nav": "Strona",
-		"status": "Stan"
+		"nav": "Język"
 	},
 	"footer": {
 		"status": "Stan usług",
-		"code": "Kod na GitHubie",
 		"privacy": "Bez ciasteczek; historia tylko po włączeniu"
 	},
 	"features": {
