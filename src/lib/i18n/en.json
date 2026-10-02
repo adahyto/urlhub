@@ -267,5 +267,14 @@
 		"shortLinkTitle": "This short link does not exist",
 		"shortLinkText": "It may have expired: short links unused for 90 days are deleted. Ask whoever shared it for a new one.",
 		"other": "Something went wrong."
+	},
+	"og": {
+		"title": {
+			"one": "{count} link: {sites}",
+			"other": "{count} links: {sites}"
+		},
+		"more": " +{count}",
+		"open": "Open them as tiles, a table or JSON on urlhub.",
+		"imageAlt": "urlhub: link previews as tiles, a table or JSON"
 	}
 }

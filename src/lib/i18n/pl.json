@@ -299,5 +299,16 @@
 		"shortLinkTitle": "Ten krótki link nie istnieje",
 		"shortLinkText": "Mógł wygasnąć: krótkie linki nieużywane przez 90 dni są usuwane. Poproś osobę, która go udostępniła, o nowy.",
 		"other": "Coś poszło nie tak."
+	},
+	"og": {
+		"title": {
+			"one": "{count} link: {sites}",
+			"few": "{count} linki: {sites}",
+			"many": "{count} linków: {sites}",
+			"other": "{count} linku: {sites}"
+		},
+		"more": " +{count}",
+		"open": "Otwórz je jako kafelki, tabelę albo JSON w urlhub.",
+		"imageAlt": "urlhub: podgląd linków jako kafelki, tabela albo JSON"
 	}
 }

@@ -15,6 +15,9 @@ services:
     # /status also checks ldb-api's /health next to it (src/lib/server/status.ts)
     environment:
       - LDB_API_URL=http://host.docker.internal:84/json
+      # The public address: without it the server takes every request for https, and the share preview
+      # (og:url, og:image) would point to https://, which this site does not serve
+      - ORIGIN=http://51.75.116.68:98
     # Short links: one JSON file per list, kept across deploys; in the server's daily backup
     # (/usr/local/sbin/server-backup: /var/lib/docker/volumes/urlhub_data)
     volumes:
