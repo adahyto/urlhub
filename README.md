@@ -13,6 +13,9 @@ fetched again on their own.
 The address of the page holds the links, the view and the option (`?urls=...&view=table&advanced=1`), so a
 result can be shared; shared links load by themselves. Results fill in as each link is ready; Stop cancels.
 
+**Share** copies the address of the results. The dark theme follows the system setting (colours in
+`src/app.css`; no switch, which would have to remember the choice on the device).
+
 Recent queries can be remembered on the visitor's device: off by default, turned on with a switch under the
 form (`src/lib/history.svelte.ts`). Until then the page stores nothing in the browser, turning it off deletes
 the list, and the list is never sent anywhere. Storing on a device needs consent unless the visitor asked for it

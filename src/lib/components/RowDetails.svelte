@@ -161,7 +161,7 @@
 	}
 
 	.details__ok {
-		color: #2c6e2f;
+		color: var(--success);
 	}
 
 	.details__facts {
@@ -172,7 +172,7 @@
 	}
 
 	.details__facts dt {
-		color: #777;
+		color: var(--muted);
 	}
 
 	.details__facts dd {
@@ -185,7 +185,7 @@
 	}
 
 	.details__hint {
-		color: #777;
+		color: var(--muted);
 	}
 
 	@media (max-width: 40rem) {

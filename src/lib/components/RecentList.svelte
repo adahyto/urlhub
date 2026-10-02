@@ -100,13 +100,13 @@
 
 	.recent__switch input {
 		margin: 0;
-		accent-color: #1a1a1a;
+		accent-color: var(--accent);
 	}
 
 	.recent__note {
 		margin: 0.25rem 0 0;
 		font-size: 0.75rem;
-		color: #777;
+		color: var(--muted);
 	}
 
 	.recent__list {
@@ -121,7 +121,7 @@
 	.recent__item {
 		display: flex;
 		align-items: stretch;
-		background: #f7f7f7;
+		background: var(--surface-2);
 		border-radius: 0.6rem;
 	}
 
@@ -134,7 +134,7 @@
 		padding: 0.55rem 0.75rem;
 		font: inherit;
 		text-align: left;
-		color: #1a1a1a;
+		color: var(--ink);
 		background: none;
 		border: 0;
 		cursor: pointer;
@@ -146,7 +146,7 @@
 
 	.recent__when,
 	.recent__view {
-		color: #777;
+		color: var(--muted);
 		white-space: nowrap;
 	}
 
@@ -158,14 +158,14 @@
 		padding: 0 0.85rem;
 		font: inherit;
 		font-size: 1.1rem;
-		color: #777;
+		color: var(--muted);
 		background: none;
 		border: 0;
 		cursor: pointer;
 	}
 
 	.recent__remove:hover {
-		color: #c0392b;
+		color: var(--error);
 	}
 
 	.recent__clear {
@@ -174,7 +174,7 @@
 		font: inherit;
 		font-size: 0.75rem;
 		text-decoration: underline;
-		color: #555;
+		color: var(--ink-3);
 		background: none;
 		border: 0;
 		cursor: pointer;

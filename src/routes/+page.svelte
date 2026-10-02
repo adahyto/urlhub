@@ -117,18 +117,22 @@
 	}
 
 	// navigator.clipboard needs HTTPS; this site is plain HTTP, so fall back to the old way
-	async function copyJson() {
+	async function copy(content: string, done: string) {
 		try {
-			await navigator.clipboard.writeText(json);
+			await navigator.clipboard.writeText(content);
 		} catch {
-			const area = Object.assign(document.createElement('textarea'), { value: json });
+			const area = Object.assign(document.createElement('textarea'), { value: content });
 			document.body.append(area);
 			area.select();
 			document.execCommand('copy');
 			area.remove();
 		}
-		flash('JSON copied');
+		flash(done);
 	}
+
+	const copyJson = () => copy(json, 'JSON copied');
+	// The address already holds the links, the view and the option: it is the link to share
+	const share = () => copy(page.url.href, 'Link copied: it opens these results');
 
 	function download(content: string, type: string, name: string) {
 		const url = URL.createObjectURL(new Blob([content], { type }));
@@ -221,6 +225,7 @@
 				</select>
 			{/if}
 			<div class="toolbar__actions">
+				<button type="button" onclick={share}>Share</button>
 				{#if query.failed && !query.loading}
 					<button type="button" onclick={() => query.retryFailed()}>
 						Retry {query.failed} failed
@@ -251,10 +256,6 @@
 </main>
 
 <style>
-	:global(body) {
-		margin: 0;
-	}
-
 	.page {
 		display: flex;
 		flex-direction: column;
@@ -288,13 +289,13 @@
 	}
 
 	.toolbar__failed {
-		color: #c0392b;
+		color: var(--error);
 	}
 
 	.toolbar__tabs {
 		display: inline-flex;
 		padding: 0.2rem;
-		background: #f0f0f0;
+		background: var(--surface-3);
 		border-radius: 0.6rem;
 	}
 
@@ -304,7 +305,7 @@
 		font: inherit;
 		font-size: 0.8rem;
 		font-weight: 600;
-		color: #1a1a1a;
+		color: var(--ink);
 		background: transparent;
 		border: 0;
 		border-radius: 0.45rem;
@@ -312,8 +313,8 @@
 	}
 
 	.toolbar__tabs button.is-active {
-		background: #fff;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+		background: var(--surface);
+		box-shadow: 0 1px 3px var(--shadow);
 	}
 
 	.toolbar__filter {
@@ -322,7 +323,7 @@
 		padding: 0.45rem 0.75rem;
 		font: inherit;
 		font-size: 0.85rem;
-		border: 1px solid #e2e2e2;
+		border: 1px solid var(--border);
 		border-radius: 0.6rem;
 	}
 
@@ -332,17 +333,24 @@
 		padding: 0.45rem 2rem 0.45rem 0.75rem;
 		font: inherit;
 		font-size: 0.8rem;
-		color: #1a1a1a;
-		background: #fff
+		color: var(--ink);
+		background: var(--surface)
 			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
 			no-repeat right 0.75rem center;
-		border: 1px solid #e2e2e2;
+		border: 1px solid var(--border);
 		border-radius: 0.6rem;
 		cursor: pointer;
 	}
 
+	/* The arrow is a picture, so the dark theme needs its own (light) one */
+	@media (prefers-color-scheme: dark) {
+		.toolbar__select {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ececea' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+		}
+	}
+
 	.toolbar__select:focus-visible {
-		outline: 2px solid #1a1a1a;
+		outline: 2px solid var(--ink);
 		outline-offset: 2px;
 	}
 
@@ -353,7 +361,7 @@
 	}
 
 	.toolbar__actions button {
-		border: 1px solid #e2e2e2;
+		border: 1px solid var(--border);
 	}
 
 	.notice {
@@ -363,7 +371,7 @@
 		padding-inline: 0.5rem;
 		box-sizing: border-box;
 		font-size: 0.8rem;
-		color: #555;
+		color: var(--ink-3);
 	}
 
 	.page > :global(.table),

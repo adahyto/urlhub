@@ -117,11 +117,6 @@
 
 <style>
 	.url-form {
-		--accent: #1a1a1a;
-		--surface: #f7f7f7;
-		--border: #e2e2e2;
-		--error: #c0392b;
-
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -153,7 +148,7 @@
 	.url-form__hint {
 		font-size: 0.7rem;
 		font-weight: 300;
-		color: #777;
+		color: var(--muted);
 	}
 
 	.url-form__textarea {
@@ -166,7 +161,7 @@
 		font-size: 0.95rem;
 		line-height: 1.5;
 		color: var(--accent);
-		background: var(--surface);
+		background: var(--surface-2);
 		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 		transition:
@@ -176,14 +171,14 @@
 	}
 
 	.url-form__textarea::placeholder {
-		color: #aaa;
+		color: var(--faint);
 	}
 
 	.url-form__textarea:focus-visible {
 		outline: none;
-		background: #fff;
+		background: var(--surface);
 		border-color: var(--accent);
-		box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.12);
+		box-shadow: 0 0 0 3px var(--focus-ring);
 	}
 
 	.url-form__textarea:disabled {
@@ -203,7 +198,7 @@
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: #fff;
+		color: var(--on-accent);
 		background: var(--accent);
 		border: none;
 		border-radius: 0.75rem;
@@ -215,7 +210,7 @@
 	}
 
 	.url-form__submit:hover:not(:disabled) {
-		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+		box-shadow: 0 6px 18px var(--shadow);
 		transform: translateY(-1px);
 	}
 
@@ -236,8 +231,8 @@
 	.url-form__spinner {
 		width: 0.9rem;
 		height: 0.9rem;
-		border: 2px solid rgba(255, 255, 255, 0.4);
-		border-top-color: #fff;
+		border: 2px solid color-mix(in srgb, var(--on-accent) 40%, transparent);
+		border-top-color: var(--on-accent);
 		border-radius: 50%;
 		animation: url-form-spin 700ms linear infinite;
 	}
@@ -249,7 +244,7 @@
 		font-size: 0.8rem;
 		font-weight: 500;
 		color: var(--error);
-		background: rgba(192, 57, 43, 0.08);
+		background: var(--error-bg);
 		border-left: 3px solid var(--error);
 		border-radius: 0.5rem;
 	}
@@ -321,7 +316,7 @@
 	.url-form__notice {
 		margin: 0;
 		font-size: 0.8rem;
-		color: #2c6e2f;
+		color: var(--success);
 	}
 
 	@keyframes url-form-spin {

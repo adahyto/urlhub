@@ -176,3 +176,35 @@ test('the status page shows urlhub and ldb-api up', async ({ page }) => {
 	await expect(page.locator('.check--down')).toHaveCount(0);
 	await expect(page.getByText('Links per hour, last 24 hours')).toBeVisible();
 });
+
+test('Share copies the link that opens these results', async ({ page, context }) => {
+	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+	await page.goto('/');
+	await fetchLinks(page, `${link('/a?x=1&y=2')} ${link('/video')}`);
+	await expect(summary(page)).toHaveText('2 links');
+	await page.getByRole('tab', { name: 'Table' }).click();
+	await page.getByRole('button', { name: 'Share' }).click();
+	await expect(page.getByRole('status')).toHaveText('Link copied: it opens these results');
+	const shared = new URL(await page.evaluate(() => navigator.clipboard.readText()));
+	expect(shared.searchParams.get('urls')).toBe(`${link('/a?x=1&y=2')} ${link('/video')}`);
+	expect(shared.searchParams.get('view')).toBe('table');
+
+	await page.goto(shared.pathname + shared.search);
+	await expect(page.locator('tbody tr')).toHaveCount(2);
+});
+
+test('the dark theme follows the system setting', async ({ page }) => {
+	await page.emulateMedia({ colorScheme: 'dark' });
+	await page.goto(`/?urls=${link('/a')}&view=table`);
+	await expect(summary(page)).toHaveText('1 link');
+	const colours = await page.evaluate(() => ({
+		page: getComputedStyle(document.body).backgroundColor,
+		field: getComputedStyle(document.querySelector('textarea')!).backgroundColor,
+		title: getComputedStyle(document.querySelector('.table__title')!).color
+	}));
+	expect(colours).toEqual({
+		page: 'rgb(22, 22, 21)',
+		field: 'rgb(34, 34, 33)',
+		title: 'rgb(236, 236, 234)'
+	});
+});

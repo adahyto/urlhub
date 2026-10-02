@@ -173,7 +173,7 @@
 		position: relative;
 		aspect-ratio: 1;
 		overflow: hidden;
-		background: #f0f0f0;
+		background: var(--surface-3);
 	}
 
 	.tiles__image {
@@ -204,10 +204,10 @@
 		font-size: 1.4rem;
 		font-weight: 600;
 		letter-spacing: 0.02em;
-		color: #1a1a1a;
+		color: var(--tile-ink);
 		text-align: center;
 		overflow-wrap: anywhere;
-		background: linear-gradient(135deg, #f3f3f3, #dcdcdc);
+		background: linear-gradient(135deg, var(--tile-a), var(--tile-b));
 		transition:
 			filter 350ms ease,
 			opacity 350ms ease;
@@ -215,8 +215,13 @@
 
 	/* Waiting for its details: the site's name on a soft shimmer */
 	.tiles__placeholder--pending {
-		color: #9a9a9a;
-		background: linear-gradient(110deg, #ececec 30%, #f7f7f7 50%, #ececec 70%);
+		color: var(--tile-pending-ink);
+		background: linear-gradient(
+			110deg,
+			var(--skeleton-a) 30%,
+			var(--skeleton-b) 50%,
+			var(--skeleton-a) 70%
+		);
 		background-size: 200% 100%;
 		animation: tiles-shimmer 1.2s linear infinite;
 	}
@@ -228,8 +233,8 @@
 	}
 
 	.tiles__item.has-error .tiles__placeholder {
-		color: #8a2a20;
-		background: linear-gradient(135deg, #fbeeee, #f1d6d3);
+		color: var(--tile-error-ink);
+		background: linear-gradient(135deg, var(--tile-error-a), var(--tile-error-b));
 	}
 
 	.tiles__duration,
@@ -255,7 +260,7 @@
 	}
 
 	.tiles__error {
-		background: #c0392b;
+		background: var(--error-solid);
 	}
 
 	.tiles__item.is-active .tiles__placeholder {
@@ -370,7 +375,7 @@
 
 	.tiles__link:focus-visible,
 	.tiles__info:focus-visible {
-		outline: 3px solid #1a1a1a;
+		outline: 3px solid var(--ink);
 		outline-offset: 3px;
 	}
 
