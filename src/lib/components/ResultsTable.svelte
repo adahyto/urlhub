@@ -265,8 +265,10 @@
 												onclick={() => onmove?.(item.url, 1)}>↓</button
 											>
 										{/if}
-										<button type="button" onclick={() => onremove?.(item.url)}
-											>{i18n.t('table.remove')}</button
+										<button
+											type="button"
+											aria-label={i18n.t('table.remove')}
+											onclick={() => onremove?.(item.url)}>✕</button
 										>
 									</span>
 								{/if}
@@ -483,25 +485,28 @@
 
 	.table__edit {
 		display: inline-flex;
-		gap: 0.75rem;
-		margin-left: 1rem;
+		gap: 0.25rem;
+		margin-left: 0.75rem;
 	}
 
 	.table__edit button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-width: 1.75rem;
-		min-height: 1.75rem;
-		padding: 0 0.25rem;
+		display: inline-grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		padding: 0;
 		font: inherit;
-		font-size: 0.75rem;
-		font-weight: 600;
-		color: var(--muted);
-		text-decoration: underline;
+		font-size: 0.9rem;
+		color: var(--ink-3);
 		background: none;
-		border: 0;
+		border: 1px solid var(--border);
+		border-radius: 0.45rem;
 		cursor: pointer;
+	}
+
+	.table__edit button:hover:not(:disabled) {
+		color: var(--ink);
+		background: var(--surface-3);
 	}
 
 	.table__edit button:disabled {
@@ -528,7 +533,9 @@
 	}
 
 	.table__actions {
-		margin-top: 0.35rem;
+		display: flex;
+		align-items: center;
+		margin-top: 0.4rem;
 	}
 
 	.table__more {

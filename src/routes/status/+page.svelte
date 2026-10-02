@@ -68,7 +68,7 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<main class="status">
+<main class="status shell">
 	<header class="status__header">
 		<h1 class="status__title">{i18n.t('status.title')}</h1>
 		<p class="status__muted">{i18n.t('status.checked', { time: time(status.checkedAt) })}</p>
@@ -250,12 +250,8 @@
 		--warning: #fab219;
 		--critical: #d03b3b;
 
-		box-sizing: border-box;
-		min-height: 100vh;
-		/* 48rem of content, the surface full width */
-		padding: 1.5rem max(1rem, calc((100% - 48rem) / 2)) 3rem;
+		padding-block: 1.5rem 2.5rem;
 		color: var(--ink);
-		background: var(--surface);
 		font-family:
 			'Inter',
 			system-ui,

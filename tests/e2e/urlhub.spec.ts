@@ -56,7 +56,7 @@ test('a failed link says why, and Retry asks again for the failed ones only', as
 	await expect(summary(page)).toHaveText('3 links, 2 failed');
 	await expect(page.locator('.tiles__error')).toHaveText(['host not found', 'timeout']);
 
-	await page.getByRole('button', { name: 'Retry 2 failed' }).click();
+	await page.getByRole('button', { name: 'Retry', exact: true }).click();
 	await expect(summary(page)).toHaveText('3 links, 1 failed');
 	expect((await lastRequest(page)).text).toBe(`${link('/dead')}\n${link('/flaky')}`);
 	// Results go back to their places
@@ -98,7 +98,10 @@ test('the table: advanced details, filters, sorting, JSON and CSV', async ({ pag
 
 	const [download] = await Promise.all([
 		page.waitForEvent('download'),
-		page.getByRole('button', { name: 'Download CSV' }).click()
+		page
+			.getByRole('button', { name: 'Export' })
+			.click()
+			.then(() => page.getByRole('button', { name: /Download CSV/ }).click())
 	]);
 	const csv = await readFile(await download.path(), 'utf8');
 	expect(csv.charCodeAt(0)).toBe(0xfeff);
@@ -113,9 +116,15 @@ test('the table: advanced details, filters, sorting, JSON and CSV', async ({ pag
 
 	await page.getByRole('button', { name: 'Tiles', exact: true }).click();
 	await expect(page.locator('.tiles__item')).toHaveCount(4);
-	await expect(page.getByLabel(/Advanced:/)).toHaveCount(0);
 	const address = new URL(page.url()).searchParams;
 	expect([address.get('view'), address.get('advanced')]).toEqual([null, null]);
+	// Asking for the SEO details from the tiles opens the table, where they show
+	await page.getByLabel('Advanced (SEO)').uncheck();
+	await page.getByLabel('Advanced (SEO)').check();
+	await expect(page.getByRole('button', { name: 'Table', exact: true })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
 });
 
 test('more than 200 links: the form says so and the request is refused clearly', async ({
@@ -137,18 +146,21 @@ test('recent queries: nothing stored before the switch, deleted when it is turne
 	await expect(summary(page)).toHaveText('1 link');
 	expect(await page.evaluate(() => localStorage.length)).toBe(0);
 
-	await page.locator('summary', { hasText: 'Recent queries' }).click();
+	const recentMenu = page.getByRole('button', { name: /^Recent/ });
+	await recentMenu.click();
 	await page.getByLabel('Remember recent queries on this device').check();
 	await fetchLinks(page, `${link('/b')} ${link('/c')}`);
+	await recentMenu.click();
 	await expect(page.locator('.recent__open')).toHaveCount(1);
 	await expect(page.locator('.recent__open')).toContainText('2 links · example.test');
 
 	await page.reload();
-	await page.locator('summary', { hasText: 'Recent queries' }).click();
+	await recentMenu.click();
 	await page.locator('.recent__open').click();
 	await expect(field(page)).toHaveValue(`${link('/b')}\n${link('/c')}`);
 	await expect(summary(page)).toHaveText('2 links');
 
+	await recentMenu.click();
 	await page.getByLabel('Remember recent queries on this device').uncheck();
 	expect(await page.evaluate(() => localStorage.length)).toBe(0);
 });
@@ -184,6 +196,7 @@ test('Share copies the link that opens these results', async ({ page, context })
 	await expect(summary(page)).toHaveText('2 links');
 	await page.getByRole('button', { name: 'Table', exact: true }).click();
 	await page.getByRole('button', { name: 'Share' }).click();
+	await page.getByRole('button', { name: /Copy link/ }).click();
 	await expect(page.locator('.notice[role="status"]')).toHaveText(
 		'Link copied: it opens these results'
 	);
@@ -348,7 +361,8 @@ test('a short link opens the same list, and the same list gets the same link', a
 	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 	await page.goto(`/?urls=${encodeURIComponent(`${link('/a?x=1&y=2')} ${link('/b')}`)}&view=table`);
 	await expect(summary(page)).toHaveText('2 links');
-	await page.getByRole('button', { name: 'Short link' }).click();
+	await page.getByRole('button', { name: 'Share' }).click();
+	await page.getByRole('button', { name: /Short link/ }).click();
 	await expect(page.locator('.notice[role="status"]')).toContainText(
 		'Short link copied: http://127.0.0.1:4173/c/'
 	);
@@ -368,7 +382,8 @@ test('a short link opens the same list, and the same list gets the same link', a
 		lang: 'en'
 	});
 
-	await page.getByRole('button', { name: 'Short link' }).click();
+	await page.getByRole('button', { name: 'Share' }).click();
+	await page.getByRole('button', { name: /Short link/ }).click();
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(short.href);
 
 	await page.goto(short.pathname);
@@ -422,4 +437,37 @@ test('a shared link shows its list in messengers: Open Graph tags rendered by th
 	const plain = await (await request.get('/')).text();
 	expect(meta(plain, 'og:title')).toBe('urlhub – link previews');
 	expect((await request.get('/og.png')).headers()['content-type']).toBe('image/png');
+});
+
+test('the empty page explains itself, and "Try an example" fetches working examples in the page\'s language', async ({
+	page
+}) => {
+	await page.goto('/?lang=pl');
+	await expect(page.getByLabel('Wpisz linki')).toHaveValue('');
+	await expect(
+		page.getByRole('list', { name: 'Co robi urlhub' }).getByRole('listitem')
+	).toHaveCount(3);
+	await page.getByRole('button', { name: 'Wypróbuj przykład' }).click();
+	await expect(summary(page)).toHaveText('6 linków');
+	const sent = (await lastRequest(page)).text.split('\n');
+	expect(sent).toContain('https://pl.wikipedia.org/wiki/Mars');
+	expect(sent).toContain('https://kosmos.info.pl/pl/home');
+	await expect(page.getByRole('list', { name: 'Co robi urlhub' })).toHaveCount(0);
+});
+
+test('menus open with the keyboard, move with the arrows and close with Escape', async ({
+	page
+}) => {
+	await page.goto(`/?urls=${link('/a')}`);
+	await expect(summary(page)).toHaveText('1 link');
+	const exportMenu = page.getByRole('button', { name: 'Export' });
+	await exportMenu.focus();
+	await page.keyboard.press('Enter');
+	await expect(exportMenu).toHaveAttribute('aria-expanded', 'true');
+	await expect(page.getByRole('button', { name: 'Copy JSON' })).toBeFocused();
+	await page.keyboard.press('ArrowDown');
+	await expect(page.getByRole('button', { name: 'Download JSON' })).toBeFocused();
+	await page.keyboard.press('Escape');
+	await expect(exportMenu).toHaveAttribute('aria-expanded', 'false');
+	await expect(exportMenu).toBeFocused();
 });

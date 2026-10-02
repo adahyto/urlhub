@@ -24,7 +24,10 @@
 		"advanced": "Zaawansowane: ostrzeżenia SEO, słowa kluczowe, Open Graph, canonical, robots, linki i nagłówki każdej strony",
 		"fetch": "Pobierz",
 		"loading": "Pobieram… {ready} / {total}",
-		"stop": "Zatrzymaj"
+		"stop": "Zatrzymaj",
+		"placeholder": "Wklej linki, oddzielone spacjami, przecinkami lub nowymi liniami",
+		"example": "Wypróbuj przykład",
+		"advancedShort": "Zaawansowane (SEO)"
 	},
 	"views": {
 		"label": "Widok",
@@ -53,12 +56,16 @@
 		"typeGroup": "Rodzaj",
 		"siteGroup": "Serwis",
 		"share": "Udostępnij",
-		"retry": "Ponów nieudane ({count})",
 		"copyJson": "Kopiuj JSON",
 		"downloadJson": "Pobierz JSON",
 		"downloadCsv": "Pobierz CSV",
 		"shortLink": "Krótki link",
-		"shortLinkHint": "Zapisuje listę na serwerze; nieużywana przez 90 dni znika"
+		"shortLinkHint": "Zapisuje listę na serwerze; nieużywana przez 90 dni znika",
+		"retryShort": "Ponów",
+		"copyLink": "Kopiuj link",
+		"copyLinkHint": "Adres z całą listą",
+		"export": "Eksport",
+		"csvHint": "Otwiera się w Excelu i Arkuszach Google"
 	},
 	"notices": {
 		"jsonCopied": "Skopiowano JSON",
@@ -99,7 +106,6 @@
 		"other": "inne"
 	},
 	"recent": {
-		"title": "Ostatnie zapytania",
 		"remember": "Zapamiętuj ostatnie zapytania na tym urządzeniu",
 		"note": "Zostają tylko w tej przeglądarce i nigdzie nie są wysyłane. Wyłączenie je usuwa.",
 		"links": {
@@ -111,7 +117,8 @@
 		"advanced": ", zaawansowane",
 		"remove": "Usuń z ostatnich zapytań",
 		"clear": "Wyczyść wszystko",
-		"empty": "Jeszcze nic: tu pojawią się Twoje następne zapytania."
+		"empty": "Jeszcze nic: tu pojawią się Twoje następne zapytania.",
+		"button": "Ostatnie"
 	},
 	"tiles": {
 		"showDescription": "Pokaż opis",
@@ -325,6 +332,31 @@
 			"few": "Gotowe: {count} linki, nieudane: {failed}.",
 			"many": "Gotowe: {count} linków, nieudane: {failed}.",
 			"other": "Gotowe: {count} linku, nieudane: {failed}."
+		}
+	},
+	"header": {
+		"tagline": "Podgląd linków jako kafelki, tabela albo JSON",
+		"nav": "Strona",
+		"status": "Stan"
+	},
+	"footer": {
+		"status": "Stan usług",
+		"code": "Kod na GitHubie",
+		"privacy": "Bez ciasteczek; historia tylko po włączeniu"
+	},
+	"features": {
+		"label": "Co robi urlhub",
+		"tiles": {
+			"title": "Kafelki, tabela, JSON",
+			"text": "Obrazek, tytuł i opis każdej strony, czas trwania filmów, gwiazdki z GitHuba."
+		},
+		"seo": {
+			"title": "Ostrzeżenia SEO",
+			"text": "Z opcją zaawansowaną: brakujący opis, za długi tytuł, noindex, łańcuchy przekierowań."
+		},
+		"share": {
+			"title": "Udostępnianie",
+			"text": "Link z całą listą albo krótki link /c/…, z podglądem w komunikatorach."
 		}
 	}
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { MAX_URLS, roughCount } from '$lib/query.svelte';
 	import { useI18n } from '$lib/i18n';
 
@@ -8,8 +9,6 @@
 		/** The text in the field: links as typed, ldb-api finds them */
 		text: string;
 		advanced: boolean;
-		/** The advanced option means something for the table and JSON, not for tiles */
-		showAdvanced: boolean;
 		loading: boolean;
 		ready: number;
 		total: number;
@@ -17,18 +16,26 @@
 		error: string | null;
 		onsubmit: () => void;
 		onstop: () => void;
+		/** Fills the field with the example links and fetches them */
+		onexample: () => void;
+		/** The advanced option was switched (the page shows the table for it) */
+		onadvanced?: (on: boolean) => void;
+		/** Next to the Fetch button: the recent queries menu */
+		actions?: Snippet;
 	}
 
 	let {
 		text = $bindable(),
 		advanced = $bindable(),
-		showAdvanced,
 		loading,
 		ready,
 		total,
 		error,
 		onsubmit,
-		onstop
+		onstop,
+		onexample,
+		onadvanced,
+		actions
 	}: Props = $props();
 
 	const count = $derived(roughCount(text));
@@ -62,8 +69,6 @@
 <form onsubmit={submit} class="url-form" novalidate>
 	<div class="url-form__field">
 		<label class="url-form__label" for="urls">{i18n.t('form.label')}</label>
-		<span class="url-form__hint">{i18n.t('form.hint')}</span>
-
 		<textarea
 			id="urls"
 			class="url-form__textarea"
@@ -71,29 +76,45 @@
 			{onkeydown}
 			rows="4"
 			spellcheck="false"
+			placeholder={i18n.t('form.placeholder')}
+			aria-describedby="urls-hint"
 			disabled={loading}></textarea>
-
-		<div class="url-form__row">
-			<span class="url-form__hint" class:url-form__hint--warn={count > MAX_URLS}>
-				{i18n.t('form.links', { count })}{count > MAX_URLS
-					? i18n.t('form.atMost', { max: MAX_URLS })
-					: ''}
-			</span>
-			<label class="url-form__file">
-				{i18n.t('form.addFile')}
-				<input type="file" accept=".txt,text/plain" onchange={addFile} disabled={loading} />
-			</label>
-		</div>
+		<span id="urls-hint" class="sr-only">{i18n.t('form.hint')}</span>
 	</div>
 
-	{#if showAdvanced}
-		<label class="url-form__check">
-			<input type="checkbox" bind:checked={advanced} disabled={loading} />
-			<span>{i18n.t('form.advanced')}</span>
+	<div class="url-form__row">
+		<span class="url-form__count" class:url-form__count--warn={count > MAX_URLS}>
+			{i18n.t('form.links', { count })}{count > MAX_URLS
+				? i18n.t('form.atMost', { max: MAX_URLS })
+				: ''}
+		</span>
+		<label class="url-form__file">
+			{i18n.t('form.addFile')}
+			<input type="file" accept=".txt,text/plain" onchange={addFile} disabled={loading} />
 		</label>
-	{/if}
+		{#if !text.trim() && !loading}
+			<button type="button" class="url-form__link" onclick={onexample}
+				>{i18n.t('form.example')}</button
+			>
+		{/if}
+		<label class="url-form__check">
+			<input
+				type="checkbox"
+				bind:checked={advanced}
+				onchange={() => onadvanced?.(advanced)}
+				disabled={loading}
+				aria-describedby="advanced-hint"
+			/>
+			<span>{i18n.t('form.advancedShort')}</span>
+		</label>
+		<span id="advanced-hint" class="sr-only">{i18n.t('form.advanced')}</span>
 
-	<div class="url-form__buttons">
+		<span class="url-form__spacer"></span>
+
+		{@render actions?.()}
+		{#if loading}
+			<button type="button" class="url-form__stop" onclick={onstop}>{i18n.t('form.stop')}</button>
+		{/if}
 		<button type="submit" class="url-form__submit" disabled={loading}>
 			{#if loading}
 				<span class="url-form__spinner" aria-hidden="true"></span>
@@ -102,9 +123,6 @@
 				<span>{i18n.t('form.fetch')}</span>
 			{/if}
 		</button>
-		{#if loading}
-			<button type="button" class="url-form__stop" onclick={onstop}>{i18n.t('form.stop')}</button>
-		{/if}
 	</div>
 
 	{#if error}
@@ -119,22 +137,14 @@
 	.url-form {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.75rem;
 		width: 100%;
-		max-width: 40rem;
-		margin-inline: auto;
-		font-family:
-			'Inter',
-			system-ui,
-			-apple-system,
-			'Segoe UI',
-			sans-serif;
 	}
 
 	.url-form__field {
 		display: flex;
 		flex-direction: column;
-		gap: 0.35rem;
+		gap: 0.4rem;
 	}
 
 	.url-form__label {
@@ -142,13 +152,7 @@
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--accent);
-	}
-
-	.url-form__hint {
-		font-size: 0.7rem;
-		font-weight: 300;
-		color: var(--muted);
+		color: var(--ink);
 	}
 
 	.url-form__textarea {
@@ -160,18 +164,18 @@
 		font: inherit;
 		font-size: 0.95rem;
 		line-height: 1.5;
-		color: var(--accent);
+		color: var(--ink);
 		background: var(--surface-2);
 		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 		transition:
 			border-color 200ms ease,
-			box-shadow 200ms ease,
-			background 200ms ease;
+			box-shadow 200ms ease;
 	}
 
 	.url-form__textarea::placeholder {
-		color: var(--faint);
+		color: var(--muted);
+		opacity: 1;
 	}
 
 	.url-form__textarea:focus-visible {
@@ -183,29 +187,89 @@
 
 	.url-form__textarea:disabled {
 		opacity: 0.6;
-		cursor: not-allowed;
 	}
 
-	.url-form__submit {
+	.url-form__row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		font-size: 0.8rem;
+	}
+
+	.url-form__count {
+		color: var(--muted);
+	}
+
+	.url-form__count--warn {
+		font-weight: 600;
+		color: var(--error);
+	}
+
+	.url-form__file,
+	.url-form__link {
+		position: relative;
+		padding: 0;
+		font: inherit;
+		color: var(--ink);
+		text-decoration: underline;
+		background: none;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.url-form__file input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	.url-form__file:focus-within,
+	.url-form__link:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 2px;
+	}
+
+	.url-form__check {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		cursor: pointer;
+	}
+
+	.url-form__check input {
+		margin: 0;
+		accent-color: var(--accent);
+	}
+
+	.url-form__spacer {
+		flex: 1;
+	}
+
+	.url-form__submit,
+	.url-form__stop {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 0.5rem;
-		width: 100%;
-		padding: 0.9rem 1.5rem;
+		min-height: 2.75rem;
+		padding: 0 1.75rem;
 		font: inherit;
 		font-size: 0.8rem;
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--on-accent);
-		background: var(--accent);
-		border: none;
 		border-radius: 0.75rem;
 		cursor: pointer;
+	}
+
+	.url-form__submit {
+		color: var(--on-accent);
+		background: var(--accent);
+		border: 1px solid var(--accent);
 		transition:
 			transform 150ms ease,
-			opacity 200ms ease,
 			box-shadow 200ms ease;
 	}
 
@@ -214,18 +278,21 @@
 		transform: translateY(-1px);
 	}
 
-	.url-form__submit:active:not(:disabled) {
-		transform: translateY(0);
-	}
-
-	.url-form__submit:focus-visible {
-		outline: 3px solid var(--accent);
-		outline-offset: 3px;
-	}
-
 	.url-form__submit:disabled {
 		opacity: 0.65;
 		cursor: not-allowed;
+	}
+
+	.url-form__stop {
+		color: var(--ink);
+		background: transparent;
+		border: 1px solid var(--accent);
+	}
+
+	.url-form__submit:focus-visible,
+	.url-form__stop:focus-visible {
+		outline: 3px solid var(--ink);
+		outline-offset: 3px;
 	}
 
 	.url-form__spinner {
@@ -238,7 +305,6 @@
 	}
 
 	.url-form__error {
-		width: 100%;
 		margin: 0;
 		padding: 0.75rem 1rem;
 		font-size: 0.8rem;
@@ -247,70 +313,6 @@
 		background: var(--error-bg);
 		border-left: 3px solid var(--error);
 		border-radius: 0.5rem;
-	}
-
-	.url-form__row {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		gap: 0.5rem;
-	}
-
-	.url-form__hint--warn {
-		font-weight: 600;
-		color: var(--error);
-	}
-
-	.url-form__file {
-		position: relative;
-		font-size: 0.75rem;
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	.url-form__file input {
-		position: absolute;
-		inset: 0;
-		opacity: 0;
-		cursor: pointer;
-	}
-
-	.url-form__file:focus-within {
-		outline: 2px solid var(--accent);
-		outline-offset: 2px;
-	}
-
-	.url-form__check {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.5rem;
-		font-size: 0.8rem;
-		line-height: 1.4;
-		cursor: pointer;
-	}
-
-	.url-form__check input {
-		margin: 0.15rem 0 0;
-		accent-color: var(--accent);
-	}
-
-	.url-form__buttons {
-		display: flex;
-		gap: 0.5rem;
-	}
-
-	.url-form__stop {
-		padding: 0.9rem 1.5rem;
-		font: inherit;
-		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--accent);
-		background: transparent;
-		border: 1px solid var(--accent);
-		border-radius: 0.75rem;
-		cursor: pointer;
 	}
 
 	.url-form__notice {
@@ -325,18 +327,14 @@
 		}
 	}
 
-	@media (min-width: 48rem) {
-		.url-form {
-			gap: 1.25rem;
+	/* Phones: the buttons take a row of their own, Fetch the widest part of it */
+	@media (max-width: 40rem) {
+		.url-form__spacer {
+			flex-basis: 100%;
 		}
 
 		.url-form__submit {
-			width: auto;
-			padding-inline: 2.5rem;
-		}
-
-		.url-form__label {
-			font-size: 0.8rem;
+			flex: 1;
 		}
 	}
 
@@ -345,9 +343,11 @@
 		.url-form__submit {
 			transition: none;
 		}
+
 		.url-form__submit:hover:not(:disabled) {
 			transform: none;
 		}
+
 		.url-form__spinner {
 			animation-duration: 1.6s;
 		}

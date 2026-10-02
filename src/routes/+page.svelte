@@ -7,7 +7,8 @@
 	import ResultsTable from '$lib/components/ResultsTable.svelte';
 	import JsonView from '$lib/components/JsonView.svelte';
 	import UrlForm from '$lib/components/UrlForm.svelte';
-	import RecentList from '$lib/components/RecentList.svelte';
+	import RecentMenu from '$lib/components/RecentMenu.svelte';
+	import Menu from '$lib/components/Menu.svelte';
 	import { RecentQueries, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
@@ -17,8 +18,15 @@
 
 	const i18n = useI18n();
 
-	const EXAMPLES =
-		'https://github.com/sveltejs/kit, https://vite.dev, https://nodejs.org, https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+	// "Try an example": links checked to work, each with a picture; Wikipedia and kosmos in the page's language
+	const examples = (lang: string) => [
+		'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+		'https://vimeo.com/1084537',
+		'https://github.com/sveltejs/kit',
+		`https://${lang}.wikipedia.org/wiki/Mars`,
+		'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
+		`https://kosmos.info.pl/${lang}/home`
+	];
 	const VIEWS: View[] = ['tiles', 'table', 'json'];
 
 	// The address holds the list, the view and the advanced option, so a shared link opens the same results:
@@ -30,7 +38,7 @@
 	const query = new LinkQuery();
 	const recent = new RecentQueries();
 	// Old shared links put "-" between the links; one per line reads better (ldb-api splits them either way)
-	let text = $state(linksInAddress.replace(/[\s,;-]+(?=https?:\/\/)/gi, '\n').trim() || EXAMPLES);
+	let text = $state(linksInAddress.replace(/[\s,;-]+(?=https?:\/\/)/gi, '\n').trim());
 	let view = $state<View>(
 		VIEWS.includes(viewInAddress as View) ? (viewInAddress as View) : 'tiles'
 	);
@@ -99,6 +107,16 @@
 			updateAddress(urls);
 			recent.add(urls, view, asked);
 		});
+	}
+
+	function tryExample() {
+		text = examples(i18n.lang).join('\n');
+		fetchLinks();
+	}
+
+	// SEO details show in the table and the JSON: asking for them from the tiles opens the table
+	function advancedChanged(on: boolean) {
+		if (on && view === 'tiles') show('table');
 	}
 
 	/** A recent query comes back with its links, view and option, and is fetched again */
@@ -273,24 +291,26 @@
 	<meta name="twitter:image" content={`${page.url.origin}/og.png`} />
 </svelte:head>
 
-<main class="page">
-	<h1 class="sr-only">urlhub</h1>
+<main class="page shell">
 	{#if query.rows.length}
 		<a class="skip" href="#results">{i18n.t('a11y.skip')}</a>
 	{/if}
 	<UrlForm
 		bind:text
 		bind:advanced
-		showAdvanced={view !== 'tiles'}
 		loading={query.loading}
 		ready={query.ready}
 		total={query.rows.length}
 		error={query.error && queryError(i18n.t, query.error)}
 		onsubmit={fetchLinks}
 		onstop={() => query.stop()}
-	/>
-
-	<RecentList {recent} onopen={reopen} />
+		onexample={tryExample}
+		onadvanced={advancedChanged}
+	>
+		{#snippet actions()}
+			<RecentMenu {recent} onopen={reopen} />
+		{/snippet}
+	</UrlForm>
 
 	<!-- Said once when a query starts and once when it ends, not at every result -->
 	<p class="sr-only" role="status">{announcement}</p>
@@ -299,67 +319,112 @@
 		<section id="results" class="results" aria-labelledby="results-heading" tabindex="-1">
 			<h2 id="results-heading" class="sr-only">{i18n.t('a11y.results')}</h2>
 			<div class="toolbar">
-				<p class="toolbar__summary">
-					{summary}{#if query.failed}<span class="toolbar__failed"
-							>{i18n.t('toolbar.failed', { count: query.failed })}</span
-						>{/if}{filtered}
-				</p>
-				<div class="toolbar__tabs" role="group" aria-label={i18n.t('views.label')}>
-					{#each VIEWS as v (v)}
-						<button type="button" aria-pressed={view === v} onclick={() => show(v)}
-							>{i18n.t(`views.${v}`)}</button
-						>
-					{/each}
+				<div class="toolbar__row">
+					<div class="toolbar__status">
+						<p class="toolbar__summary">
+							{summary}{#if query.failed}<span class="toolbar__failed"
+									>{i18n.t('toolbar.failed', { count: query.failed })}</span
+								>{/if}{filtered}
+						</p>
+						{#if query.failed && !query.loading}
+							<button type="button" class="toolbar__retry" onclick={() => query.retryFailed()}
+								>{i18n.t('toolbar.retryShort')}</button
+							>
+						{/if}
+					</div>
+					<div class="toolbar__views" role="group" aria-label={i18n.t('views.label')}>
+						{#each VIEWS as v (v)}
+							<button type="button" aria-pressed={view === v} onclick={() => show(v)}
+								>{i18n.t(`views.${v}`)}</button
+							>
+						{/each}
+					</div>
+					<span class="toolbar__spacer"></span>
+					<Menu label={i18n.t('toolbar.share')}>
+						{#snippet children(close)}
+							<button
+								type="button"
+								class="menu__item"
+								onclick={() => {
+									close();
+									share();
+								}}
+								>{i18n.t('toolbar.copyLink')}<small>{i18n.t('toolbar.copyLinkHint')}</small></button
+							>
+							<button
+								type="button"
+								class="menu__item"
+								disabled={query.loading}
+								onclick={() => {
+									close();
+									shortLink();
+								}}
+								>{i18n.t('toolbar.shortLink')}<small>{i18n.t('toolbar.shortLinkHint')}</small
+								></button
+							>
+						{/snippet}
+					</Menu>
+					<Menu label={i18n.t('toolbar.export')}>
+						{#snippet children(close)}
+							<button
+								type="button"
+								class="menu__item"
+								onclick={() => {
+									close();
+									copyJson();
+								}}>{i18n.t('toolbar.copyJson')}</button
+							>
+							<button
+								type="button"
+								class="menu__item"
+								onclick={() => {
+									close();
+									downloadJson();
+								}}>{i18n.t('toolbar.downloadJson')}</button
+							>
+							<button
+								type="button"
+								class="menu__item"
+								onclick={() => {
+									close();
+									downloadCsv();
+								}}>{i18n.t('toolbar.downloadCsv')}<small>{i18n.t('toolbar.csvHint')}</small></button
+							>
+						{/snippet}
+					</Menu>
 				</div>
-				<input
-					class="toolbar__filter"
-					type="search"
-					placeholder={i18n.t('toolbar.filter')}
-					aria-label={i18n.t('toolbar.filterLabel')}
-					bind:value={filter}
-				/>
-				<select class="toolbar__select" aria-label={i18n.t('toolbar.show')} bind:value={only}>
-					<option value="all">{i18n.t('toolbar.all')}</option>
-					<option value="ok">{i18n.t('toolbar.ok')}</option>
-					<option value="failed">{i18n.t('toolbar.failedOnly')}</option>
-					{#if query.advanced}
-						<option value="warnings">{i18n.t('toolbar.warnings')}</option>
-					{/if}
-				</select>
-				{#if types.length + services.length > 1}
-					<select class="toolbar__select" aria-label={i18n.t('toolbar.type')} bind:value={kind}>
-						<option value="">{i18n.t('toolbar.allTypes')}</option>
-						<optgroup label={i18n.t('toolbar.typeGroup')}>
-							{#each types as t (t)}
-								<option value={t}>{typeName(t)}</option>
-							{/each}
-						</optgroup>
-						{#if services.length}
-							<optgroup label={i18n.t('toolbar.siteGroup')}>
-								{#each services as t (t)}
-									<option value={t}>{t}</option>
-								{/each}
-							</optgroup>
+				<div class="toolbar__row">
+					<input
+						class="toolbar__filter"
+						type="search"
+						placeholder={i18n.t('toolbar.filter')}
+						aria-label={i18n.t('toolbar.filterLabel')}
+						bind:value={filter}
+					/>
+					<select class="toolbar__select" aria-label={i18n.t('toolbar.show')} bind:value={only}>
+						<option value="all">{i18n.t('toolbar.all')}</option>
+						<option value="ok">{i18n.t('toolbar.ok')}</option>
+						<option value="failed">{i18n.t('toolbar.failedOnly')}</option>
+						{#if query.advanced}
+							<option value="warnings">{i18n.t('toolbar.warnings')}</option>
 						{/if}
 					</select>
-				{/if}
-				<div class="toolbar__actions">
-					<button type="button" onclick={share}>{i18n.t('toolbar.share')}</button>
-					<button
-						type="button"
-						onclick={shortLink}
-						disabled={query.loading}
-						title={i18n.t('toolbar.shortLinkHint')}>{i18n.t('toolbar.shortLink')}</button
-					>
-					{#if query.failed && !query.loading}
-						<button type="button" onclick={() => query.retryFailed()}>
-							{i18n.t('toolbar.retry', { count: query.failed })}
-						</button>
-					{/if}
-					{#if view !== 'tiles'}
-						<button type="button" onclick={copyJson}>{i18n.t('toolbar.copyJson')}</button>
-						<button type="button" onclick={downloadJson}>{i18n.t('toolbar.downloadJson')}</button>
-						<button type="button" onclick={downloadCsv}>{i18n.t('toolbar.downloadCsv')}</button>
+					{#if types.length + services.length > 1}
+						<select class="toolbar__select" aria-label={i18n.t('toolbar.type')} bind:value={kind}>
+							<option value="">{i18n.t('toolbar.allTypes')}</option>
+							<optgroup label={i18n.t('toolbar.typeGroup')}>
+								{#each types as t (t)}
+									<option value={t}>{typeName(t)}</option>
+								{/each}
+							</optgroup>
+							{#if services.length}
+								<optgroup label={i18n.t('toolbar.siteGroup')}>
+									{#each services as t (t)}
+										<option value={t}>{t}</option>
+									{/each}
+								</optgroup>
+							{/if}
+						</select>
 					{/if}
 				</div>
 			</div>
@@ -393,6 +458,12 @@
 				<JsonView {json} />
 			{/if}
 		</section>
+	{:else if !query.loading}
+		<ul class="features" aria-label={i18n.t('features.label')}>
+			{#each ['tiles', 'seo', 'share'] as const as f (f)}
+				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
+			{/each}
+		</ul>
 	{/if}
 </main>
 
@@ -400,21 +471,14 @@
 	.page {
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
-		box-sizing: border-box;
-		padding: 1.5rem 0.5rem 3rem;
-		font-family:
-			'Inter',
-			system-ui,
-			-apple-system,
-			'Segoe UI',
-			sans-serif;
+		gap: 1.5rem;
+		padding-block: 1.5rem 2.5rem;
 	}
 
 	.results {
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
+		gap: 1rem;
 	}
 
 	.results:focus {
@@ -426,7 +490,7 @@
 		position: absolute;
 		left: 1rem;
 		top: -3rem;
-		z-index: 20;
+		z-index: 40;
 		padding: 0.5rem 0.75rem;
 		color: var(--on-accent);
 		background: var(--accent);
@@ -437,16 +501,47 @@
 		top: 0.75rem;
 	}
 
+	.features {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.features li {
+		padding: 1rem;
+		font-size: 0.85rem;
+		line-height: 1.45;
+		color: var(--ink-3);
+		background: var(--surface-2);
+		border-radius: 0.75rem;
+	}
+
+	.features b {
+		display: block;
+		margin-bottom: 0.2rem;
+		color: var(--ink);
+	}
+
 	.toolbar {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.toolbar__row {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.5rem 1rem;
-		width: 100%;
-		max-width: 72rem;
-		margin-inline: auto;
-		box-sizing: border-box;
-		padding-inline: 0.5rem;
+	}
+
+	.toolbar__status {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
 	}
 
 	.toolbar__summary {
@@ -459,16 +554,33 @@
 		color: var(--error);
 	}
 
-	.toolbar__tabs {
+	.toolbar__retry,
+	.notice__undo {
+		padding: 0;
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--ink);
+		text-decoration: underline;
+		background: none;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.toolbar__spacer {
+		flex: 1;
+	}
+
+	.toolbar__views {
 		display: inline-flex;
 		padding: 0.2rem;
 		background: var(--surface-3);
 		border-radius: 0.6rem;
 	}
 
-	.toolbar__tabs button,
-	.toolbar__actions button {
-		padding: 0.4rem 0.8rem;
+	.toolbar__views button {
+		min-height: 2rem;
+		padding: 0.35rem 0.8rem;
 		font: inherit;
 		font-size: 0.8rem;
 		font-weight: 600;
@@ -479,17 +591,20 @@
 		cursor: pointer;
 	}
 
-	.toolbar__tabs button[aria-pressed='true'] {
+	.toolbar__views button[aria-pressed='true'] {
 		background: var(--surface);
 		box-shadow: 0 1px 3px var(--shadow);
 	}
 
 	.toolbar__filter {
-		flex: 1 1 12rem;
+		flex: 1 1 14rem;
 		min-width: 0;
+		min-height: 2.25rem;
 		padding: 0.45rem 0.75rem;
 		font: inherit;
 		font-size: 0.85rem;
+		color: var(--ink);
+		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: 0.6rem;
 	}
@@ -497,6 +612,7 @@
 	/* The browser's own arrow sits against the edge; this one keeps the same space as the text on the left */
 	.toolbar__select {
 		appearance: none;
+		min-height: 2.25rem;
 		padding: 0.45rem 2rem 0.45rem 0.75rem;
 		font: inherit;
 		font-size: 0.8rem;
@@ -516,47 +632,23 @@
 		}
 	}
 
-	.toolbar__select:focus-visible {
+	.toolbar__views button:focus-visible,
+	.toolbar__select:focus-visible,
+	.toolbar__filter:focus-visible,
+	.toolbar__retry:focus-visible,
+	.notice__undo:focus-visible {
 		outline: 2px solid var(--ink);
 		outline-offset: 2px;
 	}
 
-	.toolbar__actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.25rem;
-	}
-
-	.toolbar__actions button {
-		border: 1px solid var(--border);
-	}
-
 	.notice {
-		width: 100%;
-		max-width: 72rem;
-		margin: -0.5rem auto 0;
-		padding-inline: 0.5rem;
-		box-sizing: border-box;
+		margin: 0;
 		font-size: 0.8rem;
 		color: var(--ink-3);
 	}
 
 	.notice__undo {
 		margin-left: 0.5rem;
-		padding: 0;
-		font: inherit;
-		font-weight: 600;
-		color: var(--ink);
-		text-decoration: underline;
-		background: none;
-		border: 0;
-		cursor: pointer;
-	}
-
-	.page > :global(.table),
-	.page > :global(.json) {
-		width: 100%;
-		max-width: 72rem;
-		margin-inline: auto;
+		font-size: 0.8rem;
 	}
 </style>
