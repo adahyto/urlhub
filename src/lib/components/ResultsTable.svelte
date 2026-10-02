@@ -3,7 +3,18 @@
 	import RowDetails from './RowDetails.svelte';
 	import type { Row } from '$lib/types';
 
-	let { rows, advanced }: { rows: Row[]; advanced: boolean } = $props();
+	interface Props {
+		rows: Row[];
+		advanced: boolean;
+		/** Whether rows can be removed (not while a query fills them) */
+		removable?: boolean;
+		/** Whether rows can be moved (also not while the list is filtered; not while sorted, see below) */
+		movable?: boolean;
+		onremove?: (url: string) => void;
+		onmove?: (url: string, to: number | { before: string }) => void;
+	}
+
+	let { rows, advanced, removable = false, movable = false, onremove, onmove }: Props = $props();
 
 	const hostOf = (u: string) => {
 		try {
@@ -85,6 +96,19 @@
 
 	const open = new SvelteSet<string>();
 	const toggle = (url: string) => (open.has(url) ? open.delete(url) : open.add(url));
+
+	// A sorted table shows another order than the list's, so rows move only when it is not sorted
+	const canMove = $derived(movable && !sortKey);
+
+	// Rows are dragged by their handle and dropped onto another row, which they then precede
+	let dragged = $state<string | null>(null);
+	let over = $state<string | null>(null);
+
+	function dropOn(event: DragEvent, target: string) {
+		event.preventDefault();
+		if (dragged && dragged !== target) onmove?.(dragged, { before: target });
+		dragged = over = null;
+	}
 </script>
 
 {#snippet badges(item: Row)}
@@ -122,14 +146,38 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each sorted as item (item.url)}
+			{#each sorted as item, i (item.url)}
 				<tr
+					class:is-dragged={dragged === item.url}
+					class:is-drop-target={over === item.url && dragged !== item.url}
+					ondragover={(e) => {
+						if (!dragged) return;
+						e.preventDefault();
+						over = item.url;
+					}}
+					ondragleave={() => over === item.url && (over = null)}
+					ondrop={(e) => dropOn(e, item.url)}
 					class:has-error={item.error}
 					class:is-pending={item.pending}
 					class:is-open={open.has(item.url)}
 					aria-busy={item.pending}
 				>
 					<td class="table__img">
+						{#if canMove}
+							<span
+								class="table__handle"
+								draggable="true"
+								role="presentation"
+								title="Drag to move"
+								ondragstart={(e) => {
+									dragged = item.url;
+									e.dataTransfer?.setData('text/plain', item.url);
+									const row = (e.currentTarget as HTMLElement).closest('tr');
+									if (row) e.dataTransfer?.setDragImage(row, 20, 20);
+								}}
+								ondragend={() => (dragged = over = null)}>⠿</span
+							>
+						{/if}
 						{#if item.pending}
 							<span class="table__skeleton" aria-hidden="true"></span>
 						{:else if item.ogImg?.ogImg}
@@ -180,13 +228,34 @@
 							<p class="table__badges-inline">{@render badges(item)}</p>
 						{/if}
 						{#if !item.pending}
-							<button
-								type="button"
-								class="table__more"
-								aria-expanded={open.has(item.url)}
-								onclick={() => toggle(item.url)}
-								>{open.has(item.url) ? 'Hide details' : 'Details'}</button
-							>
+							<div class="table__actions">
+								<button
+									type="button"
+									class="table__more"
+									aria-expanded={open.has(item.url)}
+									onclick={() => toggle(item.url)}
+									>{open.has(item.url) ? 'Hide details' : 'Details'}</button
+								>
+								{#if removable}
+									<span class="table__edit">
+										{#if canMove}
+											<button
+												type="button"
+												aria-label="Move up"
+												disabled={i === 0}
+												onclick={() => onmove?.(item.url, -1)}>↑</button
+											>
+											<button
+												type="button"
+												aria-label="Move down"
+												disabled={i === sorted.length - 1}
+												onclick={() => onmove?.(item.url, 1)}>↓</button
+											>
+										{/if}
+										<button type="button" onclick={() => onremove?.(item.url)}>Remove</button>
+									</span>
+								{/if}
+							</div>
 						{/if}
 						{#if open.has(item.url)}
 							<RowDetails {item} {advanced} />
@@ -394,9 +463,53 @@
 		color: var(--ink);
 	}
 
-	.table__more {
+	.table__edit {
+		display: inline-flex;
+		gap: 0.75rem;
+		margin-left: 1rem;
+	}
+
+	.table__edit button {
+		padding: 0;
+		font: inherit;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--muted);
+		text-decoration: underline;
+		background: none;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.table__edit button:disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+
+	.table__handle {
 		display: block;
+		margin-bottom: 0.25rem;
+		font-size: 1rem;
+		line-height: 1;
+		color: var(--faint);
+		cursor: grab;
+		user-select: none;
+	}
+
+	tr.is-dragged td {
+		opacity: 0.4;
+	}
+
+	tr.is-drop-target td {
+		box-shadow: inset 0 3px 0 var(--ink);
+	}
+
+	.table__actions {
 		margin-top: 0.35rem;
+	}
+
+	.table__more {
+		display: inline-block;
 		padding: 0;
 		font: inherit;
 		font-size: 0.75rem;

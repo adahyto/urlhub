@@ -13,6 +13,10 @@ fetched again on their own.
 The address of the page holds the links, the view and the option (`?urls=...&view=table&advanced=1`), so a
 result can be shared; shared links load by themselves. Results fill in as each link is ready; Stop cancels.
 
+The list can be edited without fetching again: × removes a tile or row (with Undo), ← → and ↑ ↓ or dragging
+change the order (not while the table is sorted or filtered); the address and the field follow, so Share gives
+the edited list.
+
 **Share** copies the address of the results. The dark theme follows the system setting (colours in
 `src/app.css`; no switch, which would have to remember the choice on the device).
 

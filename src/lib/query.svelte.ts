@@ -143,6 +143,37 @@ export class LinkQuery {
 		}
 	}
 
+	// Editing the list (not while a query fills it: results arrive by position)
+
+	/** Takes a link out of the list; returns it with its place, for undo */
+	remove(url: string): { row: Row; index: number } | null {
+		const index = this.rows.findIndex((r) => r.url === url);
+		if (index < 0 || this.loading) return null;
+		const row = this.rows[index];
+		this.rows = this.rows.filter((_, i) => i !== index);
+		return { row, index };
+	}
+
+	/** Puts a removed link back where it was */
+	restore(row: Row, index: number): void {
+		if (this.loading || this.rows.some((r) => r.url === row.url)) return;
+		this.rows = [...this.rows.slice(0, index), row, ...this.rows.slice(index)];
+	}
+
+	/** Moves a link by delta places (-1 earlier, 1 later), or to the place of another link */
+	move(url: string, to: number | { before: string }): void {
+		if (this.loading) return;
+		const from = this.rows.findIndex((r) => r.url === url);
+		if (from < 0) return;
+		const target =
+			typeof to === 'number' ? from + to : this.rows.findIndex((r) => r.url === to.before);
+		if (target < 0 || target >= this.rows.length || target === from) return;
+		const rows = [...this.rows];
+		const [row] = rows.splice(from, 1);
+		rows.splice(target, 0, row);
+		this.rows = rows;
+	}
+
 	/** Stops the query in progress; the links not ready by then are marked as stopped */
 	stop(): void {
 		if (!this.#controller) return;
