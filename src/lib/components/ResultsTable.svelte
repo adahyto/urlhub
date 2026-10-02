@@ -71,7 +71,8 @@
 		type: (r) => `${r.type} ${r.service ?? ''}`,
 		duration: (r) => seconds(r.duration),
 		warnings: (r) =>
-			(r.error ? 1000 : 0) + (r.warnings ?? []).reduce((sum, w) => sum + RANK[w.level], 0)
+			(r.error ? (r.error === 'blocked' ? 2 : 1000) : 0) +
+			(r.warnings ?? []).reduce((sum, w) => sum + RANK[w.level], 0)
 	};
 
 	const sorted = $derived.by(() => {
@@ -124,7 +125,9 @@
 
 {#snippet badges(item: Row)}
 	{#if item.error}
-		<span class="table__badge table__badge--error">{linkError(i18n.t, item.error)}</span>
+		<span class="table__badge table__badge--{item.error === 'blocked' ? 'info' : 'error'}"
+			>{linkError(i18n.t, item.error)}</span
+		>
 	{/if}
 	{#if item.warnings?.length}
 		<span class="table__badge table__badge--{worst(item)}"
@@ -170,7 +173,7 @@
 					}}
 					ondragleave={() => over === item.url && (over = null)}
 					ondrop={(e) => dropOn(e, item.url)}
-					class:has-error={item.error}
+					class:has-error={item.error && item.error !== 'blocked'}
 					class:is-pending={item.pending}
 					class:is-open={open.has(item.url)}
 					aria-busy={item.pending}

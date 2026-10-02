@@ -60,6 +60,16 @@
 		if (item.pending) {
 			return { kind: 'pending', src: '', alt: '', title: hostOf(item.url), desc: item.url };
 		}
+		// A shop that refuses servers: the product's name from the address under the shop's name, no alarm
+		if (item.error === 'blocked') {
+			return {
+				kind: 'text',
+				src: '',
+				alt: '',
+				title: item.title || hostOf(item.url),
+				desc: `${item.url} — ${linkError(i18n.t, item.error)}`
+			};
+		}
 		if (item.error) {
 			return {
 				kind: 'text',
@@ -120,7 +130,8 @@
 			ondragleave={() => over === item.url && (over = null)}
 			ondrop={(e) => drop(e, item.url)}
 			ondragend={() => (dragged = over = null)}
-			class:has-error={item.error}
+			class:has-error={item.error && item.error !== 'blocked'}
+			class:is-blocked={item.error === 'blocked'}
 			class:is-pending={item.pending}
 			aria-busy={item.pending}
 		>
@@ -148,7 +159,7 @@
 						>{hostOf(item.url)}</span
 					>
 				{:else if view.kind === 'text'}
-					<span class="tiles__placeholder" aria-hidden="true">{hostOf(item.url)}</span>
+					<span class="tiles__placeholder" aria-hidden="true">{item.site || hostOf(item.url)}</span>
 				{:else}
 					<img
 						class="tiles__image"
@@ -166,7 +177,9 @@
 					<span class="tiles__duration">{item.duration}</span>
 				{/if}
 				{#if item.error}
-					<span class="tiles__error">{linkError(i18n.t, item.error)}</span>
+					<span class="tiles__error" class:tiles__error--quiet={item.error === 'blocked'}
+						>{linkError(i18n.t, item.error)}</span
+					>
 				{/if}
 
 				<span class="tiles__title">{view.title}</span>
@@ -301,6 +314,10 @@
 		to {
 			background-position: -200% 0;
 		}
+	}
+
+	.tiles__error.tiles__error--quiet {
+		background: rgba(0, 0, 0, 0.7);
 	}
 
 	.tiles__item.has-error .tiles__placeholder {

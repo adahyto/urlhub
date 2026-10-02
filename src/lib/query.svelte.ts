@@ -27,6 +27,13 @@ class QueryFailure extends Error {
 const failure = (err: unknown): QueryError =>
 	err instanceof QueryFailure ? err.error : { kind: 'network' };
 
+/**
+ * "blocked": the site refuses servers (shops behind DataDome, Akamai, Cloudflare). Not a failure the visitor can fix
+ * or retry: such rows keep a title from their address and are counted apart.
+ */
+export const isBlocked = (r: Row) => r.error === 'blocked';
+export const isFailed = (r: Row) => !r.pending && !!r.error && !isBlocked(r);
+
 const waiting = (url: string): Row => ({
 	url,
 	type: 'page',
@@ -47,7 +54,8 @@ export class LinkQuery {
 	/** Whether the rows hold advanced details */
 	advanced = $state(false);
 	ready = $derived(this.rows.filter((r) => !r.pending).length);
-	failed = $derived(this.rows.filter((r) => !r.pending && r.error).length);
+	failed = $derived(this.rows.filter(isFailed).length);
+	blocked = $derived(this.rows.filter(isBlocked).length);
 
 	#controller: AbortController | null = null;
 
@@ -114,7 +122,7 @@ export class LinkQuery {
 		// Where each failed link sits in the list (a plain object: nothing here needs to be reactive)
 		const positions: Record<string, number> = {};
 		this.rows.forEach((r, i) => {
-			if (!r.pending && r.error) positions[r.url] = i;
+			if (isFailed(r)) positions[r.url] = i;
 		});
 		const urls = Object.keys(positions);
 		if (!urls.length) return;

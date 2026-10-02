@@ -78,6 +78,8 @@ export interface TileUrl {
 	channel: string;
 	duration: string;
 	error: string;
+	/** The site's or shop's name (ldb-api siteName) */
+	site?: string;
 	/** Still being fetched */
 	pending?: boolean;
 }

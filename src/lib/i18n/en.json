@@ -59,7 +59,11 @@
 		"copyLink": "Copy link",
 		"copyLinkHint": "A long address with the whole list",
 		"export": "Export",
-		"csvHint": "Opens in Excel and Google Sheets"
+		"csvHint": "Opens in Excel and Google Sheets",
+		"blocked": {
+			"one": ", {count} without preview",
+			"other": ", {count} without preview"
+		}
 	},
 	"notices": {
 		"jsonCopied": "JSON copied",
@@ -90,7 +94,8 @@
 		"video-unavailable": "video unavailable",
 		"cancelled": "cancelled",
 		"not-fetched": "not fetched",
-		"stopped": "stopped"
+		"stopped": "stopped",
+		"blocked": "no preview"
 	},
 	"types": {
 		"page": "page",

@@ -495,3 +495,29 @@ test('the footer has the copyright and the privacy page, in both languages', asy
 	await expect(page.getByRole('main')).toContainText('14 dniach');
 	await expect(page.locator('time')).toHaveText('Ostatnia aktualizacja: 2 października 2026');
 });
+
+test('a shop that refuses servers shows the product from its address, not as a failure', async ({
+	page
+}) => {
+	await page.goto(
+		`/?urls=${encodeURIComponent(`${link('/blocked-1')} ${link('/a')} ${link('/dead')}`)}`
+	);
+	await expect(summary(page)).toHaveText('3 links, 1 failed, 1 without preview');
+	const tile = page.locator('.tiles__item').first();
+	await expect(tile.locator('.tiles__title')).toHaveText('Apple iphone 15 128GB czarny');
+	await expect(tile.locator('.tiles__placeholder')).toHaveText('Allegro');
+	await expect(tile).not.toHaveClass(/has-error/);
+	await expect(tile.locator('.tiles__error')).toHaveText('no preview');
+
+	// Retry asks for the real failure only
+	await page.getByRole('button', { name: 'Retry', exact: true }).click();
+	await expect(summary(page)).toHaveText('3 links, 1 failed, 1 without preview');
+	expect((await lastRequest(page)).text).toBe(link('/dead'));
+
+	await page.getByRole('button', { name: 'Table', exact: true }).click();
+	await expect(
+		page.locator('tbody tr').first().locator('.table__seo .table__badge--info')
+	).toHaveText('no preview');
+	await page.getByLabel('Show').selectOption('failed');
+	await expect(page.locator('tbody tr')).toHaveCount(1);
+});

@@ -5,6 +5,7 @@
 //   /slow...   answers after 4 s          /dead...   fails with "host not found"
 //   /flaky...  fails once, then works     /video...  a YouTube video (duration, channel)
 //   /stars...  a GitHub repository        /seo...    a page with an SEO warning (advanced)
+//   /blocked...  a shop that refuses servers (403, title from the address)
 import http from 'node:http';
 
 const PORT = Number(process.env.FAKE_API_PORT || 13901);
@@ -69,6 +70,17 @@ function details(url, advanced) {
 	if (path.startsWith('/dead') || (path.startsWith('/flaky') && tries === 1)) {
 		const error = path.startsWith('/dead') ? 'host not found' : 'timeout';
 		return { ...base, ...more, title: '', desc: '', status: null, responseMs: null, error };
+	}
+	if (path.startsWith('/blocked')) {
+		return {
+			...base,
+			...more,
+			title: 'Apple iphone 15 128GB czarny',
+			desc: '',
+			siteName: 'Allegro',
+			status: 403,
+			error: 'blocked'
+		};
 	}
 	if (path.startsWith('/video')) {
 		return {

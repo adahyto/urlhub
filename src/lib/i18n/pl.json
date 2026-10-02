@@ -65,7 +65,11 @@
 		"copyLink": "Kopiuj link",
 		"copyLinkHint": "Długi adres z całą listą",
 		"export": "Eksport",
-		"csvHint": "Otwiera się w Excelu i Arkuszach Google"
+		"csvHint": "Otwiera się w Excelu i Arkuszach Google",
+		"blocked": {
+			"one": ", bez podglądu: {count}",
+			"other": ", bez podglądu: {count}"
+		}
 	},
 	"notices": {
 		"jsonCopied": "Skopiowano JSON",
@@ -96,7 +100,8 @@
 		"video-unavailable": "film niedostępny",
 		"cancelled": "przerwane",
 		"not-fetched": "nie pobrano",
-		"stopped": "zatrzymane"
+		"stopped": "zatrzymane",
+		"blocked": "bez podglądu"
 	},
 	"types": {
 		"page": "strona",
