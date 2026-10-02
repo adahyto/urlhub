@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useI18n, type Key } from '$lib/i18n';
 	import { PRIVACY } from '$lib/privacy';
+	import SeoLinks from '$lib/components/SeoLinks.svelte';
 
 	/* What data urlhub handles (GDPR art. 13 information), on the pattern of kosmos.info.pl's privacy page */
 	const i18n = useI18n();
@@ -34,6 +35,8 @@
 	<title>{i18n.t('privacy.title')} – urlhub</title>
 	<meta name="description" content={i18n.t('privacy.intro')} />
 </svelte:head>
+
+<SeoLinks path="/privacy" />
 
 <main class="privacy shell" aria-labelledby="privacy-heading">
 	<h1 id="privacy-heading">{i18n.t('privacy.title')}</h1>

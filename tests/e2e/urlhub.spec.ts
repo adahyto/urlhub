@@ -521,3 +521,48 @@ test('a shop that refuses servers shows the product from its address, not as a f
 	await page.getByLabel('Show').selectOption('failed');
 	await expect(page.locator('tbody tr')).toHaveCount(1);
 });
+
+test('search engines get one canonical page per language, results stay out of the index', async ({
+	request
+}) => {
+	const head = async (path: string) => (await (await request.get(path)).text()).split('</head>')[0];
+	const links = (html: string) =>
+		[
+			...html.matchAll(/<link rel="(canonical|alternate)"(?: hreflang="([^"]+)")? href="([^"]+)"/g)
+		].map(([, rel, lang, href]) => `${rel}${lang ? `:${lang}` : ''} ${href}`);
+	const O = 'http://127.0.0.1:4173';
+
+	const home = await head('/?lang=pl');
+	expect(links(home)).toEqual([
+		`canonical ${O}/?lang=pl`,
+		`alternate:en ${O}/?lang=en`,
+		`alternate:pl ${O}/?lang=pl`,
+		`alternate:x-default ${O}/`
+	]);
+	expect(home).not.toContain('noindex');
+	const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(home)![1]);
+	expect([ld['@type'], ld.name, ld.url, ld.isAccessibleForFree]).toEqual([
+		'WebApplication',
+		'urlhub',
+		`${O}/`,
+		true
+	]);
+
+	const results = await head(`/?urls=${encodeURIComponent(link('/a'))}`);
+	expect(results).toContain('<meta name="robots" content="noindex, follow"');
+	expect(links(results)).toEqual([]);
+	expect(results).not.toContain('application/ld+json');
+
+	expect(links(await head('/privacy'))[0]).toBe(`canonical ${O}/privacy`);
+
+	const sitemap = await (await request.get('/sitemap.xml')).text();
+	expect(sitemap.match(/<loc>[^<]+<\/loc>/g)).toEqual([
+		`<loc>${O}/?lang=en</loc>`,
+		`<loc>${O}/?lang=pl</loc>`,
+		`<loc>${O}/privacy?lang=en</loc>`,
+		`<loc>${O}/privacy?lang=pl</loc>`
+	]);
+	const robots = await (await request.get('/robots.txt')).text();
+	expect(robots).toContain('Disallow: /api/');
+	expect(robots).toContain(`Sitemap: ${O}/sitemap.xml`);
+});
