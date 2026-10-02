@@ -15,7 +15,14 @@ services:
     # /status also checks ldb-api's /health next to it (src/lib/server/status.ts)
     environment:
       - LDB_API_URL=http://host.docker.internal:84/json
+    # Short links: one JSON file per list, kept across deploys; in the server's daily backup
+    # (/usr/local/sbin/server-backup: /var/lib/docker/volumes/urlhub_data)
+    volumes:
+      - data:/data
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:
       - '98:3000'
+
+volumes:
+  data:

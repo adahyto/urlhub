@@ -23,7 +23,12 @@ The interface is in English and Polish (`src/lib/i18n/en.json`, `pl.json`; forms
 stored on the device. SEO warnings and link errors from ldb-api are translated by their code (warnings with their
 `params`). `npm run check` fails when pl.json misses a key of en.json; an end-to-end test compares placeholders.
 
-**Share** copies the address of the results. The dark theme follows the system setting (colours in
+**Share** copies the address of the results. **Short link** keeps the list on the server and copies an address
+like `/c/k7Qm2xAb`, which opens the list with its view, option and language (`src/lib/server/collections.ts`): one
+JSON file per list in `DATA_DIR` (the `data` volume, `/var/lib/docker/volumes/urlhub_data` on the server, in its
+daily backup). Only the links, the view, the option and the language are kept (no address, account or cookie);
+the same list always gets the same id; a list nobody opened for 90 days is deleted; 10 short links a minute per
+visitor. The notice after the click says so. The dark theme follows the system setting (colours in
 `src/app.css`; no switch, which would have to remember the choice on the device).
 
 Recent queries can be remembered on the visitor's device: off by default, turned on with a switch under the

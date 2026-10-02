@@ -149,9 +149,11 @@
 		updateAddress(null);
 	}
 
-	function flash(message: string) {
+	let noticeTimer: ReturnType<typeof setTimeout> | undefined;
+	function flash(message: string, ms = 2500) {
 		notice = message;
-		setTimeout(() => (notice = ''), 2500);
+		clearTimeout(noticeTimer);
+		if (message) noticeTimer = setTimeout(() => (notice = ''), ms);
 	}
 
 	// navigator.clipboard needs HTTPS; this site is plain HTTP, so fall back to the old way
@@ -165,7 +167,7 @@
 			document.execCommand('copy');
 			area.remove();
 		}
-		flash(done);
+		if (done) flash(done);
 	}
 
 	const copyJson = () => copy(json, i18n.t('notices.jsonCopied'));
@@ -176,6 +178,28 @@
 		const url = URL.createObjectURL(new Blob([content], { type }));
 		Object.assign(document.createElement('a'), { href: url, download: name }).click();
 		URL.revokeObjectURL(url);
+	}
+
+	// A short address for the list, kept on the server (lib/server/collections.ts); the notice says so
+	async function shortLink() {
+		try {
+			const res = await fetch('/api/collections', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					urls: query.rows.map((r) => r.url),
+					view,
+					advanced: query.advanced,
+					lang: i18n.lang
+				})
+			});
+			if (!res.ok) throw new Error(String(res.status));
+			const { path } = await res.json();
+			await copy(new URL(path, page.url).href, '');
+			flash(i18n.t('notices.shortLinkCopied', { url: new URL(path, page.url).href }), 8000);
+		} catch {
+			flash(i18n.t('notices.shortLinkFailed'));
+		}
 	}
 
 	const downloadJson = () => download(json, 'application/json', 'urlhub-links.json');
@@ -262,6 +286,12 @@
 			{/if}
 			<div class="toolbar__actions">
 				<button type="button" onclick={share}>{i18n.t('toolbar.share')}</button>
+				<button
+					type="button"
+					onclick={shortLink}
+					disabled={query.loading}
+					title={i18n.t('toolbar.shortLinkHint')}>{i18n.t('toolbar.shortLink')}</button
+				>
 				{#if query.failed && !query.loading}
 					<button type="button" onclick={() => query.retryFailed()}>
 						{i18n.t('toolbar.retry', { count: query.failed })}

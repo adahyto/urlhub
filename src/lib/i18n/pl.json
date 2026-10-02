@@ -26,7 +26,12 @@
 		"loading": "Pobieram… {ready} / {total}",
 		"stop": "Zatrzymaj"
 	},
-	"views": { "label": "Widok", "tiles": "Kafelki", "table": "Tabela", "json": "JSON" },
+	"views": {
+		"label": "Widok",
+		"tiles": "Kafelki",
+		"table": "Tabela",
+		"json": "JSON"
+	},
 	"toolbar": {
 		"links": {
 			"one": "{count} link",
@@ -51,14 +56,18 @@
 		"retry": "Ponów nieudane ({count})",
 		"copyJson": "Kopiuj JSON",
 		"downloadJson": "Pobierz JSON",
-		"downloadCsv": "Pobierz CSV"
+		"downloadCsv": "Pobierz CSV",
+		"shortLink": "Krótki link",
+		"shortLinkHint": "Zapisuje listę na serwerze; nieużywana przez 90 dni znika"
 	},
 	"notices": {
 		"jsonCopied": "Skopiowano JSON",
 		"linkCopied": "Skopiowano link: otwiera te wyniki",
 		"removed": "Usunięto: {name}",
 		"undo": "Cofnij",
-		"fetchAgain": "Pobierz ponownie, żeby zobaczyć szczegóły zaawansowane."
+		"fetchAgain": "Pobierz ponownie, żeby zobaczyć szczegóły zaawansowane.",
+		"shortLinkCopied": "Skopiowano krótki link: {url} · Lista zostaje na serwerze; nieużywana przez 90 dni znika.",
+		"shortLinkFailed": "Nie udało się utworzyć krótkiego linku. Spróbuj za minutę."
 	},
 	"errors": {
 		"empty": "Nie znaleziono linków. Linki zaczynają się od http:// lub https://.",
@@ -130,7 +139,11 @@
 	},
 	"details": {
 		"warnings": "Ostrzeżenia SEO",
-		"levels": { "error": "Błąd", "warning": "Uwaga", "info": "Informacja" },
+		"levels": {
+			"error": "Błąd",
+			"warning": "Uwaga",
+			"info": "Informacja"
+		},
 		"noWarnings": "Brak ostrzeżeń SEO",
 		"hint": "Pobierz z opcją zaawansowaną, żeby zobaczyć ostrzeżenia SEO, nagłówki i więcej.",
 		"yes": "tak",
@@ -156,7 +169,9 @@
 			"images": "Obrazki"
 		}
 	},
-	"json": { "label": "Wyniki w JSON" },
+	"json": {
+		"label": "Wyniki w JSON"
+	},
 	"seo": {
 		"noindex": "Wyszukiwarki mają nie indeksować tej strony (noindex).",
 		"title-missing": "Strona nie ma tytułu.",
@@ -219,7 +234,12 @@
 		"upFor": "Działa od {time} · Node {node} · liczniki zerują się przy każdym restarcie",
 		"lastHour": "Ostatnia godzina",
 		"last24h": "Ostatnie 24 godziny",
-		"links": { "one": "link", "few": "linki", "many": "linków", "other": "linku" },
+		"links": {
+			"one": "link",
+			"few": "linki",
+			"many": "linków",
+			"other": "linku"
+		},
 		"requestsLine": "zapytania: {requests} · nieudane: {failed} ({percent}) · z pamięci: {cached}",
 		"cancelledLine": "przerwane: {cancelled} · odrzucone (limity): {refused}",
 		"perHour": "Linki na godzinę, ostatnie 24 godziny",
@@ -274,5 +294,10 @@
 			"hours": "{hours} godz. {minutes} min",
 			"minutes": "{minutes} min"
 		}
+	},
+	"errorPage": {
+		"shortLinkTitle": "Ten krótki link nie istnieje",
+		"shortLinkText": "Mógł wygasnąć: krótkie linki nieużywane przez 90 dni są usuwane. Poproś osobę, która go udostępniła, o nowy.",
+		"other": "Coś poszło nie tak."
 	}
 }

@@ -31,7 +31,9 @@ export default defineConfig({
 			env: {
 				PORT: String(APP_PORT),
 				HOST: '127.0.0.1',
-				LDB_API_URL: `http://127.0.0.1:${API_PORT}/json`
+				LDB_API_URL: `http://127.0.0.1:${API_PORT}/json`,
+				// Short links of the tests, out of the repository's way (test-results is ignored by git)
+				DATA_DIR: 'test-results/data'
 			},
 			reuseExistingServer: !process.env.CI
 		}
