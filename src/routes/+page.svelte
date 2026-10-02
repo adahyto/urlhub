@@ -7,7 +7,7 @@
 	import ResultsTable from '$lib/components/ResultsTable.svelte';
 	import JsonView from '$lib/components/JsonView.svelte';
 	import UrlForm from '$lib/components/UrlForm.svelte';
-	import { LinkQuery, asJson } from '$lib/query.svelte';
+	import { LinkQuery, asCsv, asJson } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
 	import type { Row, View } from '$lib/types';
 
@@ -33,15 +33,31 @@
 	);
 	let advanced = $state(params.get('advanced') === '1');
 	let filter = $state('');
+	let only = $state<'all' | 'failed' | 'warnings' | 'ok'>('all');
+	let kind = $state('');
 	let notice = $state('');
+
+	// The type filter offers the types (page, video, ...) and the services (youtube, github, ...) present
+	const distinct = (values: (string | undefined)[]) =>
+		values.filter((v, i, all): v is string => !!v && all.indexOf(v) === i).sort();
+	const types = $derived(distinct(query.rows.filter((r) => !r.pending).map((r) => r.type)));
+	const services = $derived(distinct(query.rows.filter((r) => !r.pending).map((r) => r.service)));
+
+	const matches = (r: Row, words: string) =>
+		!words ||
+		[r.url, r.title, r.desc, r.channel, r.author, r.siteName, r.error, r.type, r.service].some(
+			(v) => (v ?? '').toLowerCase().includes(words)
+		);
+	const shows = (r: Row) =>
+		only === 'all' ||
+		(only === 'failed' && !!r.error) ||
+		(only === 'ok' && !r.error && !r.pending) ||
+		(only === 'warnings' && !!r.warnings?.length);
 
 	const shown = $derived.by(() => {
 		const words = filter.trim().toLowerCase();
-		if (!words) return query.rows;
-		return query.rows.filter((r: Row) =>
-			[r.url, r.title, r.desc, r.channel, r.author, r.siteName, r.error, r.type, r.service].some(
-				(v) => (v ?? '').toLowerCase().includes(words)
-			)
+		return query.rows.filter(
+			(r) => matches(r, words) && shows(r) && (!kind || r.type === kind || r.service === kind)
 		);
 	});
 	const json = $derived(asJson(shown));
@@ -68,6 +84,8 @@
 
 	function fetchLinks() {
 		filter = '';
+		only = 'all';
+		kind = '';
 		// Tiles show the basic details only, so they do not ask for the heavier advanced ones
 		query.run(text, advanced && view !== 'tiles', (urls) => updateAddress(urls));
 	}
@@ -96,14 +114,15 @@
 		flash('JSON copied');
 	}
 
-	function downloadJson() {
-		const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-		Object.assign(document.createElement('a'), {
-			href: url,
-			download: 'urlhub-links.json'
-		}).click();
+	function download(content: string, type: string, name: string) {
+		const url = URL.createObjectURL(new Blob([content], { type }));
+		Object.assign(document.createElement('a'), { href: url, download: name }).click();
 		URL.revokeObjectURL(url);
 	}
+
+	const downloadJson = () => download(json, 'application/json', 'urlhub-links.json');
+	// Excel and Google Sheets open it; the filters apply, as for JSON
+	const downloadCsv = () => download(asCsv(shown), 'text/csv;charset=utf-8', 'urlhub-links.csv');
 
 	// Only shared links (?urls=...) load by themselves; the examples wait for a click
 	onMount(() => {
@@ -157,12 +176,43 @@
 				aria-label="Filter"
 				bind:value={filter}
 			/>
-			{#if view !== 'tiles'}
-				<div class="toolbar__actions">
+			<select class="toolbar__select" aria-label="Show" bind:value={only}>
+				<option value="all">All links</option>
+				<option value="ok">Without errors</option>
+				<option value="failed">Failed only</option>
+				{#if query.advanced}
+					<option value="warnings">With SEO warnings</option>
+				{/if}
+			</select>
+			{#if types.length + services.length > 1}
+				<select class="toolbar__select" aria-label="Type" bind:value={kind}>
+					<option value="">All types</option>
+					<optgroup label="Type">
+						{#each types as t (t)}
+							<option value={t}>{t}</option>
+						{/each}
+					</optgroup>
+					{#if services.length}
+						<optgroup label="Site">
+							{#each services as t (t)}
+								<option value={t}>{t}</option>
+							{/each}
+						</optgroup>
+					{/if}
+				</select>
+			{/if}
+			<div class="toolbar__actions">
+				{#if query.failed && !query.loading}
+					<button type="button" onclick={() => query.retryFailed()}>
+						Retry {query.failed} failed
+					</button>
+				{/if}
+				{#if view !== 'tiles'}
 					<button type="button" onclick={copyJson}>Copy JSON</button>
 					<button type="button" onclick={downloadJson}>Download JSON</button>
-				</div>
-			{/if}
+					<button type="button" onclick={downloadCsv}>Download CSV</button>
+				{/if}
+			</div>
 		</div>
 		{#if notice}
 			<p class="notice" role="status">{notice}</p>
@@ -174,7 +224,7 @@
 		{#if view === 'tiles'}
 			<Tiles urls={shown.map(toTileUrl)} />
 		{:else if view === 'table'}
-			<ResultsTable rows={shown} />
+			<ResultsTable rows={shown} advanced={query.advanced} />
 		{:else}
 			<JsonView {json} />
 		{/if}
@@ -257,8 +307,18 @@
 		border-radius: 0.6rem;
 	}
 
+	.toolbar__select {
+		padding: 0.4rem 0.5rem;
+		font: inherit;
+		font-size: 0.8rem;
+		background: #fff;
+		border: 1px solid #e2e2e2;
+		border-radius: 0.6rem;
+	}
+
 	.toolbar__actions {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 0.25rem;
 	}
 

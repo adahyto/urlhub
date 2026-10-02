@@ -57,7 +57,14 @@ export class LinkQuery {
 				signal: controller.signal
 			});
 			if (/ndjson/.test(res.headers.get('content-type') ?? '')) {
-				await this.#read(res, onList);
+				await this.#read(
+					res,
+					(urls) => {
+						this.rows = urls.map(waiting);
+						onList?.(urls);
+					},
+					(index, result) => (this.rows[index] = result)
+				);
 			} else {
 				// Errors (limits) come as one JSON, and so would a whole answer from an API that does not stream
 				const data = await res.json().catch(() => null);
@@ -84,6 +91,58 @@ export class LinkQuery {
 		}
 	}
 
+	/**
+	 * Asks again for the links that failed (ldb-api does not keep failures, so they are read anew); their rows
+	 * wait in place and fill in as before, the others stay as they are
+	 */
+	async retryFailed(): Promise<void> {
+		if (this.loading) return;
+		// Where each failed link sits in the list (a plain object: nothing here needs to be reactive)
+		const positions: Record<string, number> = {};
+		this.rows.forEach((r, i) => {
+			if (!r.pending && r.error) positions[r.url] = i;
+		});
+		const urls = Object.keys(positions);
+		if (!urls.length) return;
+		const controller = new AbortController();
+		this.#controller = controller;
+		this.loading = true;
+		this.error = null;
+		for (const url of urls) this.rows[positions[url]] = waiting(url);
+		const place = (result: ApiUrl) => {
+			const i = positions[result.url];
+			if (i !== undefined) this.rows[i] = result;
+		};
+		try {
+			const res = await fetch(this.endpoint, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/x-ndjson' },
+				body: JSON.stringify({ text: urls.join('\n'), advanced: this.advanced }),
+				signal: controller.signal
+			});
+			if (/ndjson/.test(res.headers.get('content-type') ?? '')) {
+				await this.#read(res, undefined, (_, result) => place(result));
+			} else {
+				const data = await res.json().catch(() => null);
+				if (!res.ok || !Array.isArray(data?.urls)) {
+					throw new Error(
+						data?.error || `The link service answered with an error (${res.status}).`
+					);
+				}
+				(data.urls as ApiUrl[]).forEach(place);
+			}
+		} catch (err) {
+			if (controller.signal.aborted) return;
+			this.#settlePending('not fetched');
+			this.error = err instanceof Error ? err.message : 'Something went wrong.';
+		} finally {
+			if (this.#controller === controller) {
+				this.loading = false;
+				this.#controller = null;
+			}
+		}
+	}
+
 	/** Stops the query in progress; the links not ready by then are marked as stopped */
 	stop(): void {
 		if (!this.#controller) return;
@@ -97,7 +156,12 @@ export class LinkQuery {
 		this.rows = this.rows.map((r) => (r.pending ? { ...r, pending: false, error } : r));
 	}
 
-	async #read(res: Response, onList?: (urls: string[]) => void): Promise<void> {
+	/** Reads ldb-api's NDJSON answer: onUrls gets the list of links found (first line), onResult each result */
+	async #read(
+		res: Response,
+		onUrls: ((urls: string[]) => void) | undefined,
+		onResult: (index: number, result: ApiUrl) => void
+	): Promise<void> {
 		const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
 		let buffered = '';
 		let done = false;
@@ -109,11 +173,8 @@ export class LinkQuery {
 			buffered = lines.pop() ?? '';
 			for (const line of lines.filter(Boolean)) {
 				const message = JSON.parse(line);
-				if (Array.isArray(message.urls)) {
-					this.rows = message.urls.map(waiting);
-					onList?.(message.urls);
-				}
-				if (message.result) this.rows[message.index] = message.result;
+				if (Array.isArray(message.urls)) onUrls?.(message.urls);
+				if (message.result) onResult(message.index, message.result);
 				if (message.error) throw new Error(message.error);
 				if (message.done) done = true;
 			}
@@ -125,3 +186,41 @@ export class LinkQuery {
 /** The finished rows as ldb-api would answer them, for copying and downloading */
 export const asJson = (rows: Row[]): string =>
 	JSON.stringify({ urls: rows.filter((r) => !r.pending) }, null, 2);
+
+const CSV_COLUMNS: [string, (r: Row) => unknown][] = [
+	['url', (r) => r.url],
+	['final_url', (r) => r.finalUrl],
+	['status', (r) => r.status],
+	['type', (r) => r.type],
+	['service', (r) => r.service],
+	['site', (r) => r.siteName],
+	['title', (r) => r.title],
+	['description', (r) => r.desc],
+	['author', (r) => r.author || r.channel],
+	['published', (r) => r.published],
+	['duration', (r) => r.duration],
+	['language', (r) => r.lang],
+	['image', (r) => r.ogImg?.ogImg],
+	['stars', (r) => r.extra?.stars],
+	['response_ms', (r) => r.responseMs],
+	['error', (r) => r.error],
+	['seo_warnings', (r) => (r.warnings ?? []).map((w) => w.code).join('; ')]
+];
+
+const cell = (value: unknown): string => {
+	const text = value === null || value === undefined ? '' : String(value);
+	return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+
+/**
+ * The finished rows as CSV, one link per line. Starts with a byte order mark so that Excel reads the UTF-8
+ * (Polish letters) right.
+ */
+export const asCsv = (rows: Row[]): string =>
+	'\uFEFF' +
+	[
+		CSV_COLUMNS.map(([name]) => name),
+		...rows.filter((r) => !r.pending).map((r) => CSV_COLUMNS.map(([, get]) => get(r)))
+	]
+		.map((line) => line.map(cell).join(','))
+		.join('\r\n');
