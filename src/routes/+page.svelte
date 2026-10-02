@@ -206,6 +206,36 @@
 	// Excel and Google Sheets open it; the filters apply, as for JSON
 	const downloadCsv = () => download(asCsv(shown), 'text/csv;charset=utf-8', 'urlhub-links.csv');
 
+	// What a messenger shows for a shared link: made from the list in the address alone, so the server renders it
+	// at once without asking ldb-api (a short link /c/... redirects here, and messengers follow it)
+	const shared = $derived(
+		(page.url.searchParams.get('urls') ?? '')
+			.replace(/[\s,;-]+(?=https?:\/\/)/gi, ' ')
+			.split(/\s+/)
+			.filter((u) => /^https?:\/\//i.test(u))
+	);
+	const siteOf = (url: string) => {
+		try {
+			return new URL(url).hostname.replace(/^www\./, '');
+		} catch {
+			return '';
+		}
+	};
+	const preview = $derived.by(() => {
+		if (!shared.length)
+			return { title: i18n.t('meta.title'), description: i18n.t('meta.description') };
+		const sites = shared.map(siteOf).filter((h, i, all) => h && all.indexOf(h) === i);
+		const more = sites.length > 3 ? i18n.t('og.more', { count: sites.length - 3 }) : '';
+		const shown = shared.slice(0, 4).map((u) => u.replace(/^https?:\/\/(www\.)?/, ''));
+		return {
+			title: i18n.t('og.title', {
+				count: shared.length,
+				sites: sites.slice(0, 3).join(', ') + more
+			}),
+			description: `${shown.join(' · ')}${shared.length > 4 ? ' …' : ''} — ${i18n.t('og.open')}`
+		};
+	});
+
 	// Only shared links (?urls=...) load by themselves; the examples wait for a click
 	onMount(() => {
 		recent.load();
@@ -215,8 +245,22 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('meta.title')}</title>
-	<meta name="description" content={i18n.t('meta.description')} />
+	<title>{shared.length ? `${preview.title} – urlhub` : i18n.t('meta.title')}</title>
+	<meta name="description" content={preview.description} />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="urlhub" />
+	<meta property="og:title" content={preview.title} />
+	<meta property="og:description" content={preview.description} />
+	<meta property="og:url" content={page.url.href} />
+	<meta property="og:image" content={`${page.url.origin}/og.png`} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={i18n.t('og.imageAlt')} />
+	<meta property="og:locale" content={i18n.lang === 'pl' ? 'pl_PL' : 'en_GB'} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={preview.title} />
+	<meta name="twitter:description" content={preview.description} />
+	<meta name="twitter:image" content={`${page.url.origin}/og.png`} />
 </svelte:head>
 
 <main class="page">

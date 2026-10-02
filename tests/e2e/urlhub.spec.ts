@@ -385,3 +385,37 @@ test('an unknown short link says what happened, in both languages', async ({ pag
 	await expect(page.getByRole('heading')).toHaveText('Ten krótki link nie istnieje');
 	expect((await page.goto('/c/not-an-id!'))?.status()).toBe(404);
 });
+
+test('a shared link shows its list in messengers: Open Graph tags rendered by the server', async ({
+	request
+}) => {
+	const meta = (html: string, name: string) =>
+		new RegExp(`<meta (?:property|name)="${name}" content="([^"]*)"`)
+			.exec(html)?.[1]
+			?.replace(/&amp;/g, '&');
+	const urls = [
+		link('/a?x=1&y=2'),
+		'https://www.github.com/x',
+		'https://vimeo.com/1',
+		'https://c.test/',
+		'https://d.test/'
+	];
+	const address = `/?urls=${encodeURIComponent(urls.join(' '))}`;
+
+	const en = await (await request.get(address, { headers: { 'accept-language': 'en-US' } })).text();
+	expect(meta(en, 'og:title')).toBe('5 links: example.test, github.com, vimeo.com +2');
+	expect(meta(en, 'og:description')).toBe(
+		'example.test/a?x=1&y=2 · github.com/x · vimeo.com/1 · c.test/ … — Open them as tiles, a table or JSON on urlhub.'
+	);
+	expect(meta(en, 'og:image')).toBe('http://127.0.0.1:4173/og.png');
+	expect(meta(en, 'twitter:card')).toBe('summary_large_image');
+	expect(en).toContain('<title>5 links: example.test, github.com, vimeo.com +2 – urlhub</title>');
+
+	const pl = await (await request.get(`${address}&lang=pl`)).text();
+	expect(meta(pl, 'og:title')).toBe('5 linków: example.test, github.com, vimeo.com +2');
+	expect(meta(pl, 'og:locale')).toBe('pl_PL');
+
+	const plain = await (await request.get('/')).text();
+	expect(meta(plain, 'og:title')).toBe('urlhub – link previews');
+	expect((await request.get('/og.png')).headers()['content-type']).toBe('image/png');
+});
