@@ -122,7 +122,7 @@
 		<section class="status__section" aria-labelledby="hours">
 			<h2 id="hours" class="status__heading">{i18n.t('status.perHour')}</h2>
 			<div class="chart">
-				<div class="chart__plot" role="img" aria-label={i18n.t('status.chartLabel')}>
+				<div class="chart__plot" role="group" aria-label={i18n.t('status.chartLabel')}>
 					{#each api.hours as h, i (h.start)}
 						<button
 							type="button"

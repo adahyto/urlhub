@@ -106,12 +106,12 @@ test('the table: advanced details, filters, sorting, JSON and CSV', async ({ pag
 	expect(lines[0]).toMatch(/^url,final_url,status,type,service,/);
 	expect(lines).toHaveLength(5);
 
-	await page.getByRole('tab', { name: 'JSON' }).click();
+	await page.getByRole('button', { name: 'JSON', exact: true }).click();
 	expect(new URL(page.url()).searchParams.get('view')).toBe('json');
 	const json = JSON.parse(await page.getByRole('region', { name: 'Results as JSON' }).innerText());
 	expect(json.urls).toHaveLength(4);
 
-	await page.getByRole('tab', { name: 'Tiles' }).click();
+	await page.getByRole('button', { name: 'Tiles', exact: true }).click();
 	await expect(page.locator('.tiles__item')).toHaveCount(4);
 	await expect(page.getByLabel(/Advanced:/)).toHaveCount(0);
 	const address = new URL(page.url()).searchParams;
@@ -182,9 +182,11 @@ test('Share copies the link that opens these results', async ({ page, context })
 	await page.goto('/');
 	await fetchLinks(page, `${link('/a?x=1&y=2')} ${link('/video')}`);
 	await expect(summary(page)).toHaveText('2 links');
-	await page.getByRole('tab', { name: 'Table' }).click();
+	await page.getByRole('button', { name: 'Table', exact: true }).click();
 	await page.getByRole('button', { name: 'Share' }).click();
-	await expect(page.getByRole('status')).toHaveText('Link copied: it opens these results');
+	await expect(page.locator('.notice[role="status"]')).toHaveText(
+		'Link copied: it opens these results'
+	);
 	const shared = new URL(await page.evaluate(() => navigator.clipboard.readText()));
 	expect(shared.searchParams.get('urls')).toBe(`${link('/a?x=1&y=2')} ${link('/video')}`);
 	expect(shared.searchParams.get('view')).toBe('table');
@@ -236,7 +238,7 @@ test('the list can be edited: remove with undo, move with buttons and by draggin
 	// Nothing was fetched again
 	expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
 
-	await page.getByRole('tab', { name: 'Table' }).click();
+	await page.getByRole('button', { name: 'Table', exact: true }).click();
 	const rows = page.locator('tbody tr .table__title');
 	await page.locator('tbody tr').first().getByRole('button', { name: 'Move down' }).click();
 	await expect(rows).toHaveText(['Title of /b', 'Title of /c', 'Title of /a']);
@@ -302,8 +304,8 @@ test.describe('in Polish', () => {
 		await expect(page.locator('.details')).toContainText(
 			'Tytuł ma 72 znaki (zalecane najwyżej 60).'
 		);
-		await expect(page.getByRole('tab', { name: 'Tabela' })).toHaveAttribute(
-			'aria-selected',
+		await expect(page.getByRole('button', { name: 'Tabela', exact: true })).toHaveAttribute(
+			'aria-pressed',
 			'true'
 		);
 	});
@@ -347,10 +349,12 @@ test('a short link opens the same list, and the same list gets the same link', a
 	await page.goto(`/?urls=${encodeURIComponent(`${link('/a?x=1&y=2')} ${link('/b')}`)}&view=table`);
 	await expect(summary(page)).toHaveText('2 links');
 	await page.getByRole('button', { name: 'Short link' }).click();
-	await expect(page.getByRole('status')).toContainText(
+	await expect(page.locator('.notice[role="status"]')).toContainText(
 		'Short link copied: http://127.0.0.1:4173/c/'
 	);
-	await expect(page.getByRole('status')).toContainText('unused for 90 days, it is deleted');
+	await expect(page.locator('.notice[role="status"]')).toContainText(
+		'unused for 90 days, it is deleted'
+	);
 	const short = new URL(await page.evaluate(() => navigator.clipboard.readText()));
 	expect(short.pathname).toMatch(/^\/c\/[0-9A-Za-z]{8}$/);
 

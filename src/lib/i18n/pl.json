@@ -310,5 +310,21 @@
 		"more": " +{count}",
 		"open": "Otwórz je jako kafelki, tabelę albo JSON w urlhub.",
 		"imageAlt": "urlhub: podgląd linków jako kafelki, tabela albo JSON"
+	},
+	"a11y": {
+		"skip": "Przejdź do wyników",
+		"results": "Wyniki",
+		"fetching": {
+			"one": "Pobieram {count} link…",
+			"few": "Pobieram {count} linki…",
+			"many": "Pobieram {count} linków…",
+			"other": "Pobieram {count} linku…"
+		},
+		"done": {
+			"one": "Gotowe: {count} link, nieudane: {failed}.",
+			"few": "Gotowe: {count} linki, nieudane: {failed}.",
+			"many": "Gotowe: {count} linków, nieudane: {failed}.",
+			"other": "Gotowe: {count} linku, nieudane: {failed}."
+		}
 	}
 }
