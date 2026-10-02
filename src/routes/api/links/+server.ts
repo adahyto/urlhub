@@ -10,7 +10,7 @@ const MAX_TEXT = 100_000;
  * POST { text } -> { total, urls }: the links ldb-api finds in a text, without reading them; the field shows only
  * these when a .txt file is added
  */
-export const POST: RequestHandler = async ({ request, fetch }) => {
+export const POST: RequestHandler = async ({ request, fetch, getClientAddress }) => {
 	const body = await request.json().catch(() => null);
 	if (typeof body?.text !== 'string')
 		return json({ error: 'Send { "text": "..." }.' }, { status: 400 });
@@ -23,7 +23,11 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 	try {
 		const response = await fetch(linksUrl(), {
 			method: 'POST',
-			headers: { 'content-type': 'application/json' },
+			headers: {
+				'content-type': 'application/json',
+				// ldb-api limits requests per visitor; without this every urlhub visitor would share one limit
+				'x-forwarded-for': getClientAddress()
+			},
 			body: JSON.stringify({ text: body.text }),
 			signal: AbortSignal.timeout(10_000)
 		});
