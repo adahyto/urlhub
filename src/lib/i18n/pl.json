@@ -365,23 +365,27 @@
 		},
 		"links": {
 			"title": "Linki, które wpisujesz",
-			"text": "Wpisane linki trafiają do naszego serwera, który pobiera opisane nimi strony albo pyta o nie serwisy, do których prowadzą (YouTube, Vimeo, Spotify, SoundCloud, TikTok, X, Wikipedia, GitHub). Strony i serwisy widzą przy tym adres naszego serwera, nie Twój. Wyniki są przez krótki czas (do 30 minut, filmy do godziny) przechowywane w pamięci serwera i znikają przy jego restarcie. Nie wpisuj linków, które same zawierają dane, których nie chcesz przekazywać, np. adresów z hasłem lub tokenem."
+			"text": "Wpisane linki trafiają do naszego serwera, który pobiera opisane nimi strony albo pyta o nie serwisy, do których prowadzą (YouTube, Vimeo, Spotify, SoundCloud, TikTok, X, Wikipedia, GitHub). Strony i serwisy widzą przy tym adres naszego serwera, nie Twój. Wyniki są przez krótki czas (do 30 minut, filmy do godziny) przechowywane w pamięci serwera i znikają przy jego restarcie. Robimy to, żeby pokazać podgląd, o który prosisz (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO). Podanie linków jest dobrowolne, ale bez nich serwis nie ma czego pokazać. Nie wpisuj linków, które same zawierają dane, których nie chcesz przekazywać, np. adresów z hasłem lub tokenem."
 		},
 		"pictures": {
 			"title": "Obrazki podglądów",
-			"text": "Obrazki w kafelkach i tabeli Twoja przeglądarka pobiera bezpośrednio z serwerów stron, do których prowadzą linki, i przekazuje im przy tym swój adres IP."
+			"text": "Obrazki w kafelkach i tabeli Twoja przeglądarka pobiera bezpośrednio z serwerów stron, do których prowadzą linki, i przekazuje im przy tym swój adres IP. Serwery te mogą działać poza Unią Europejską i ustawiać własne ciasteczka na zasadach swoich polityk prywatności; nie mamy na to wpływu."
 		},
 		"address": {
 			"title": "Adres strony i krótkie linki",
-			"text": "Lista linków, widok, opcja zaawansowana i język są częścią adresu strony, żeby dało się go udostępnić. Krótki link (/c/…) zapisuje na naszym serwerze tylko te cztery rzeczy, bez adresu IP i bez konta. Krótki link, którego nikt nie otworzył przez 90 dni, jest usuwany."
+			"text": "Lista linków, widok, opcja zaawansowana i język są częścią adresu strony, żeby dało się go udostępnić. Krótki link (/c/…) tworzysz przyciskiem i zapisuje on na naszym serwerze tylko te cztery rzeczy, bez adresu IP i bez konta; każdy, kto go zna, zobaczy listę. Krótki link, którego nikt nie otworzył przez 90 dni, jest usuwany, a z codziennych kopii zapasowych znika po kolejnych 14 dniach."
 		},
 		"storage": {
 			"title": "Ciasteczka i pamięć przeglądarki",
-			"text": "Strona nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa."
+			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa."
 		},
 		"logs": {
 			"title": "Logi serwera",
-			"text": "Serwer zapisuje w logach technicznych skrócony adres IP (bez ostatniej części, więc nie wskazuje konkretnego urządzenia), datę i godzinę oraz rodzaj zapytania, bez wpisanych linków. Służą one wyłącznie do zapewnienia działania i bezpieczeństwa strony (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO) i są automatycznie nadpisywane nowszymi. Pełny adres IP jest przez kilka minut trzymany wyłącznie w pamięci serwera, żeby ograniczyć liczbę zapytań z jednego adresu."
+			"text": "Serwer zapisuje w logach technicznych skrócony adres IP (bez ostatniej części, więc nie wskazuje konkretnego urządzenia), datę i godzinę oraz rodzaj zapytania, bez wpisanych linków. Służą one wyłącznie do zapewnienia działania i bezpieczeństwa strony (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO) i są nadpisywane nowszymi po zapełnieniu 30 MB, zwykle po kilku tygodniach. Pełny adres IP jest trzymany wyłącznie w pamięci serwera, tylko do ograniczania liczby zapytań z jednego adresu, i usuwany zwykle po kilkunastu minutach, najpóźniej przy restarcie."
+		},
+		"where": {
+			"title": "Gdzie są dane i kto je otrzymuje",
+			"text": "Serwer działa w centrum danych OVHcloud we Francji (Unia Europejska), na nasze zlecenie. Linki trafiają też do serwisów, o które pytamy; część z nich (np. YouTube i GitHub) ma siedzibę w USA, ale nie dostają Twojego adresu IP. Danych nie sprzedajemy, nie profilujemy Cię i nie podejmujemy wobec Ciebie decyzji automatycznie."
 		},
 		"rights": {
 			"title": "Twoje prawa",

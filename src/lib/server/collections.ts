@@ -126,6 +126,14 @@ export async function deleteExpired(now = Date.now()): Promise<number> {
 const PER_MINUTE = 10;
 const recent = new Map<string, number[]>();
 
+// Addresses older than a minute are forgotten every minute: they stay in memory for minutes, as /privacy says
+setInterval(() => {
+	const now = Date.now();
+	for (const [address, times] of recent) {
+		if (times.every((t) => now - t >= 60_000)) recent.delete(address);
+	}
+}, 60_000).unref();
+
 export function allowCreate(address: string, now = Date.now()): boolean {
 	const times = (recent.get(address) ?? []).filter((t) => now - t < 60_000);
 	if (times.length >= PER_MINUTE) {

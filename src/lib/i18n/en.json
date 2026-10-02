@@ -327,23 +327,27 @@
 		},
 		"links": {
 			"title": "The links you enter",
-			"text": "The links you enter go to our server, which fetches the pages they point to or asks the services they belong to (YouTube, Vimeo, Spotify, SoundCloud, TikTok, X, Wikipedia, GitHub). Those pages and services see our server's address, not yours. Results are kept in the server's memory for a short time (up to 30 minutes, videos up to an hour) and are gone when it restarts. Do not enter links that themselves hold data you do not want to pass on, such as addresses with a password or token."
+			"text": "The links you enter go to our server, which fetches the pages they point to or asks the services they belong to (YouTube, Vimeo, Spotify, SoundCloud, TikTok, X, Wikipedia, GitHub). Those pages and services see our server's address, not yours. Results are kept in the server's memory for a short time (up to 30 minutes, videos up to an hour) and are gone when it restarts. We do this to show the preview you ask for (legitimate interest, Art. 6(1)(f) GDPR). Entering links is voluntary, but without them there is nothing to show. Do not enter links that themselves hold data you do not want to pass on, such as addresses with a password or token."
 		},
 		"pictures": {
 			"title": "Preview pictures",
-			"text": "Your browser loads the pictures in the tiles and the table directly from the servers of the pages the links point to, and passes them its IP address."
+			"text": "Your browser loads the pictures in the tiles and the table directly from the servers of the pages the links point to, and passes them its IP address. Those servers may be outside the European Union and may set their own cookies under their own privacy policies; we have no say in that."
 		},
 		"address": {
 			"title": "The page address and short links",
-			"text": "The list of links, the view, the advanced option and the language are part of the page address, so it can be shared. A short link (/c/…) stores only these four things on our server, with no IP address and no account. A short link nobody opened for 90 days is deleted."
+			"text": "The list of links, the view, the advanced option and the language are part of the page address, so it can be shared. A short link (/c/…) is made with a button and stores only these four things on our server, with no IP address and no account; anyone who has it sees the list. A short link nobody opened for 90 days is deleted, and it leaves the daily backups 14 days later."
 		},
 		"storage": {
 			"title": "Cookies and browser storage",
-			"text": "The site stores no cookies. Recent queries go to your browser's storage (localStorage) only after you turn on \"Remember recent queries on this device\". They are never sent anywhere, and turning the switch off deletes them."
+			"text": "urlhub stores no cookies. Recent queries go to your browser's storage (localStorage) only at your request, after you turn on \"Remember recent queries on this device\". They are never sent anywhere, and turning the switch off deletes them."
 		},
 		"logs": {
 			"title": "Server logs",
-			"text": "The server logs a shortened IP address (without its last part, so it does not point to a particular device), the date and time and the kind of request, without the links you entered. They are used only to keep the site running and secure (legitimate interest, Art. 6(1)(f) GDPR) and are overwritten by newer ones automatically. The full IP address is held for a few minutes in the server's memory only, to limit the number of requests from one address."
+			"text": "The server logs a shortened IP address (without its last part, so it does not point to a particular device), the date and time and the kind of request, without the links you entered. They are used only to keep the site running and secure (legitimate interest, Art. 6(1)(f) GDPR) and are overwritten by newer ones once they fill 30 MB, usually after a few weeks. The full IP address is held in the server's memory only, just to limit the number of requests from one address, and is deleted usually within a quarter of an hour, at the latest when the server restarts."
+		},
+		"where": {
+			"title": "Where the data is and who receives it",
+			"text": "The server runs in an OVHcloud data centre in France (European Union), on our behalf. Links also go to the services we ask about them; some of them (such as YouTube and GitHub) are based in the USA, but they do not get your IP address. We do not sell data, do not profile you and make no automated decisions about you."
 		},
 		"rights": {
 			"title": "Your rights",

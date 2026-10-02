@@ -491,5 +491,7 @@ test('the footer has the copyright and the privacy page, in both languages', asy
 	await page.goto('/privacy?lang=pl');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Prywatność');
 	await expect(page.getByRole('main')).toContainText('Prezes Urzędu Ochrony Danych Osobowych');
+	await expect(page.getByRole('main')).toContainText('OVHcloud we Francji');
+	await expect(page.getByRole('main')).toContainText('14 dniach');
 	await expect(page.locator('time')).toHaveText('Ostatnia aktualizacja: 2 października 2026');
 });
