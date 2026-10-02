@@ -566,3 +566,30 @@ test('search engines get one canonical page per language, results stay out of th
 	expect(robots).toContain('Disallow: /api/');
 	expect(robots).toContain(`Sitemap: ${O}/sitemap.xml`);
 });
+
+test('a .txt file adds only its links; pasted text becomes the list of links once previewed', async ({
+	page
+}) => {
+	await page.goto('/');
+	await page.locator('input[type="file"]').setInputFiles({
+		name: 'notes.txt',
+		mimeType: 'text/plain',
+		buffer: Buffer.from(
+			`Gift ideas\n- the blue one ${link('/a')}, maybe\n- ${link('/b')}.\nAsk Ola first.`
+		)
+	});
+	await expect(field(page)).toHaveValue(`${link('/a')}\n${link('/b')}`);
+	await expect(page.locator('.url-form__notice')).toHaveText('Found 2 links in notes.txt');
+
+	await page.locator('input[type="file"]').setInputFiles({
+		name: 'empty.txt',
+		mimeType: 'text/plain',
+		buffer: Buffer.from('no links here')
+	});
+	await expect(page.locator('.url-form__notice')).toHaveText('There are no links in empty.txt.');
+	await expect(field(page)).toHaveValue(`${link('/a')}\n${link('/b')}`);
+
+	await fetchLinks(page, `Hi! Have a look at ${link('/c')} and ${link('/d')}, thanks.`);
+	await expect(summary(page)).toHaveText('2 links');
+	await expect(field(page)).toHaveValue(`${link('/c')}\n${link('/d')}`);
+});
