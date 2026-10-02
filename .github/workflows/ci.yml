@@ -20,7 +20,7 @@ jobs:
     name: Lint, types and build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v5
         with:
@@ -43,7 +43,7 @@ jobs:
     name: Docker image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Start it as on the server
         run: docker compose up -d --build
