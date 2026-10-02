@@ -1,7 +1,7 @@
 {
 	"meta": {
-		"title": "urlhub – podgląd linków",
-		"description": "Wklej linki i zobacz, co jest pod każdym z nich: obrazek, tytuł, opis, czas trwania filmów. Sprawdź SEO stron i udostępnij listę jednym linkiem.",
+		"title": "urlhub – zestawy linków do udostępniania",
+		"description": "Zbieraj linki do produktów, filmów i artykułów w zestawy i dziel się nimi jednym linkiem – każda pozycja z obrazkiem, tytułem i opisem.",
 		"statusTitle": "urlhub – stan"
 	},
 	"form": {
@@ -315,8 +315,8 @@
 			"other": "{count} linku: {sites}"
 		},
 		"more": " +{count}",
-		"open": "Otwórz je jako kafelki, tabelę albo JSON w urlhub.",
-		"imageAlt": "urlhub: podgląd linków jako kafelki, tabela albo JSON"
+		"open": "Otwórz cały zestaw w urlhub.",
+		"imageAlt": "urlhub: zestawy linków do udostępniania"
 	},
 	"a11y": {
 		"skip": "Przejdź do wyników",
@@ -335,25 +335,25 @@
 		}
 	},
 	"header": {
-		"tagline": "Wklej linki i zobacz, co jest pod każdym z nich",
+		"tagline": "Zbieraj linki w zestawy i dziel się nimi",
 		"nav": "Język"
 	},
 	"footer": {
 		"privacy": "Prywatność"
 	},
 	"features": {
-		"label": "Co robi urlhub",
+		"label": "Do czego służy urlhub",
 		"tiles": {
-			"title": "Zobacz, co jest pod linkiem",
-			"text": "Obrazek, tytuł i opis każdej strony, czas trwania filmów i gwiazdki z GitHuba – jako kafelki, tabela albo JSON do pobrania."
+			"title": "Zestaw linków w jednym miejscu",
+			"text": "Wklej linki do produktów, filmów czy artykułów – każdy pokaże się z obrazkiem, tytułem i opisem, a filmy z czasem trwania."
 		},
 		"seo": {
-			"title": "Sprawdź SEO stron",
-			"text": "Zaznacz „Sprawdź SEO”, a zobaczysz, czego brakuje: opisu, obrazka do udostępniania, nagłówka – i czy coś nie blokuje wyszukiwarek."
+			"title": "Porządkuj i porównuj",
+			"text": "Ustaw kolejność, usuń zbędne, porównaj pozycje w tabeli albo pobierz zestaw jako CSV. Właścicielom stron pomoże „Sprawdź SEO”."
 		},
 		"share": {
-			"title": "Udostępnij jednym linkiem",
-			"text": "Wyślij link z całą listą albo krótki link /c/… – w komunikatorach pokaże się podgląd."
+			"title": "Wysyłaj zestawy jednym linkiem",
+			"text": "Jeden link otwiera cały zestaw, np. listę prezentów albo porównanie sprzętu. Wyślij go znajomym – w komunikatorze pokaże się podgląd."
 		}
 	},
 	"privacy": {
