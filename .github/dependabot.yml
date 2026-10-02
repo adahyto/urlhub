@@ -1,26 +1,33 @@
 # Weekly update PRs for npm packages, Docker base images and GitHub Actions; CI checks each one.
 # Minor and patch updates come grouped in one PR per ecosystem, major versions one PR each.
+# Node itself moves to a new major by hand, to an LTS release, with @types/node in step.
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     target-branch: main
     schedule:
       interval: weekly
+    ignore:
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
     groups:
       npm-minor:
         update-types: [minor, patch]
   - package-ecosystem: docker
     directories:
-      - "/"
+      - '/'
     target-branch: main
     schedule:
       interval: weekly
+    ignore:
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
     groups:
       docker-minor:
         update-types: [minor, patch]
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     target-branch: main
     schedule:
       interval: weekly
