@@ -17,6 +17,12 @@ The list can be edited without fetching again: × removes a tile or row (with Un
 change the order (not while the table is sorted or filtered); the address and the field follow, so Share gives
 the edited list.
 
+The interface is in English and Polish (`src/lib/i18n/en.json`, `pl.json`; forms by number through
+`Intl.PluralRules`). The language comes from `?lang=pl|en` in the address, otherwise from the browser
+(`Accept-Language`, read on the server so the page arrives in it); the PL | EN switch changes `?lang=`. Nothing is
+stored on the device. SEO warnings and link errors from ldb-api are translated by their code (warnings with their
+`params`). `npm run check` fails when pl.json misses a key of en.json; an end-to-end test compares placeholders.
+
 **Share** copies the address of the results. The dark theme follows the system setting (colours in
 `src/app.css`; no switch, which would have to remember the choice on the device).
 

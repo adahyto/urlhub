@@ -75,7 +75,7 @@ test('the table: advanced details, filters, sorting, JSON and CSV', async ({ pag
 	const rows = page.locator('tbody tr');
 	await expect(rows).toHaveCount(4);
 	await expect(page.locator('.table__seo .table__badge--warning')).toHaveText('1 SEO');
-	await expect(rows.nth(3)).toContainText('★ 1.2K');
+	await expect(rows.nth(3)).toContainText('★ 1.2k');
 
 	await rows.first().getByRole('button', { name: 'Details' }).click();
 	await expect(rows.first()).toContainText('Title is 72 characters (aim for at most 60).');
@@ -258,4 +258,83 @@ test('the list cannot be edited while a query fills it', async ({ page }) => {
 	await expect(page.locator('.tiles__edit')).toHaveCount(0);
 	await page.getByRole('button', { name: 'Stop' }).click();
 	await expect(page.locator('.tiles__edit')).toHaveCount(2);
+});
+
+test('both dictionaries have the same texts with the same placeholders', async () => {
+	const read = async (lang: string) =>
+		JSON.parse(await readFile(new URL(`../../src/lib/i18n/${lang}.json`, import.meta.url), 'utf8'));
+	type Tree = { [key: string]: string | Tree };
+	const isPlural = (v: Tree) => 'one' in v && 'other' in v;
+	const leaves = (tree: Tree, prefix = ''): [string, string][] =>
+		Object.entries(tree).flatMap(([key, value]) =>
+			typeof value === 'string' || isPlural(value)
+				? [[prefix + key, JSON.stringify(value)] as [string, string]]
+				: leaves(value, `${prefix}${key}.`)
+		);
+	const placeholders = (text: string) => [...new Set(text.match(/\{\w+\}/g) ?? [])].sort();
+	const en = new Map(leaves(await read('en')));
+	const pl = new Map(leaves(await read('pl')));
+	expect([...pl.keys()].sort()).toEqual([...en.keys()].sort());
+	for (const [key, text] of en) expect(placeholders(pl.get(key)!), key).toEqual(placeholders(text));
+});
+
+test.describe('in Polish', () => {
+	test.use({ locale: 'pl-PL' });
+
+	test('the browser language picks Polish; numbers, warnings and errors are Polish too', async ({
+		page
+	}) => {
+		await page.goto('/');
+		await expect(page.locator('html')).toHaveAttribute('lang', 'pl');
+		await expect(page.getByLabel('Wpisz linki')).toBeVisible();
+		await page
+			.getByLabel('Wpisz linki')
+			.fill([link('/a'), link('/b'), link('/c'), link('/d'), link('/dead')].join(' '));
+		await page.getByRole('button', { name: 'Pobierz' }).click();
+		await expect(summary(page)).toHaveText('5 linków, nieudane: 1');
+		await expect(page.locator('.tiles__error')).toHaveText('nie ma takiego serwera');
+
+		await page.goto(
+			`/?urls=${encodeURIComponent(`${link('/seo')} ${link('/b')}`)}&view=table&advanced=1`
+		);
+		await expect(summary(page)).toHaveText('2 linki');
+		await page.getByRole('button', { name: 'Szczegóły', exact: true }).first().click();
+		await expect(page.locator('.details')).toContainText(
+			'Tytuł ma 72 znaki (zalecane najwyżej 60).'
+		);
+		await expect(page.getByRole('tab', { name: 'Tabela' })).toHaveAttribute(
+			'aria-selected',
+			'true'
+		);
+	});
+
+	test('the switch changes the language and keeps the results; ?lang= wins over the browser', async ({
+		page
+	}) => {
+		await page.goto(`/?urls=${link('/a')}`);
+		await expect(summary(page)).toHaveText('1 link');
+		await page.getByRole('link', { name: 'EN' }).click();
+		await expect(page.getByRole('button', { name: 'Fetch' })).toBeVisible();
+		await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+		await expect(summary(page)).toHaveText('1 link');
+		expect(new URL(page.url()).searchParams.get('lang')).toBe('en');
+		expect(new URL(page.url()).searchParams.get('urls')).toBe(link('/a'));
+		// The results stayed; nothing was fetched again
+		expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
+
+		await page.goto('/?lang=en');
+		await expect(page.getByRole('button', { name: 'Fetch' })).toBeVisible();
+	});
+
+	test('too many links are refused in Polish', async ({ page }) => {
+		await page.goto('/');
+		await page
+			.getByLabel('Wpisz linki')
+			.fill(Array.from({ length: 201 }, (_, i) => link(`/${i}`)).join('\n'));
+		await expect(page.getByText('201 linków — najwyżej 200 naraz')).toBeVisible();
+		await page.getByRole('button', { name: 'Pobierz' }).click();
+		await expect(page.getByRole('alert')).toHaveText(
+			'Najwyżej 200 linków w jednym zapytaniu, a jest 201.'
+		);
+	});
 });

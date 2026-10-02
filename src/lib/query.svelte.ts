@@ -11,6 +11,22 @@ export const roughCount = (text: string): number => {
 	return found.filter((url, i) => found.indexOf(url) === i).length;
 };
 
+/** What went wrong with a whole query; the page says it in the interface language (lib/i18n/messages.ts) */
+export type QueryError =
+	| { kind: 'empty' }
+	| { kind: 'cutoff' }
+	| { kind: 'network' }
+	| { kind: 'http'; status: number; message: string };
+
+class QueryFailure extends Error {
+	constructor(readonly error: QueryError) {
+		super(error.kind);
+	}
+}
+
+const failure = (err: unknown): QueryError =>
+	err instanceof QueryFailure ? err.error : { kind: 'network' };
+
 const waiting = (url: string): Row => ({
 	url,
 	type: 'page',
@@ -27,7 +43,7 @@ const waiting = (url: string): Row => ({
 export class LinkQuery {
 	rows = $state<Row[]>([]);
 	loading = $state(false);
-	error = $state<string | null>(null);
+	error = $state<QueryError | null>(null);
 	/** Whether the rows hold advanced details */
 	advanced = $state(false);
 	ready = $derived(this.rows.filter((r) => !r.pending).length);
@@ -69,20 +85,18 @@ export class LinkQuery {
 				// Errors (limits) come as one JSON, and so would a whole answer from an API that does not stream
 				const data = await res.json().catch(() => null);
 				if (!res.ok || !Array.isArray(data?.urls)) {
-					throw new Error(
-						data?.error || `The link service answered with an error (${res.status}).`
-					);
+					throw new QueryFailure({ kind: 'http', status: res.status, message: data?.error ?? '' });
 				}
 				this.rows = data.urls as ApiUrl[];
 				onList?.(this.rows.map((r) => r.url));
 			}
-			if (!this.rows.length) this.error = 'No links found. Links start with http:// or https://.';
+			if (!this.rows.length) this.error = { kind: 'empty' };
 		} catch (err) {
 			if (controller.signal.aborted) return;
 			// Rows already filled stay; the rest say they were not fetched
 			this.#settlePending('not fetched');
 			if (!this.ready) this.rows = [];
-			this.error = err instanceof Error ? err.message : 'Something went wrong.';
+			this.error = failure(err);
 		} finally {
 			if (this.#controller === controller) {
 				this.loading = false;
@@ -125,16 +139,14 @@ export class LinkQuery {
 			} else {
 				const data = await res.json().catch(() => null);
 				if (!res.ok || !Array.isArray(data?.urls)) {
-					throw new Error(
-						data?.error || `The link service answered with an error (${res.status}).`
-					);
+					throw new QueryFailure({ kind: 'http', status: res.status, message: data?.error ?? '' });
 				}
 				(data.urls as ApiUrl[]).forEach(place);
 			}
 		} catch (err) {
 			if (controller.signal.aborted) return;
 			this.#settlePending('not fetched');
-			this.error = err instanceof Error ? err.message : 'Something went wrong.';
+			this.error = failure(err);
 		} finally {
 			if (this.#controller === controller) {
 				this.loading = false;
@@ -206,11 +218,13 @@ export class LinkQuery {
 				const message = JSON.parse(line);
 				if (Array.isArray(message.urls)) onUrls?.(message.urls);
 				if (message.result) onResult(message.index, message.result);
-				if (message.error) throw new Error(message.error);
+				if (message.error) {
+					throw new QueryFailure({ kind: 'http', status: 500, message: message.error });
+				}
 				if (message.done) done = true;
 			}
 		}
-		if (!done) throw new Error('The answer was cut off. Fetch again to complete the list.');
+		if (!done) throw new QueryFailure({ kind: 'cutoff' });
 	}
 }
 

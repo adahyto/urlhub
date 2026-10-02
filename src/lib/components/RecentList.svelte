@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { Recent, RecentQueries } from '$lib/history.svelte';
+	import { useI18n } from '$lib/i18n';
 
 	let { recent, onopen }: { recent: RecentQueries; onopen: (entry: Recent) => void } = $props();
 
-	const VIEW_LABELS = { tiles: 'tiles', table: 'table', json: 'JSON' };
+	const i18n = useI18n();
 
 	const hosts = (urls: string[]) => {
 		const names = urls
@@ -19,13 +20,15 @@
 	};
 
 	const when = (at: number) =>
-		new Date(at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+		new Date(at).toLocaleString(i18n.locale, { dateStyle: 'short', timeStyle: 'short' });
 </script>
 
 {#if recent.available}
 	<details class="recent">
 		<summary class="recent__summary">
-			Recent queries{recent.enabled && recent.entries.length ? ` (${recent.entries.length})` : ''}
+			{i18n.t('recent.title')}{recent.enabled && recent.entries.length
+				? ` (${recent.entries.length})`
+				: ''}
 		</summary>
 
 		<label class="recent__switch">
@@ -34,11 +37,9 @@
 				checked={recent.enabled}
 				onchange={(e) => recent.setEnabled((e.currentTarget as HTMLInputElement).checked)}
 			/>
-			<span>Remember recent queries on this device</span>
+			<span>{i18n.t('recent.remember')}</span>
 		</label>
-		<p class="recent__note">
-			Kept only in this browser, never sent anywhere. Turning this off deletes them.
-		</p>
+		<p class="recent__note">{i18n.t('recent.note')}</p>
 
 		{#if recent.enabled}
 			{#if recent.entries.length}
@@ -48,26 +49,28 @@
 							<button type="button" class="recent__open" onclick={() => onopen(entry)}>
 								<span class="recent__when">{when(entry.at)}</span>
 								<span class="recent__what">
-									{entry.urls.length}
-									{entry.urls.length === 1 ? 'link' : 'links'} · {hosts(entry.urls)}
+									{i18n.t('recent.links', { count: entry.urls.length })} · {hosts(entry.urls)}
 								</span>
 								<span class="recent__view"
-									>{VIEW_LABELS[entry.view]}{entry.advanced ? ', advanced' : ''}</span
+									>{i18n.t(`views.${entry.view}`)}{entry.advanced
+										? i18n.t('recent.advanced')
+										: ''}</span
 								>
 							</button>
 							<button
 								type="button"
 								class="recent__remove"
-								aria-label="Remove from recent queries"
+								aria-label={i18n.t('recent.remove')}
 								onclick={() => recent.remove(entry)}>×</button
 							>
 						</li>
 					{/each}
 				</ul>
-				<button type="button" class="recent__clear" onclick={() => recent.clear()}>Clear all</button
+				<button type="button" class="recent__clear" onclick={() => recent.clear()}
+					>{i18n.t('recent.clear')}</button
 				>
 			{:else}
-				<p class="recent__note">Nothing yet: your next queries will show up here.</p>
+				<p class="recent__note">{i18n.t('recent.empty')}</p>
 			{/if}
 		{/if}
 	</details>

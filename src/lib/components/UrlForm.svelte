@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { MAX_URLS, roughCount } from '$lib/query.svelte';
+	import { useI18n } from '$lib/i18n';
+
+	const i18n = useI18n();
 
 	interface Props {
 		/** The text in the field: links as typed, ldb-api finds them */
@@ -10,6 +13,7 @@
 		loading: boolean;
 		ready: number;
 		total: number;
+		/** Already in the interface language */
 		error: string | null;
 		onsubmit: () => void;
 		onstop: () => void;
@@ -50,17 +54,15 @@
 		if (!file) return;
 		const added = await file.text();
 		text = [text.trim(), added.trim()].filter(Boolean).join('\n');
-		notice = `${roughCount(added)} links added from ${file.name}`;
+		notice = i18n.t('form.fileAdded', { count: roughCount(added), file: file.name });
 		setTimeout(() => (notice = ''), 2500);
 	}
 </script>
 
 <form onsubmit={submit} class="url-form" novalidate>
 	<div class="url-form__field">
-		<label class="url-form__label" for="urls">Enter URLs</label>
-		<span class="url-form__hint"
-			>Separate with spaces, commas, or new lines · Ctrl + Enter fetches</span
-		>
+		<label class="url-form__label" for="urls">{i18n.t('form.label')}</label>
+		<span class="url-form__hint">{i18n.t('form.hint')}</span>
 
 		<textarea
 			id="urls"
@@ -73,11 +75,12 @@
 
 		<div class="url-form__row">
 			<span class="url-form__hint" class:url-form__hint--warn={count > MAX_URLS}>
-				{count}
-				{count === 1 ? 'link' : 'links'}{count > MAX_URLS ? ` — at most ${MAX_URLS} at once` : ''}
+				{i18n.t('form.links', { count })}{count > MAX_URLS
+					? i18n.t('form.atMost', { max: MAX_URLS })
+					: ''}
 			</span>
 			<label class="url-form__file">
-				Add links from a .txt file
+				{i18n.t('form.addFile')}
 				<input type="file" accept=".txt,text/plain" onchange={addFile} disabled={loading} />
 			</label>
 		</div>
@@ -86,10 +89,7 @@
 	{#if showAdvanced}
 		<label class="url-form__check">
 			<input type="checkbox" bind:checked={advanced} disabled={loading} />
-			<span>
-				Advanced: SEO warnings, keywords, Open Graph, canonical, robots, links and headings of each
-				page
-			</span>
+			<span>{i18n.t('form.advanced')}</span>
 		</label>
 	{/if}
 
@@ -97,13 +97,13 @@
 		<button type="submit" class="url-form__submit" disabled={loading}>
 			{#if loading}
 				<span class="url-form__spinner" aria-hidden="true"></span>
-				<span>Loading… {ready} / {total}</span>
+				<span>{i18n.t('form.loading', { ready, total })}</span>
 			{:else}
-				<span>Fetch</span>
+				<span>{i18n.t('form.fetch')}</span>
 			{/if}
 		</button>
 		{#if loading}
-			<button type="button" class="url-form__stop" onclick={onstop}>Stop</button>
+			<button type="button" class="url-form__stop" onclick={onstop}>{i18n.t('form.stop')}</button>
 		{/if}
 	</div>
 

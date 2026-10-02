@@ -1,0 +1,278 @@
+{
+	"meta": {
+		"title": "urlhub – podgląd linków",
+		"description": "Wklej linki i zobacz je jako kafelki albo tabelę: obrazek, tytuł i opis każdej strony, czas trwania filmów, ostrzeżenia SEO.",
+		"statusTitle": "urlhub – stan"
+	},
+	"form": {
+		"label": "Wpisz linki",
+		"hint": "Oddziel spacjami, przecinkami lub nowymi liniami · Ctrl + Enter pobiera",
+		"links": {
+			"one": "{count} link",
+			"few": "{count} linki",
+			"many": "{count} linków",
+			"other": "{count} linku"
+		},
+		"atMost": " — najwyżej {max} naraz",
+		"addFile": "Dodaj linki z pliku .txt",
+		"fileAdded": {
+			"one": "Dodano {count} link z pliku {file}",
+			"few": "Dodano {count} linki z pliku {file}",
+			"many": "Dodano {count} linków z pliku {file}",
+			"other": "Dodano {count} linku z pliku {file}"
+		},
+		"advanced": "Zaawansowane: ostrzeżenia SEO, słowa kluczowe, Open Graph, canonical, robots, linki i nagłówki każdej strony",
+		"fetch": "Pobierz",
+		"loading": "Pobieram… {ready} / {total}",
+		"stop": "Zatrzymaj"
+	},
+	"views": { "label": "Widok", "tiles": "Kafelki", "table": "Tabela", "json": "JSON" },
+	"toolbar": {
+		"links": {
+			"one": "{count} link",
+			"few": "{count} linki",
+			"many": "{count} linków",
+			"other": "{count} linku"
+		},
+		"failed": ", nieudane: {count}",
+		"shown": " · widoczne: {count}",
+		"filter": "Szukaj w tekście, linkach i błędach",
+		"filterLabel": "Szukaj",
+		"show": "Pokaż",
+		"all": "Wszystkie linki",
+		"ok": "Bez błędów",
+		"failedOnly": "Tylko nieudane",
+		"warnings": "Z ostrzeżeniami SEO",
+		"type": "Rodzaj",
+		"allTypes": "Wszystkie rodzaje",
+		"typeGroup": "Rodzaj",
+		"siteGroup": "Serwis",
+		"share": "Udostępnij",
+		"retry": "Ponów nieudane ({count})",
+		"copyJson": "Kopiuj JSON",
+		"downloadJson": "Pobierz JSON",
+		"downloadCsv": "Pobierz CSV"
+	},
+	"notices": {
+		"jsonCopied": "Skopiowano JSON",
+		"linkCopied": "Skopiowano link: otwiera te wyniki",
+		"removed": "Usunięto: {name}",
+		"undo": "Cofnij",
+		"fetchAgain": "Pobierz ponownie, żeby zobaczyć szczegóły zaawansowane."
+	},
+	"errors": {
+		"empty": "Nie znaleziono linków. Linki zaczynają się od http:// lub https://.",
+		"tooMany": "Najwyżej {max} linków w jednym zapytaniu, a jest {count}.",
+		"rateLimited": "Za dużo linków z Twojego adresu. Spróbuj ponownie za kilka minut.",
+		"unreachable": "Usługa linków jest niedostępna. Spróbuj za chwilę.",
+		"service": "Usługa linków zwróciła błąd ({status}).",
+		"cutoff": "Odpowiedź się urwała. Pobierz ponownie, żeby uzupełnić listę.",
+		"network": "Połączenie zostało przerwane. Sprawdź je i pobierz ponownie."
+	},
+	"linkErrors": {
+		"timeout": "przekroczony czas",
+		"host-not-found": "nie ma takiego serwera",
+		"address-not-allowed": "adres niedozwolony",
+		"connection-refused": "połączenie odrzucone",
+		"certificate-error": "błąd certyfikatu",
+		"fetch-failed": "nie udało się pobrać",
+		"too-many-redirects": "za dużo przekierowań",
+		"video-unavailable": "film niedostępny",
+		"cancelled": "przerwane",
+		"not-fetched": "nie pobrano",
+		"stopped": "zatrzymane"
+	},
+	"types": {
+		"page": "strona",
+		"video": "wideo",
+		"audio": "audio",
+		"image": "obraz",
+		"other": "inne"
+	},
+	"recent": {
+		"title": "Ostatnie zapytania",
+		"remember": "Zapamiętuj ostatnie zapytania na tym urządzeniu",
+		"note": "Zostają tylko w tej przeglądarce i nigdzie nie są wysyłane. Wyłączenie je usuwa.",
+		"links": {
+			"one": "{count} link",
+			"few": "{count} linki",
+			"many": "{count} linków",
+			"other": "{count} linku"
+		},
+		"advanced": ", zaawansowane",
+		"remove": "Usuń z ostatnich zapytań",
+		"clear": "Wyczyść wszystko",
+		"empty": "Jeszcze nic: tu pojawią się Twoje następne zapytania."
+	},
+	"tiles": {
+		"showDescription": "Pokaż opis",
+		"hideDescription": "Ukryj opis",
+		"earlier": "Przesuń wcześniej",
+		"later": "Przesuń dalej",
+		"remove": "Usuń",
+		"video": "wideo"
+	},
+	"table": {
+		"picture": "Obrazek",
+		"title": "Tytuł i szczegóły",
+		"issues": "Problemy",
+		"type": "Rodzaj",
+		"duration": "Czas",
+		"fetching": "Pobieram…",
+		"nothing": "Nic nie pasuje do filtra.",
+		"details": "Szczegóły",
+		"hideDetails": "Ukryj szczegóły",
+		"up": "Przesuń w górę",
+		"down": "Przesuń w dół",
+		"remove": "Usuń",
+		"drag": "Przeciągnij, żeby przesunąć",
+		"seo": "SEO: {count}"
+	},
+	"details": {
+		"warnings": "Ostrzeżenia SEO",
+		"levels": { "error": "Błąd", "warning": "Uwaga", "info": "Informacja" },
+		"noWarnings": "Brak ostrzeżeń SEO",
+		"hint": "Pobierz z opcją zaawansowaną, żeby zobaczyć ostrzeżenia SEO, nagłówki i więcej.",
+		"yes": "tak",
+		"facts": {
+			"finalUrl": "Adres końcowy",
+			"status": "Status HTTP",
+			"responseTime": "Czas odpowiedzi",
+			"lang": "Język",
+			"published": "Opublikowano",
+			"author": "Autor",
+			"canonical": "Canonical",
+			"robots": "Robots",
+			"keywords": "Słowa kluczowe",
+			"ogTitle": "Tytuł Open Graph",
+			"description": "Opis",
+			"stars": "Gwiazdki",
+			"forks": "Forki",
+			"license": "Licencja",
+			"lastPush": "Ostatnia zmiana",
+			"archived": "Zarchiwizowane",
+			"homepage": "Strona projektu",
+			"links": "Linki na stronie",
+			"images": "Obrazki"
+		}
+	},
+	"json": { "label": "Wyniki w JSON" },
+	"seo": {
+		"noindex": "Wyszukiwarki mają nie indeksować tej strony (noindex).",
+		"title-missing": "Strona nie ma tytułu.",
+		"title-too-long": {
+			"one": "Tytuł ma {count} znak (zalecane najwyżej {max}).",
+			"few": "Tytuł ma {count} znaki (zalecane najwyżej {max}).",
+			"many": "Tytuł ma {count} znaków (zalecane najwyżej {max}).",
+			"other": "Tytuł ma {count} znaków (zalecane najwyżej {max})."
+		},
+		"title-too-short": {
+			"one": "Tytuł ma {count} znak (zalecane co najmniej {min}).",
+			"few": "Tytuł ma {count} znaki (zalecane co najmniej {min}).",
+			"many": "Tytuł ma {count} znaków (zalecane co najmniej {min}).",
+			"other": "Tytuł ma {count} znaków (zalecane co najmniej {min})."
+		},
+		"description-missing": "Strona nie ma opisu (meta description).",
+		"description-too-long": {
+			"one": "Opis ma {count} znak (zalecane najwyżej {max}).",
+			"few": "Opis ma {count} znaki (zalecane najwyżej {max}).",
+			"many": "Opis ma {count} znaków (zalecane najwyżej {max}).",
+			"other": "Opis ma {count} znaków (zalecane najwyżej {max})."
+		},
+		"description-too-short": {
+			"one": "Opis ma {count} znak (zalecane co najmniej {min}).",
+			"few": "Opis ma {count} znaki (zalecane co najmniej {min}).",
+			"many": "Opis ma {count} znaków (zalecane co najmniej {min}).",
+			"other": "Opis ma {count} znaków (zalecane co najmniej {min})."
+		},
+		"og-image-missing": "Brak og:image: udostępniony link nie pokaże obrazka.",
+		"h1-missing": "Strona nie ma nagłówka <h1>.",
+		"h1-multiple": {
+			"one": "Strona ma {count} nagłówek <h1>.",
+			"few": "Strona ma {count} nagłówki <h1>.",
+			"many": "Strona ma {count} nagłówków <h1>.",
+			"other": "Strona ma {count} nagłówka <h1>."
+		},
+		"canonical-other": "Adres kanoniczny jest inny: {canonical}",
+		"redirect-chain": {
+			"one": "{count} przekierowanie przed stroną: {chain}",
+			"few": "{count} przekierowania przed stroną: {chain}",
+			"many": "{count} przekierowań przed stroną: {chain}",
+			"other": "{count} przekierowania przed stroną: {chain}"
+		},
+		"slow": "Strona ładowała się {seconds} s (ponad {limit} s).",
+		"viewport-missing": "Brak meta viewport: strona nie jest przystosowana do telefonów.",
+		"lang-missing": "Znacznik <html> nie ma atrybutu lang.",
+		"img-alt-missing": {
+			"one": "{count} obrazek nie ma opisu alt.",
+			"few": "{count} obrazki nie mają opisu alt.",
+			"many": "{count} obrazków nie ma opisu alt.",
+			"other": "{count} obrazka nie ma opisu alt."
+		}
+	},
+	"status": {
+		"title": "Stan",
+		"checked": "Sprawdzono o {time} · odświeża się co 30 s · tylko liczby, bez linków",
+		"up": "działa",
+		"down": "nie działa",
+		"thisPage": "ta strona",
+		"upFor": "Działa od {time} · Node {node} · liczniki zerują się przy każdym restarcie",
+		"lastHour": "Ostatnia godzina",
+		"last24h": "Ostatnie 24 godziny",
+		"links": { "one": "link", "few": "linki", "many": "linków", "other": "linku" },
+		"requestsLine": "zapytania: {requests} · nieudane: {failed} ({percent}) · z pamięci: {cached}",
+		"cancelledLine": "przerwane: {cancelled} · odrzucone (limity): {refused}",
+		"perHour": "Linki na godzinę, ostatnie 24 godziny",
+		"chartLabel": "Linki na godzinę; te same liczby są w tabeli poniżej",
+		"barLabel": "{time}: linki {links}, nieudane {failed}",
+		"tipLinks": "linki: {links} · nieudane: {failed}",
+		"tipRequests": "zapytania: {requests} · z pamięci: {cached}",
+		"busiest": "Najwięcej linków w godzinie: {count}",
+		"table": "Tabela",
+		"columns": {
+			"hour": "Godzina",
+			"requests": "Zapytania",
+			"links": "Linki",
+			"failed": "Nieudane",
+			"cached": "Z pamięci",
+			"cancelled": "Przerwane"
+		},
+		"quota": "{used} z {daily} jednostek dziś ({percent}) · limit odnawia się o północy czasu pacyficznego",
+		"quotaLabel": "Wykorzystanie dziennego limitu YouTube",
+		"quotaProblem": "⚠ {problem}: filmy na razie z oEmbed",
+		"noKey": "⚠ Brak klucza API: filmy z oEmbed (bez opisu i czasu trwania)",
+		"apiCalls": {
+			"one": "{count} zapytanie do API",
+			"few": "{count} zapytania do API",
+			"many": "{count} zapytań do API",
+			"other": "{count} zapytania do API"
+		},
+		"oembed": {
+			"one": "{count} zapytanie oEmbed",
+			"few": "{count} zapytania oEmbed",
+			"many": "{count} zapytań oEmbed",
+			"other": "{count} zapytania oEmbed"
+		},
+		"lastHourCalls": "{calls} i {oembed} w ostatniej godzinie",
+		"memory": "Pamięć",
+		"pages": {
+			"one": "{count} strona",
+			"few": "{count} strony",
+			"many": "{count} stron",
+			"other": "{count} strony"
+		},
+		"videos": {
+			"one": "{count} film",
+			"few": "{count} filmy",
+			"many": "{count} filmów",
+			"other": "{count} filmu"
+		},
+		"memoryLine": "{pages} ({size} z 64 MB) przez 30 min · {videos} przez 1 h",
+		"noApi": "⚠ ldb-api nie odpowiada, więc nie ma liczb do pokazania.",
+		"duration": {
+			"days": "{days} d {hours} godz.",
+			"hours": "{hours} godz. {minutes} min",
+			"minutes": "{minutes} min"
+		}
+	}
+}

@@ -2,6 +2,11 @@
 	import { SvelteSet } from 'svelte/reactivity';
 	import RowDetails from './RowDetails.svelte';
 	import type { Row } from '$lib/types';
+	import { has, useI18n, type Key } from '$lib/i18n';
+	import { linkError } from '$lib/i18n/messages';
+
+	const i18n = useI18n();
+	const typeName = (type: string) => (has(`types.${type}`) ? i18n.t(`types.${type}` as Key) : type);
 
 	interface Props {
 		rows: Row[];
@@ -26,10 +31,12 @@
 
 	const date = (iso?: string) => {
 		const time = Date.parse(iso ?? '');
-		return Number.isNaN(time) ? '' : new Date(time).toLocaleDateString();
+		return Number.isNaN(time) ? '' : new Date(time).toLocaleDateString(i18n.locale);
 	};
 
-	const number = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+	const number = $derived(
+		new Intl.NumberFormat(i18n.locale, { notation: 'compact', maximumFractionDigits: 1 })
+	);
 
 	/** Site, author, date, stars: whatever the link has, in one short line */
 	const metaOf = (item: Row) =>
@@ -113,10 +120,12 @@
 
 {#snippet badges(item: Row)}
 	{#if item.error}
-		<span class="table__badge table__badge--error">{item.error}</span>
+		<span class="table__badge table__badge--error">{linkError(i18n.t, item.error)}</span>
 	{/if}
 	{#if item.warnings?.length}
-		<span class="table__badge table__badge--{worst(item)}">{item.warnings.length} SEO</span>
+		<span class="table__badge table__badge--{worst(item)}"
+			>{i18n.t('table.seo', { count: item.warnings.length })}</span
+		>
 	{/if}
 {/snippet}
 
@@ -132,16 +141,16 @@
 	<table>
 		<thead>
 			<tr>
-				<th class="table__img"><span class="table__sr">Picture</span></th>
-				<th aria-sort={ariaSort('title')}>{@render sortButton('title', 'Title and details')}</th>
+				<th class="table__img"><span class="table__sr">{i18n.t('table.picture')}</span></th>
+				<th aria-sort={ariaSort('title')}>{@render sortButton('title', i18n.t('table.title'))}</th>
 				<th class="table__seo" aria-sort={ariaSort('warnings')}
-					>{@render sortButton('warnings', 'Issues')}</th
+					>{@render sortButton('warnings', i18n.t('table.issues'))}</th
 				>
 				<th class="table__type" aria-sort={ariaSort('type')}
-					>{@render sortButton('type', 'Type')}</th
+					>{@render sortButton('type', i18n.t('table.type'))}</th
 				>
 				<th class="table__dur" aria-sort={ariaSort('duration')}
-					>{@render sortButton('duration', 'Duration')}</th
+					>{@render sortButton('duration', i18n.t('table.duration'))}</th
 				>
 			</tr>
 		</thead>
@@ -168,7 +177,7 @@
 								class="table__handle"
 								draggable="true"
 								role="presentation"
-								title="Drag to move"
+								title={i18n.t('table.drag')}
 								ondragstart={(e) => {
 									dragged = item.url;
 									e.dataTransfer?.setData('text/plain', item.url);
@@ -210,7 +219,7 @@
 							>{item.title || item.url}</a
 						>
 						{#if item.pending}
-							<p class="table__meta">Fetching…</p>
+							<p class="table__meta">{i18n.t('table.fetching')}</p>
 						{:else if metaOf(item).length || item.duration}
 							<p class="table__meta">
 								{metaOf(item).join(' · ')}<span class="table__dur-inline"
@@ -234,25 +243,27 @@
 									class="table__more"
 									aria-expanded={open.has(item.url)}
 									onclick={() => toggle(item.url)}
-									>{open.has(item.url) ? 'Hide details' : 'Details'}</button
+									>{i18n.t(open.has(item.url) ? 'table.hideDetails' : 'table.details')}</button
 								>
 								{#if removable}
 									<span class="table__edit">
 										{#if canMove}
 											<button
 												type="button"
-												aria-label="Move up"
+												aria-label={i18n.t('table.up')}
 												disabled={i === 0}
 												onclick={() => onmove?.(item.url, -1)}>↑</button
 											>
 											<button
 												type="button"
-												aria-label="Move down"
+												aria-label={i18n.t('table.down')}
 												disabled={i === sorted.length - 1}
 												onclick={() => onmove?.(item.url, 1)}>↓</button
 											>
 										{/if}
-										<button type="button" onclick={() => onremove?.(item.url)}>Remove</button>
+										<button type="button" onclick={() => onremove?.(item.url)}
+											>{i18n.t('table.remove')}</button
+										>
 									</span>
 								{/if}
 							</div>
@@ -263,8 +274,11 @@
 					</td>
 					<td class="table__seo">{@render badges(item)}</td>
 					<td class="table__type">
-						{item.pending ? '' : item.type}{#if item.service && item.service !== item.type}<br
-							/><span class="table__service">{item.service}</span>{/if}
+						{item.pending
+							? ''
+							: typeName(item.type)}{#if item.service && item.service !== item.type}<br /><span
+								class="table__service">{item.service}</span
+							>{/if}
 					</td>
 					<td class="table__dur">{item.duration ?? ''}</td>
 				</tr>
@@ -272,7 +286,7 @@
 		</tbody>
 	</table>
 	{#if !rows.length}
-		<p class="table__empty">Nothing matches the filter.</p>
+		<p class="table__empty">{i18n.t('table.nothing')}</p>
 	{/if}
 </div>
 

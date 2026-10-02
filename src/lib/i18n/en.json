@@ -1,0 +1,227 @@
+{
+	"meta": {
+		"title": "urlhub – link previews",
+		"description": "Paste links and see them as tiles or a table: picture, title and description of each page, YouTube duration, SEO warnings.",
+		"statusTitle": "urlhub – status"
+	},
+	"form": {
+		"label": "Enter URLs",
+		"hint": "Separate with spaces, commas, or new lines · Ctrl + Enter fetches",
+		"links": { "one": "{count} link", "other": "{count} links" },
+		"atMost": " — at most {max} at once",
+		"addFile": "Add links from a .txt file",
+		"fileAdded": {
+			"one": "{count} link added from {file}",
+			"other": "{count} links added from {file}"
+		},
+		"advanced": "Advanced: SEO warnings, keywords, Open Graph, canonical, robots, links and headings of each page",
+		"fetch": "Fetch",
+		"loading": "Loading… {ready} / {total}",
+		"stop": "Stop"
+	},
+	"views": { "label": "View", "tiles": "Tiles", "table": "Table", "json": "JSON" },
+	"toolbar": {
+		"links": { "one": "{count} link", "other": "{count} links" },
+		"failed": ", {count} failed",
+		"shown": " · {count} shown",
+		"filter": "Filter by text, link or error",
+		"filterLabel": "Filter",
+		"show": "Show",
+		"all": "All links",
+		"ok": "Without errors",
+		"failedOnly": "Failed only",
+		"warnings": "With SEO warnings",
+		"type": "Type",
+		"allTypes": "All types",
+		"typeGroup": "Type",
+		"siteGroup": "Site",
+		"share": "Share",
+		"retry": "Retry {count} failed",
+		"copyJson": "Copy JSON",
+		"downloadJson": "Download JSON",
+		"downloadCsv": "Download CSV"
+	},
+	"notices": {
+		"jsonCopied": "JSON copied",
+		"linkCopied": "Link copied: it opens these results",
+		"removed": "Removed {name}",
+		"undo": "Undo",
+		"fetchAgain": "Fetch again to get the advanced details."
+	},
+	"errors": {
+		"empty": "No links found. Links start with http:// or https://.",
+		"tooMany": "At most {max} links per request, got {count}.",
+		"rateLimited": "Too many links from your address. Try again in a few minutes.",
+		"unreachable": "The link service cannot be reached. Try again in a moment.",
+		"service": "The link service answered with an error ({status}).",
+		"cutoff": "The answer was cut off. Fetch again to complete the list.",
+		"network": "The connection was lost. Check it and fetch again."
+	},
+	"linkErrors": {
+		"timeout": "timeout",
+		"host-not-found": "host not found",
+		"address-not-allowed": "address not allowed",
+		"connection-refused": "connection refused",
+		"certificate-error": "certificate error",
+		"fetch-failed": "fetch failed",
+		"too-many-redirects": "too many redirects",
+		"video-unavailable": "video unavailable",
+		"cancelled": "cancelled",
+		"not-fetched": "not fetched",
+		"stopped": "stopped"
+	},
+	"types": {
+		"page": "page",
+		"video": "video",
+		"audio": "audio",
+		"image": "image",
+		"other": "other"
+	},
+	"recent": {
+		"title": "Recent queries",
+		"remember": "Remember recent queries on this device",
+		"note": "Kept only in this browser, never sent anywhere. Turning this off deletes them.",
+		"links": { "one": "{count} link", "other": "{count} links" },
+		"advanced": ", advanced",
+		"remove": "Remove from recent queries",
+		"clear": "Clear all",
+		"empty": "Nothing yet: your next queries will show up here."
+	},
+	"tiles": {
+		"showDescription": "Show description",
+		"hideDescription": "Hide description",
+		"earlier": "Move earlier",
+		"later": "Move later",
+		"remove": "Remove",
+		"video": "video"
+	},
+	"table": {
+		"picture": "Picture",
+		"title": "Title and details",
+		"issues": "Issues",
+		"type": "Type",
+		"duration": "Duration",
+		"fetching": "Fetching…",
+		"nothing": "Nothing matches the filter.",
+		"details": "Details",
+		"hideDetails": "Hide details",
+		"up": "Move up",
+		"down": "Move down",
+		"remove": "Remove",
+		"drag": "Drag to move",
+		"seo": "{count} SEO"
+	},
+	"details": {
+		"warnings": "SEO warnings",
+		"levels": { "error": "Error", "warning": "Warning", "info": "Note" },
+		"noWarnings": "No SEO warnings",
+		"hint": "Fetch with the advanced option for SEO warnings, headings and more.",
+		"yes": "yes",
+		"facts": {
+			"finalUrl": "Final address",
+			"status": "HTTP status",
+			"responseTime": "Response time",
+			"lang": "Language",
+			"published": "Published",
+			"author": "Author",
+			"canonical": "Canonical",
+			"robots": "Robots",
+			"keywords": "Keywords",
+			"ogTitle": "Open Graph title",
+			"description": "Description",
+			"stars": "Stars",
+			"forks": "Forks",
+			"license": "License",
+			"lastPush": "Last push",
+			"archived": "Archived",
+			"homepage": "Homepage",
+			"links": "Links on the page",
+			"images": "Images"
+		}
+	},
+	"json": { "label": "Results as JSON" },
+	"seo": {
+		"noindex": "Search engines are told not to index this page (noindex).",
+		"title-missing": "The page has no title.",
+		"title-too-long": {
+			"one": "Title is {count} character (aim for at most {max}).",
+			"other": "Title is {count} characters (aim for at most {max})."
+		},
+		"title-too-short": {
+			"one": "Title is {count} character (aim for at least {min}).",
+			"other": "Title is {count} characters (aim for at least {min})."
+		},
+		"description-missing": "The page has no meta description.",
+		"description-too-long": {
+			"one": "Description is {count} character (aim for at most {max}).",
+			"other": "Description is {count} characters (aim for at most {max})."
+		},
+		"description-too-short": {
+			"one": "Description is {count} character (aim for at least {min}).",
+			"other": "Description is {count} characters (aim for at least {min})."
+		},
+		"og-image-missing": "No og:image: shared links show no picture.",
+		"h1-missing": "The page has no <h1> heading.",
+		"h1-multiple": {
+			"one": "The page has {count} <h1> heading.",
+			"other": "The page has {count} <h1> headings."
+		},
+		"canonical-other": "The canonical address is another one: {canonical}",
+		"redirect-chain": {
+			"one": "{count} redirect before the page: {chain}",
+			"other": "{count} redirects before the page: {chain}"
+		},
+		"slow": "The page took {seconds} s to load (over {limit} s).",
+		"viewport-missing": "No meta viewport: the page is not set up for phones.",
+		"lang-missing": "The <html> tag has no lang attribute.",
+		"img-alt-missing": {
+			"one": "{count} image has no alt text.",
+			"other": "{count} images have no alt text."
+		}
+	},
+	"status": {
+		"title": "Status",
+		"checked": "Checked at {time} · refreshes every 30 s · counts only, no links",
+		"up": "up",
+		"down": "down",
+		"thisPage": "this page",
+		"upFor": "Up for {time} · Node {node} · counts start again at every restart",
+		"lastHour": "Last hour",
+		"last24h": "Last 24 hours",
+		"links": { "one": "link", "other": "links" },
+		"requestsLine": "{requests} requests · {failed} failed ({percent}) · {cached} from memory",
+		"cancelledLine": "{cancelled} cancelled · {refused} refused (limits)",
+		"perHour": "Links per hour, last 24 hours",
+		"chartLabel": "Links per hour; the same numbers are in the table below",
+		"barLabel": "{time}: {links} links, {failed} failed",
+		"tipLinks": "{links} links · {failed} failed",
+		"tipRequests": "{requests} requests · {cached} from memory",
+		"busiest": "Busiest hour: {count} links",
+		"table": "Table",
+		"columns": {
+			"hour": "Hour",
+			"requests": "Requests",
+			"links": "Links",
+			"failed": "Failed",
+			"cached": "From memory",
+			"cancelled": "Cancelled"
+		},
+		"quota": "{used} of {daily} units today ({percent}) · the day starts again at midnight Pacific Time",
+		"quotaLabel": "YouTube quota used today",
+		"quotaProblem": "⚠ {problem}: videos come from oEmbed for now",
+		"noKey": "⚠ No API key: videos come from oEmbed (no description or duration)",
+		"apiCalls": { "one": "{count} API call", "other": "{count} API calls" },
+		"oembed": { "one": "{count} oEmbed request", "other": "{count} oEmbed requests" },
+		"lastHourCalls": "{calls} and {oembed} in the last hour",
+		"memory": "Memory",
+		"pages": { "one": "{count} page", "other": "{count} pages" },
+		"videos": { "one": "{count} video", "other": "{count} videos" },
+		"memoryLine": "{pages} ({size} of 64 MB) for 30 min · {videos} for 1 h",
+		"noApi": "⚠ ldb-api does not answer, so there are no counts to show.",
+		"duration": {
+			"days": "{days} d {hours} h",
+			"hours": "{hours} h {minutes} min",
+			"minutes": "{minutes} min"
+		}
+	}
+}
