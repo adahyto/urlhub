@@ -1,7 +1,27 @@
 <script lang="ts">
 	import type { TileUrl } from '$lib/types';
 
-	let { urls }: { urls: TileUrl[] } = $props();
+	interface Props {
+		urls: TileUrl[];
+		/** Whether tiles can be removed (not while a query fills them) */
+		removable?: boolean;
+		/** Whether tiles can be moved (also not while the list is filtered) */
+		movable?: boolean;
+		onremove?: (url: string) => void;
+		onmove?: (url: string, to: number | { before: string }) => void;
+	}
+
+	let { urls, removable = false, movable = false, onremove, onmove }: Props = $props();
+
+	// Dragging a tile onto another puts it in that tile's place
+	let dragged = $state<string | null>(null);
+	let over = $state<string | null>(null);
+
+	function drop(event: DragEvent, target: string) {
+		event.preventDefault();
+		if (dragged && dragged !== target) onmove?.(dragged, { before: target });
+		dragged = over = null;
+	}
 
 	let activeUrl = $state<string | null>(null);
 
@@ -76,16 +96,37 @@
 </script>
 
 <ul class="tiles" role="list">
-	{#each urls as item (item.url)}
+	{#each urls as item, i (item.url)}
 		{@const view = tileView(item)}
 		<li
 			class="tiles__item"
 			class:is-active={activeUrl === item.url}
+			class:is-dragged={dragged === item.url}
+			class:is-drop-target={over === item.url && dragged !== item.url}
+			draggable={movable}
+			ondragstart={(e) => {
+				dragged = item.url;
+				e.dataTransfer?.setData('text/plain', item.url);
+			}}
+			ondragover={(e) => {
+				if (!dragged) return;
+				e.preventDefault();
+				over = item.url;
+			}}
+			ondragleave={() => over === item.url && (over = null)}
+			ondrop={(e) => drop(e, item.url)}
+			ondragend={() => (dragged = over = null)}
 			class:has-error={item.error}
 			class:is-pending={item.pending}
 			aria-busy={item.pending}
 		>
-			<a class="tiles__link" href={item.url} target="_blank" rel="external noopener">
+			<a
+				class="tiles__link"
+				href={item.url}
+				target="_blank"
+				rel="external noopener"
+				draggable="false"
+			>
 				{#if view.kind === 'video'}
 					<video
 						class="tiles__image"
@@ -130,6 +171,26 @@
 					<span class="tiles__desc-text">{view.desc}</span>
 				</span>
 			</a>
+
+			{#if removable}
+				<span class="tiles__edit">
+					{#if movable}
+						<button
+							type="button"
+							aria-label="Move earlier"
+							disabled={i === 0}
+							onclick={() => onmove?.(item.url, -1)}>←</button
+						>
+						<button
+							type="button"
+							aria-label="Move later"
+							disabled={i === urls.length - 1}
+							onclick={() => onmove?.(item.url, 1)}>→</button
+						>
+					{/if}
+					<button type="button" aria-label="Remove" onclick={() => onremove?.(item.url)}>×</button>
+				</span>
+			{/if}
 
 			<button
 				type="button"
@@ -359,6 +420,63 @@
 		transition: background 200ms ease;
 	}
 
+	/* Remove and move: on hover or keyboard focus with a mouse, always on touch screens (left of the info button) */
+	.tiles__edit {
+		position: absolute;
+		top: 0.75rem;
+		right: 0.75rem;
+		z-index: 4;
+		display: inline-flex;
+		gap: 0.25rem;
+		opacity: 0;
+		transition: opacity 150ms ease;
+	}
+
+	.tiles__item:hover .tiles__edit,
+	.tiles__item:focus-within .tiles__edit {
+		opacity: 1;
+	}
+
+	.tiles__edit button {
+		display: inline-grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		padding: 0;
+		font: inherit;
+		font-size: 1rem;
+		line-height: 1;
+		color: #fff;
+		background: rgba(0, 0, 0, 0.55);
+		backdrop-filter: blur(4px);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		cursor: pointer;
+	}
+
+	.tiles__edit button:disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+
+	.tiles__edit button:focus-visible {
+		outline: 3px solid var(--ink);
+		outline-offset: 2px;
+	}
+
+	.tiles__item[draggable='true'] {
+		cursor: grab;
+	}
+
+	.tiles__item.is-dragged {
+		opacity: 0.4;
+	}
+
+	.tiles__item.is-drop-target {
+		outline: 3px dashed var(--ink);
+		outline-offset: 3px;
+	}
+
 	.tiles__info svg {
 		width: 1.1rem;
 		height: 1.1rem;
@@ -409,6 +527,11 @@
 	@media (hover: none) {
 		.tiles__info {
 			display: inline-flex;
+		}
+
+		.tiles__edit {
+			right: 3.5rem;
+			opacity: 1;
 		}
 	}
 

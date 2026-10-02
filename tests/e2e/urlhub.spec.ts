@@ -208,3 +208,54 @@ test('the dark theme follows the system setting', async ({ page }) => {
 		title: 'rgb(236, 236, 234)'
 	});
 });
+
+test('the list can be edited: remove with undo, move with buttons and by dragging', async ({
+	page
+}) => {
+	const titles = page.locator('.tiles__title');
+	const urlsInAddress = () => new URL(page.url()).searchParams.get('urls');
+	await page.goto('/');
+	await fetchLinks(page, [link('/a'), link('/b'), link('/c')].join(' '));
+	await expect(titles).toHaveText(['Title of /a', 'Title of /b', 'Title of /c']);
+
+	const tile = (name: string) => page.locator('.tiles__item', { hasText: `Title of /${name}` });
+	await tile('a').hover();
+	await tile('a').getByRole('button', { name: 'Remove' }).click();
+	await expect(titles).toHaveText(['Title of /b', 'Title of /c']);
+	expect(urlsInAddress()).toBe(`${link('/b')} ${link('/c')}`);
+	await expect(field(page)).toHaveValue(`${link('/b')}\n${link('/c')}`);
+	await page.getByRole('button', { name: 'Undo' }).click();
+	await expect(titles).toHaveText(['Title of /a', 'Title of /b', 'Title of /c']);
+	expect(urlsInAddress()).toBe(`${link('/a')} ${link('/b')} ${link('/c')}`);
+
+	await tile('a').getByRole('button', { name: 'Move later' }).click();
+	await expect(titles).toHaveText(['Title of /b', 'Title of /a', 'Title of /c']);
+	await tile('c').dragTo(tile('b'));
+	await expect(titles).toHaveText(['Title of /c', 'Title of /b', 'Title of /a']);
+	expect(urlsInAddress()).toBe(`${link('/c')} ${link('/b')} ${link('/a')}`);
+	// Nothing was fetched again
+	expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
+
+	await page.getByRole('tab', { name: 'Table' }).click();
+	const rows = page.locator('tbody tr .table__title');
+	await page.locator('tbody tr').first().getByRole('button', { name: 'Move down' }).click();
+	await expect(rows).toHaveText(['Title of /b', 'Title of /c', 'Title of /a']);
+	// A sorted or filtered table shows another order: rows can be removed there, not moved
+	await page.getByRole('button', { name: /Title and details/ }).click();
+	await expect(page.getByRole('button', { name: 'Move down' })).toHaveCount(0);
+	await page.getByRole('button', { name: /Title and details/ }).click();
+	await page.getByRole('button', { name: /Title and details/ }).click();
+	await expect(page.getByRole('button', { name: 'Move down' })).toHaveCount(3);
+	await page.getByPlaceholder('Filter by text, link or error').fill('/c');
+	await expect(page.getByRole('button', { name: 'Move down' })).toHaveCount(0);
+	await expect(page.locator('tbody').getByRole('button', { name: 'Remove' })).toHaveCount(1);
+});
+
+test('the list cannot be edited while a query fills it', async ({ page }) => {
+	await page.goto('/');
+	await fetchLinks(page, `${link('/fast')} ${link('/slow')}`);
+	await expect(page.getByRole('button', { name: /Loading… 1 \/ 2/ })).toBeVisible();
+	await expect(page.locator('.tiles__edit')).toHaveCount(0);
+	await page.getByRole('button', { name: 'Stop' }).click();
+	await expect(page.locator('.tiles__edit')).toHaveCount(2);
+});

@@ -86,6 +86,7 @@
 	}
 
 	function fetchLinks() {
+		removed = null;
 		filter = '';
 		only = 'all';
 		kind = '';
@@ -104,6 +105,40 @@
 		advanced = entry.advanced;
 		fetchLinks();
 		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+
+	// Editing the list: the address and the field follow, so Share gives the edited list. Moving needs the
+	// whole list in view (no filter); removing works any time a query is not filling the list.
+	const removable = $derived(!query.loading);
+	const movable = $derived(!query.loading && !filter.trim() && only === 'all' && !kind);
+	let removed = $state<{ row: Row; index: number } | null>(null);
+	let removedTimer: ReturnType<typeof setTimeout> | undefined;
+
+	function listChanged() {
+		const urls = query.rows.map((r) => r.url);
+		text = urls.join('\n');
+		updateAddress(urls);
+	}
+
+	function remove(url: string) {
+		const taken = query.remove(url);
+		if (!taken) return;
+		removed = taken;
+		clearTimeout(removedTimer);
+		removedTimer = setTimeout(() => (removed = null), 8000);
+		listChanged();
+	}
+
+	function undoRemove() {
+		if (!removed) return;
+		query.restore(removed.row, removed.index);
+		removed = null;
+		listChanged();
+	}
+
+	function move(url: string, to: number | { before: string }) {
+		query.move(url, to);
+		listChanged();
 	}
 
 	function show(next: View) {
@@ -241,14 +276,27 @@
 		{#if notice}
 			<p class="notice" role="status">{notice}</p>
 		{/if}
+		{#if removed}
+			<p class="notice" role="status">
+				Removed {removed.row.title || removed.row.url}
+				<button type="button" class="notice__undo" onclick={undoRemove}>Undo</button>
+			</p>
+		{/if}
 		{#if view === 'table' && !query.advanced && advanced}
 			<p class="notice">Fetch again to get the advanced details.</p>
 		{/if}
 
 		{#if view === 'tiles'}
-			<Tiles urls={shown.map(toTileUrl)} />
+			<Tiles urls={shown.map(toTileUrl)} {removable} {movable} onremove={remove} onmove={move} />
 		{:else if view === 'table'}
-			<ResultsTable rows={shown} advanced={query.advanced} />
+			<ResultsTable
+				rows={shown}
+				advanced={query.advanced}
+				{removable}
+				{movable}
+				onremove={remove}
+				onmove={move}
+			/>
 		{:else}
 			<JsonView {json} />
 		{/if}
@@ -372,6 +420,18 @@
 		box-sizing: border-box;
 		font-size: 0.8rem;
 		color: var(--ink-3);
+	}
+
+	.notice__undo {
+		margin-left: 0.5rem;
+		padding: 0;
+		font: inherit;
+		font-weight: 600;
+		color: var(--ink);
+		text-decoration: underline;
+		background: none;
+		border: 0;
+		cursor: pointer;
 	}
 
 	.page > :global(.table),
