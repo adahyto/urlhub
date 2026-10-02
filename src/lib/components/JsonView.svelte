@@ -16,9 +16,9 @@
 		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 		font-size: 0.78rem;
 		line-height: 1.5;
-		color: #1a1a1a;
-		background: #f7f7f7;
-		border: 1px solid #e2e2e2;
+		color: var(--ink);
+		background: var(--surface-2);
+		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 	}
 </style>

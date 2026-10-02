@@ -231,22 +231,22 @@
 		letter-spacing: 0.08em;
 		text-align: left;
 		text-transform: uppercase;
-		color: #777;
-		border-bottom: 1px solid #e2e2e2;
+		color: var(--muted);
+		border-bottom: 1px solid var(--border);
 	}
 
 	td {
 		padding: 0.75rem 0.5rem;
 		vertical-align: top;
-		border-bottom: 1px solid #eee;
+		border-bottom: 1px solid var(--border-soft);
 	}
 
 	tr.has-error td {
-		background: #fdf6f5;
+		background: var(--row-error);
 	}
 
 	tr.is-pending {
-		color: #999;
+		color: var(--faint);
 	}
 
 	.table__sr {
@@ -267,12 +267,17 @@
 		width: 6rem;
 		aspect-ratio: 16 / 10;
 		object-fit: cover;
-		background: #f0f0f0;
+		background: var(--surface-3);
 		border-radius: 0.4rem;
 	}
 
 	.table__skeleton {
-		background: linear-gradient(110deg, #ececec 30%, #f7f7f7 50%, #ececec 70%);
+		background: linear-gradient(
+			110deg,
+			var(--skeleton-a) 30%,
+			var(--skeleton-b) 50%,
+			var(--skeleton-a) 70%
+		);
 		background-size: 200% 100%;
 		animation: table-shimmer 1.2s linear infinite;
 	}
@@ -292,7 +297,7 @@
 		align-items: center;
 		gap: 0.35rem;
 		font-size: 0.75rem;
-		color: #777;
+		color: var(--muted);
 	}
 
 	.table__favicon {
@@ -301,22 +306,31 @@
 		object-fit: contain;
 	}
 
+	/* Many site icons are black (GitHub, X): on the dark theme they get a light square, as in browser tabs */
+	@media (prefers-color-scheme: dark) {
+		.table__favicon {
+			padding: 1px;
+			background: #fff;
+			border-radius: 0.2rem;
+		}
+	}
+
 	.table__title {
 		font-weight: 600;
-		color: #1a1a1a;
+		color: var(--ink);
 		overflow-wrap: anywhere;
 	}
 
 	.table__meta {
 		font-size: 0.8rem;
-		color: #555;
+		color: var(--ink-3);
 	}
 
 	/* Three lines in the table; the whole text is in the JSON */
 	.table__desc {
 		display: -webkit-box;
 		overflow: hidden;
-		color: #333;
+		color: var(--ink-2);
 		line-height: 1.45;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3;
@@ -325,7 +339,7 @@
 
 	.table__link {
 		font-size: 0.75rem;
-		color: #888;
+		color: var(--faint);
 		overflow-wrap: anywhere;
 	}
 
@@ -341,17 +355,17 @@
 
 	.table__badge--error {
 		color: #fff;
-		background: #c0392b;
+		background: var(--error-solid);
 	}
 
 	.table__badge--warning {
-		color: #6b4e00;
-		background: #fdf1d3;
+		color: var(--warning-ink);
+		background: var(--warning-bg);
 	}
 
 	.table__badge--info {
-		color: #555;
-		background: #eee;
+		color: var(--info-ink);
+		background: var(--info-bg);
 	}
 
 	.table__seo {
@@ -372,12 +386,12 @@
 	}
 
 	.table__arrow {
-		color: #bbb;
+		color: var(--faint);
 	}
 
 	th[aria-sort='ascending'] .table__arrow,
 	th[aria-sort='descending'] .table__arrow {
-		color: #1a1a1a;
+		color: var(--ink);
 	}
 
 	.table__more {
@@ -387,7 +401,7 @@
 		font: inherit;
 		font-size: 0.75rem;
 		font-weight: 600;
-		color: #1a1a1a;
+		color: var(--ink);
 		text-decoration: underline;
 		background: none;
 		border: 0;
@@ -395,7 +409,7 @@
 	}
 
 	tr.is-open td {
-		background: #fafafa;
+		background: var(--row-open);
 	}
 
 	.table__type,
@@ -407,7 +421,7 @@
 
 	.table__service {
 		font-size: 0.75rem;
-		color: #777;
+		color: var(--muted);
 	}
 
 	.table__dur-inline,
@@ -418,7 +432,7 @@
 	.table__empty {
 		padding: 1rem;
 		text-align: center;
-		color: #777;
+		color: var(--muted);
 	}
 
 	/* Phones: picture and text only; the duration moves into the text */

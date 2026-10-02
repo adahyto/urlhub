@@ -1,0 +1,89 @@
+/*
+ * Colours of the whole app, light and dark. The dark ones follow the visitor's system setting (no switch: a
+ * switch would have to remember the choice on the device). Components use these variables, never fixed colours;
+ * /status keeps its own set.
+ */
+:root {
+	color-scheme: light dark;
+
+	--ink: #1a1a1a;
+	--ink-2: #333;
+	--ink-3: #555;
+	--muted: #777;
+	--faint: #999;
+	--surface: #fff;
+	--surface-2: #f7f7f7;
+	--surface-3: #f0f0f0;
+	--border: #e2e2e2;
+	--border-soft: #eee;
+	--accent: #1a1a1a;
+	--on-accent: #fff;
+	--focus-ring: rgba(26, 26, 26, 0.12);
+	--shadow: rgba(0, 0, 0, 0.12);
+
+	--error: #c0392b;
+	--error-solid: #c0392b;
+	--error-bg: rgba(192, 57, 43, 0.08);
+	--row-error: #fdf6f5;
+	--row-open: #fafafa;
+	--warning-ink: #6b4e00;
+	--warning-bg: #fdf1d3;
+	--info-ink: #555;
+	--info-bg: #eee;
+	--success: #2c6e2f;
+
+	--skeleton-a: #ececec;
+	--skeleton-b: #f7f7f7;
+	--tile-a: #f3f3f3;
+	--tile-b: #dcdcdc;
+	--tile-ink: #1a1a1a;
+	--tile-pending-ink: #9a9a9a;
+	--tile-error-a: #fbeeee;
+	--tile-error-b: #f1d6d3;
+	--tile-error-ink: #8a2a20;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ink: #ececea;
+		--ink-2: #d6d6d3;
+		--ink-3: #b3b3b0;
+		--muted: #9a9a97;
+		--faint: #7a7a77;
+		--surface: #161615;
+		--surface-2: #222221;
+		--surface-3: #2b2b29;
+		--border: #3a3a37;
+		--border-soft: #2c2c2a;
+		--accent: #ececea;
+		--on-accent: #161615;
+		--focus-ring: rgba(236, 236, 234, 0.18);
+		--shadow: rgba(0, 0, 0, 0.5);
+
+		--error: #f07167;
+		--error-bg: rgba(240, 113, 103, 0.14);
+		--row-error: #2a1d1b;
+		--row-open: #1c1c1b;
+		--warning-ink: #f3cf6e;
+		--warning-bg: #3d3112;
+		--info-ink: #c8c8c5;
+		--info-bg: #2f2f2d;
+		--success: #7bd47f;
+
+		--skeleton-a: #262624;
+		--skeleton-b: #31312f;
+		--tile-a: #2a2a28;
+		--tile-b: #1e1e1d;
+		--tile-ink: #e2e2df;
+		--tile-pending-ink: #6f6f6c;
+		--tile-error-a: #3a2421;
+		--tile-error-b: #2b1a18;
+		--tile-error-ink: #f2a59d;
+	}
+}
+
+body {
+	margin: 0;
+	color: var(--ink);
+	background: var(--surface);
+}
