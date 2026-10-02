@@ -20,7 +20,10 @@
 		"advanced": "Advanced: SEO warnings, keywords, Open Graph, canonical, robots, links and headings of each page",
 		"fetch": "Fetch",
 		"loading": "Loading… {ready} / {total}",
-		"stop": "Stop"
+		"stop": "Stop",
+		"placeholder": "Paste links, separated by spaces, commas or new lines",
+		"example": "Try an example",
+		"advancedShort": "Advanced (SEO)"
 	},
 	"views": {
 		"label": "View",
@@ -47,12 +50,16 @@
 		"typeGroup": "Type",
 		"siteGroup": "Site",
 		"share": "Share",
-		"retry": "Retry {count} failed",
 		"copyJson": "Copy JSON",
 		"downloadJson": "Download JSON",
 		"downloadCsv": "Download CSV",
 		"shortLink": "Short link",
-		"shortLinkHint": "Keeps the list on the server; unused for 90 days, it is deleted"
+		"shortLinkHint": "Keeps the list on the server; unused for 90 days, it is deleted",
+		"retryShort": "Retry",
+		"copyLink": "Copy link",
+		"copyLinkHint": "The address with the whole list",
+		"export": "Export",
+		"csvHint": "Opens in Excel and Google Sheets"
 	},
 	"notices": {
 		"jsonCopied": "JSON copied",
@@ -93,7 +100,6 @@
 		"other": "other"
 	},
 	"recent": {
-		"title": "Recent queries",
 		"remember": "Remember recent queries on this device",
 		"note": "Kept only in this browser, never sent anywhere. Turning this off deletes them.",
 		"links": {
@@ -103,7 +109,8 @@
 		"advanced": ", advanced",
 		"remove": "Remove from recent queries",
 		"clear": "Clear all",
-		"empty": "Nothing yet: your next queries will show up here."
+		"empty": "Nothing yet: your next queries will show up here.",
+		"button": "Recent"
 	},
 	"tiles": {
 		"showDescription": "Show description",
@@ -287,6 +294,31 @@
 		"done": {
 			"one": "Done: {count} link, {failed} failed.",
 			"other": "Done: {count} links, {failed} failed."
+		}
+	},
+	"header": {
+		"tagline": "Link previews as tiles, a table or JSON",
+		"nav": "Site",
+		"status": "Status"
+	},
+	"footer": {
+		"status": "Service status",
+		"code": "Code on GitHub",
+		"privacy": "No cookies; history only when switched on"
+	},
+	"features": {
+		"label": "What urlhub does",
+		"tiles": {
+			"title": "Tiles, table, JSON",
+			"text": "Picture, title and description of each page, video durations, GitHub stars."
+		},
+		"seo": {
+			"title": "SEO warnings",
+			"text": "With the advanced option: missing description, title too long, noindex, redirect chains."
+		},
+		"share": {
+			"title": "Sharing",
+			"text": "A link with the whole list or a short /c/… link, with a preview in messengers."
 		}
 	}
 }

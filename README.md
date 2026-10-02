@@ -23,6 +23,12 @@ The interface is in English and Polish (`src/lib/i18n/en.json`, `pl.json`; forms
 stored on the device. SEO warnings and link errors from ldb-api are translated by their code (warnings with their
 `params`). `npm run check` fails when pl.json misses a key of en.json; an end-to-end test compares placeholders.
 
+The page has one column: a header (name, Status, PL | EN), the field with Fetch and **Recent ▾** next to it,
+the results with **Share ▾** (copy the link, or a short link) and **Export ▾** (copy JSON, download JSON or CSV),
+and a footer. An empty field offers **Try an example**: six working links (YouTube, Vimeo, GitHub, Wikipedia and
+kosmos.info.pl in the page's language, Spotify). The duration and issues columns show only when a row fills them.
+Menus open with Enter, move with ↑ ↓ and close with Escape (`src/lib/components/Menu.svelte`).
+
 **Share** copies the address of the results. **Short link** keeps the list on the server and copies an address
 like `/c/k7Qm2xAb`, which opens the list with its view, option and language (`src/lib/server/collections.ts`): one
 JSON file per list in `DATA_DIR` (the `data` volume, `/var/lib/docker/volumes/urlhub_data` on the server, in its

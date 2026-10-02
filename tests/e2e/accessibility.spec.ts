@@ -7,10 +7,17 @@ const link = (path: string) => `https://example.test${path}`;
 const LIST = [link('/seo'), link('/video'), link('/dead'), link('/stars'), link('/a')];
 const results = (extra = '') => `/?urls=${encodeURIComponent(LIST.join(' '))}${extra}`;
 
-async function expectAccessible(page: Page) {
-	const { violations } = await new AxeBuilder({ page })
-		.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
-		.analyze();
+/** within: only that part of the page (an open menu covers what is under it, which axe would count against it) */
+async function expectAccessible(page: Page, within?: string) {
+	const builder = new AxeBuilder({ page }).withTags([
+		'wcag2a',
+		'wcag2aa',
+		'wcag21a',
+		'wcag21aa',
+		'wcag22aa',
+		'best-practice'
+	]);
+	const { violations } = await (within ? builder.include(within) : builder).analyze();
 	const found = violations.map(
 		(v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`
 	);
@@ -20,8 +27,10 @@ async function expectAccessible(page: Page) {
 const settled = (page: Page) =>
 	expect(page.getByRole('button', { name: /^(Fetch|Pobierz)$/ })).toBeEnabled();
 
-test('the empty page', async ({ page }) => {
+test('the empty page, light and dark', async ({ page }) => {
 	await page.goto('/');
+	await expectAccessible(page);
+	await page.emulateMedia({ colorScheme: 'dark' });
 	await expectAccessible(page);
 });
 
@@ -41,9 +50,11 @@ test('the table with a row open', async ({ page }) => {
 test('JSON and recent queries', async ({ page }) => {
 	await page.goto(results('&view=json'));
 	await settled(page);
-	await page.locator('summary', { hasText: 'Recent queries' }).click();
+	await page.getByRole('button', { name: /^Recent/ }).click();
 	await page.getByLabel('Remember recent queries on this device').check();
 	await expectAccessible(page);
+	await page.getByRole('button', { name: 'Export' }).click();
+	await expectAccessible(page, '.menu__list');
 });
 
 test('the dark theme', async ({ page }) => {
