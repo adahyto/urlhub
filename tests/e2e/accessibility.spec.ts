@@ -3,6 +3,10 @@ import { expect, test, type Page } from '@playwright/test';
 
 // WCAG 2.2 AA (and axe's best practices) on every state of the pages: a change that breaks one fails CI
 
+// Without motion: axe measures colours, and a menu still fading in (120 ms) would read as low contrast on a
+// slow runner. People who ask their system for less motion see the pages exactly like this.
+test.use({ contextOptions: { reducedMotion: 'reduce' } });
+
 const link = (path: string) => `https://example.test${path}`;
 const LIST = [link('/seo'), link('/video'), link('/dead'), link('/stars'), link('/a')];
 const results = (extra = '') => `/?urls=${encodeURIComponent(LIST.join(' '))}${extra}`;
