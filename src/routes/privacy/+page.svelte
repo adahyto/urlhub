@@ -12,6 +12,7 @@
 		'address',
 		'storage',
 		'logs',
+		'where',
 		'rights'
 	] as const;
 
