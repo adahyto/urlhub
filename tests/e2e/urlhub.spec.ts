@@ -471,3 +471,25 @@ test('menus open with the keyboard, move with the arrows and close with Escape',
 	await expect(exportMenu).toHaveAttribute('aria-expanded', 'false');
 	await expect(exportMenu).toBeFocused();
 });
+
+test('the footer has the copyright and the privacy page, in both languages', async ({ page }) => {
+	await page.goto('/');
+	const footer = page.locator('footer');
+	await expect(footer).toContainText(`© ${new Date().getFullYear()} doner.cloud`);
+	await expect(footer.getByRole('link', { name: 'doner.cloud' })).toHaveAttribute(
+		'href',
+		'https://doner.cloud'
+	);
+	await expect(footer.getByRole('link')).toHaveCount(2);
+	await expect(page.locator('header').getByRole('link', { name: /Status|Stan/ })).toHaveCount(0);
+
+	await footer.getByRole('link', { name: 'Privacy' }).click();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Privacy');
+	await expect(page.getByRole('main')).toContainText('The data controller is Adam Tomaś');
+	await expect(page.getByRole('main')).toContainText('shortened IP address');
+
+	await page.goto('/privacy?lang=pl');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Prywatność');
+	await expect(page.getByRole('main')).toContainText('Prezes Urzędu Ochrony Danych Osobowych');
+	await expect(page.locator('time')).toHaveText('Ostatnia aktualizacja: 2 października 2026');
+});

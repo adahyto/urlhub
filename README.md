@@ -25,7 +25,9 @@ stored on the device. SEO warnings and link errors from ldb-api are translated b
 
 The page has one column: a header (name, PL | EN), the field with Fetch and **Recent ▾** next to it,
 the results with **Share ▾** (copy the link, or a short link) and **Export ▾** (copy JSON, download JSON or CSV),
-and a footer with the status page. An empty field offers **Try an example**: six working links (YouTube, Vimeo, GitHub, Wikipedia and
+and a footer (© doner.cloud, Privacy). `/privacy` is the GDPR information, on the pattern of kosmos.info.pl;
+its facts (controller, contact, authority, date) are in `src/lib/privacy.ts`. `/status` is not linked from the
+pages. An empty field offers **Try an example**: six working links (YouTube, Vimeo, GitHub, Wikipedia and
 kosmos.info.pl in the page's language, Spotify). The duration and issues columns show only when a row fills them.
 Menus open with Enter, move with ↑ ↓ and close with Escape (`src/lib/components/Menu.svelte`).
 

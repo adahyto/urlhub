@@ -3,6 +3,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/state';
 	import { LANGS, provideI18n, translator } from '$lib/i18n';
+	import { COPYRIGHT_HOLDER } from '$lib/privacy';
 
 	let { children, data } = $props();
 
@@ -63,8 +64,13 @@
 
 <footer class="site-footer">
 	<div class="shell site-footer__inner">
-		<a href={hrefTo('/status')}>{t('footer.status')}</a>
-		<span>{t('footer.privacy')}</span>
+		<span
+			>© {new Date().getFullYear()}
+			<a href={COPYRIGHT_HOLDER.url} rel="external noopener">{COPYRIGHT_HOLDER.name}</a></span
+		>
+		<a href={hrefTo('/privacy')} aria-current={page.route.id === '/privacy' ? 'page' : undefined}
+			>{t('footer.privacy')}</a
+		>
 	</div>
 </footer>
 

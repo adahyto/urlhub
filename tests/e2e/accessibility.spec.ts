@@ -84,8 +84,10 @@ test('Polish', async ({ page }) => {
 	await expectAccessible(page);
 });
 
-test('/status and a missing short link', async ({ page }) => {
+test('/status, /privacy and a missing short link', async ({ page }) => {
 	await page.goto('/status');
+	await expectAccessible(page);
+	await page.goto('/privacy?lang=pl');
 	await expectAccessible(page);
 	await page.goto('/c/AAAAAAAA');
 	await expectAccessible(page);
