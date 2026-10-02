@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { tick, type Snippet } from 'svelte';
 
 	/*
 	 * A button that opens a list of actions below it (the disclosure pattern): Escape or a click outside closes it
@@ -20,6 +20,10 @@
 	let open = $state(false);
 	let root = $state<HTMLElement>();
 	let button = $state<HTMLButtonElement>();
+	let list = $state<HTMLElement>();
+	// The list hangs from the button's right edge; when that would put it off the left of the screen
+	// (a button on the left of a phone screen), it hangs from the left edge instead
+	let alignStart = $state(false);
 
 	const items = () => [...(root?.querySelectorAll<HTMLElement>('.menu__list .menu__item') ?? [])];
 
@@ -31,7 +35,9 @@
 	async function toggle() {
 		open = !open;
 		if (open) {
-			await Promise.resolve();
+			alignStart = false;
+			await tick();
+			if (list && list.getBoundingClientRect().left < 0) alignStart = true;
 			items()[0]?.focus();
 		}
 	}
@@ -72,7 +78,7 @@
 		<svg class="menu__chevron" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" /></svg>
 	</button>
 	{#if open}
-		<div class="menu__list" {id}>
+		<div class="menu__list" class:menu__list--start={alignStart} {id} bind:this={list}>
 			{@render children(() => close())}
 		</div>
 	{/if}
@@ -144,6 +150,11 @@
 		border: 1px solid var(--border);
 		border-radius: 0.7rem;
 		box-shadow: 0 10px 24px var(--shadow);
+	}
+
+	.menu__list--start {
+		right: auto;
+		left: 0;
 	}
 
 	/* The actions inside: a block button each, with an optional line under it */
