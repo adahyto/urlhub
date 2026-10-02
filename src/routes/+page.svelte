@@ -460,7 +460,7 @@
 		</section>
 	{:else if !query.loading}
 		<ul class="features" aria-label={i18n.t('features.label')}>
-			{#each ['tiles', 'seo', 'share'] as const as f (f)}
+			{#each ['tiles', 'share', 'seo'] as const as f (f)}
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
 			{/each}
 		</ul>

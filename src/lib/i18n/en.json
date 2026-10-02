@@ -1,7 +1,7 @@
 {
 	"meta": {
-		"title": "urlhub – link previews",
-		"description": "Paste links and see what's behind each one: picture, title, description, video duration. Check pages for SEO and share the list with one link.",
+		"title": "urlhub – link sets to share",
+		"description": "Collect links to products, videos and articles into sets and share them with one link – each item with its picture, title and description.",
 		"statusTitle": "urlhub – status"
 	},
 	"form": {
@@ -281,8 +281,8 @@
 			"other": "{count} links: {sites}"
 		},
 		"more": " +{count}",
-		"open": "Open them as tiles, a table or JSON on urlhub.",
-		"imageAlt": "urlhub: link previews as tiles, a table or JSON"
+		"open": "Open the whole set on urlhub.",
+		"imageAlt": "urlhub: link sets to share"
 	},
 	"a11y": {
 		"skip": "Skip to results",
@@ -297,25 +297,25 @@
 		}
 	},
 	"header": {
-		"tagline": "Paste links and see what's behind each one",
+		"tagline": "Collect links into sets and share them",
 		"nav": "Language"
 	},
 	"footer": {
 		"privacy": "Privacy"
 	},
 	"features": {
-		"label": "What urlhub does",
+		"label": "What urlhub is for",
 		"tiles": {
-			"title": "See what's behind a link",
-			"text": "Picture, title and description of each page, video durations and GitHub stars – as tiles, a table or JSON to download."
+			"title": "A set of links in one place",
+			"text": "Paste links to products, videos or articles – each shows with its picture, title and description, videos with their duration."
 		},
 		"seo": {
-			"title": "Check pages for SEO",
-			"text": "Tick “Check SEO” to see what is missing: a description, a picture for sharing, a heading – and whether anything blocks search engines."
+			"title": "Arrange and compare",
+			"text": "Set the order, remove what you do not need, compare items in the table or download the set as CSV. Site owners can use “Check SEO”."
 		},
 		"share": {
-			"title": "Share with one link",
-			"text": "Send a link with the whole list or a short /c/… link – messengers show a preview."
+			"title": "Send sets with one link",
+			"text": "One link opens the whole set, such as a gift list or a gear comparison. Send it to friends – messengers show a preview."
 		}
 	},
 	"privacy": {

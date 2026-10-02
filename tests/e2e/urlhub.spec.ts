@@ -424,7 +424,7 @@ test('a shared link shows its list in messengers: Open Graph tags rendered by th
 	const en = await (await request.get(address, { headers: { 'accept-language': 'en-US' } })).text();
 	expect(meta(en, 'og:title')).toBe('5 links: example.test, github.com, vimeo.com +2');
 	expect(meta(en, 'og:description')).toBe(
-		'example.test/a?x=1&y=2 · github.com/x · vimeo.com/1 · c.test/ … — Open them as tiles, a table or JSON on urlhub.'
+		'example.test/a?x=1&y=2 · github.com/x · vimeo.com/1 · c.test/ … — Open the whole set on urlhub.'
 	);
 	expect(meta(en, 'og:image')).toBe('http://127.0.0.1:4173/og.png');
 	expect(meta(en, 'twitter:card')).toBe('summary_large_image');
@@ -435,7 +435,7 @@ test('a shared link shows its list in messengers: Open Graph tags rendered by th
 	expect(meta(pl, 'og:locale')).toBe('pl_PL');
 
 	const plain = await (await request.get('/')).text();
-	expect(meta(plain, 'og:title')).toBe('urlhub – link previews');
+	expect(meta(plain, 'og:title')).toBe('urlhub – link sets to share');
 	expect((await request.get('/og.png')).headers()['content-type']).toBe('image/png');
 });
 
@@ -445,14 +445,14 @@ test('the empty page explains itself, and "Try an example" fetches working examp
 	await page.goto('/?lang=pl');
 	await expect(page.getByLabel('Linki', { exact: true })).toHaveValue('');
 	await expect(
-		page.getByRole('list', { name: 'Co robi urlhub' }).getByRole('listitem')
+		page.getByRole('list', { name: 'Do czego służy urlhub' }).getByRole('listitem')
 	).toHaveCount(3);
 	await page.getByRole('button', { name: 'Wypróbuj przykład' }).click();
 	await expect(summary(page)).toHaveText('6 linków');
 	const sent = (await lastRequest(page)).text.split('\n');
 	expect(sent).toContain('https://pl.wikipedia.org/wiki/Mars');
 	expect(sent).toContain('https://kosmos.info.pl/pl/home');
-	await expect(page.getByRole('list', { name: 'Co robi urlhub' })).toHaveCount(0);
+	await expect(page.getByRole('list', { name: 'Do czego służy urlhub' })).toHaveCount(0);
 });
 
 test('menus open with the keyboard, move with the arrows and close with Escape', async ({
