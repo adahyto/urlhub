@@ -124,6 +124,13 @@
 		cursor: pointer;
 	}
 
+	/* No line above the switch when there is nothing above it */
+	.recent__switch:first-child {
+		margin-top: 0;
+		padding-top: 0.5rem;
+		border-top: 0;
+	}
+
 	.recent__switch input {
 		margin: 0;
 		accent-color: var(--accent);

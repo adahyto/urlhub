@@ -182,6 +182,17 @@ test('on a phone the table does not scroll sideways', async ({ page }) => {
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
+test('on a phone the Recent menu opens on screen', async ({ page }) => {
+	await page.setViewportSize({ width: 360, height: 740 });
+	await page.goto('/');
+	await page.getByRole('button', { name: /^Recent/ }).click();
+	const box = await page.locator('.menu__list').boundingBox();
+	expect(box).not.toBeNull();
+	expect(box!.x).toBeGreaterThanOrEqual(0);
+	expect(box!.x + box!.width).toBeLessThanOrEqual(360);
+	await expect(page.getByLabel('Remember recent queries on this device')).toBeInViewport();
+});
+
 test('the status page shows urlhub and ldb-api up', async ({ page }) => {
 	await page.goto('/status');
 	await expect(page.locator('.check')).toHaveCount(2);
