@@ -9,6 +9,7 @@
 	import UrlForm from '$lib/components/UrlForm.svelte';
 	import RecentMenu from '$lib/components/RecentMenu.svelte';
 	import Menu from '$lib/components/Menu.svelte';
+	import SeoLinks from '$lib/components/SeoLinks.svelte';
 	import { RecentQueries, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
@@ -264,6 +265,26 @@
 				: ''
 	);
 
+	// What the home page is, for search engines (schema.org WebApplication)
+	const jsonLd = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'WebApplication',
+			name: 'urlhub',
+			url: `${page.url.origin}/`,
+			description: i18n.t('meta.description'),
+			applicationCategory: 'UtilitiesApplication',
+			operatingSystem: 'Any',
+			browserRequirements: 'Requires JavaScript',
+			inLanguage: ['pl', 'en'],
+			isAccessibleForFree: true,
+			offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' }
+		}).replace(/</g, '\\u003c')
+	);
+
+	// The closing tag is split so that it does not end this component's own script
+	const jsonLdTag = $derived(`<script type="application/ld+json">${jsonLd}</scr` + `ipt>`);
+
 	// Only shared links (?urls=...) load by themselves; the examples wait for a click
 	onMount(() => {
 		recent.load();
@@ -289,7 +310,18 @@
 	<meta name="twitter:title" content={preview.title} />
 	<meta name="twitter:description" content={preview.description} />
 	<meta name="twitter:image" content={`${page.url.origin}/og.png`} />
+	{#if shared.length}
+		<!-- A set of someone's links: worth a preview in messengers, not a place in search results -->
+		<meta name="robots" content="noindex, follow" />
+	{:else}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- JSON-LD built here, "<" escaped -->
+		{@html jsonLdTag}
+	{/if}
 </svelte:head>
+
+{#if !shared.length}
+	<SeoLinks path="/" />
+{/if}
 
 <main class="page shell">
 	{#if query.rows.length}

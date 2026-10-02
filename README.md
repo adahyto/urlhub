@@ -45,6 +45,11 @@ the list, and the list is never sent anywhere. Storing on a device needs consent
 (ePrivacy art. 5(3), in Poland art. 399 Prawo komunikacji elektronicznej); the switch is that request, so no
 consent banner is needed. The app sets no cookies.
 
+For search engines (`src/lib/seo.ts`): the home page and `/privacy` have a canonical address and language
+versions (`?lang=pl`, `?lang=en`, x-default without `?lang=`), the home page a JSON-LD `WebApplication`;
+results (`?urls=`) are `noindex, follow`; `/sitemap.xml` lists the indexed pages, `/robots.txt` keeps crawlers off
+`/api/` and `/c/`. All addresses come from `ORIGIN`.
+
 `/status` shows whether urlhub and ldb-api answer, and ldb-api's counts (no links).
 
 Runs on the server at http://51.75.116.68:98 (SvelteKit, adapter-node). Link details come from
