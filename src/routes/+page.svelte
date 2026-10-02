@@ -236,6 +236,16 @@
 		};
 	});
 
+	const announcement = $derived(
+		query.loading
+			? query.rows.length
+				? i18n.t('a11y.fetching', { count: query.rows.length })
+				: ''
+			: query.rows.length
+				? i18n.t('a11y.done', { count: query.rows.length, failed: query.failed })
+				: ''
+	);
+
 	// Only shared links (?urls=...) load by themselves; the examples wait for a click
 	onMount(() => {
 		recent.load();
@@ -264,6 +274,10 @@
 </svelte:head>
 
 <main class="page">
+	<h1 class="sr-only">urlhub</h1>
+	{#if query.rows.length}
+		<a class="skip" href="#results">{i18n.t('a11y.skip')}</a>
+	{/if}
 	<UrlForm
 		bind:text
 		bind:advanced
@@ -278,105 +292,107 @@
 
 	<RecentList {recent} onopen={reopen} />
 
+	<!-- Said once when a query starts and once when it ends, not at every result -->
+	<p class="sr-only" role="status">{announcement}</p>
+
 	{#if query.rows.length}
-		<div class="toolbar">
-			<p class="toolbar__summary" aria-live="polite">
-				{summary}{#if query.failed}<span class="toolbar__failed"
-						>{i18n.t('toolbar.failed', { count: query.failed })}</span
-					>{/if}{filtered}
-			</p>
-			<div class="toolbar__tabs" role="tablist" aria-label={i18n.t('views.label')}>
-				{#each VIEWS as v (v)}
-					<button
-						type="button"
-						role="tab"
-						aria-selected={view === v}
-						class:is-active={view === v}
-						onclick={() => show(v)}>{i18n.t(`views.${v}`)}</button
-					>
-				{/each}
-			</div>
-			<input
-				class="toolbar__filter"
-				type="search"
-				placeholder={i18n.t('toolbar.filter')}
-				aria-label={i18n.t('toolbar.filterLabel')}
-				bind:value={filter}
-			/>
-			<select class="toolbar__select" aria-label={i18n.t('toolbar.show')} bind:value={only}>
-				<option value="all">{i18n.t('toolbar.all')}</option>
-				<option value="ok">{i18n.t('toolbar.ok')}</option>
-				<option value="failed">{i18n.t('toolbar.failedOnly')}</option>
-				{#if query.advanced}
-					<option value="warnings">{i18n.t('toolbar.warnings')}</option>
-				{/if}
-			</select>
-			{#if types.length + services.length > 1}
-				<select class="toolbar__select" aria-label={i18n.t('toolbar.type')} bind:value={kind}>
-					<option value="">{i18n.t('toolbar.allTypes')}</option>
-					<optgroup label={i18n.t('toolbar.typeGroup')}>
-						{#each types as t (t)}
-							<option value={t}>{typeName(t)}</option>
-						{/each}
-					</optgroup>
-					{#if services.length}
-						<optgroup label={i18n.t('toolbar.siteGroup')}>
-							{#each services as t (t)}
-								<option value={t}>{t}</option>
-							{/each}
-						</optgroup>
+		<section id="results" class="results" aria-labelledby="results-heading" tabindex="-1">
+			<h2 id="results-heading" class="sr-only">{i18n.t('a11y.results')}</h2>
+			<div class="toolbar">
+				<p class="toolbar__summary">
+					{summary}{#if query.failed}<span class="toolbar__failed"
+							>{i18n.t('toolbar.failed', { count: query.failed })}</span
+						>{/if}{filtered}
+				</p>
+				<div class="toolbar__tabs" role="group" aria-label={i18n.t('views.label')}>
+					{#each VIEWS as v (v)}
+						<button type="button" aria-pressed={view === v} onclick={() => show(v)}
+							>{i18n.t(`views.${v}`)}</button
+						>
+					{/each}
+				</div>
+				<input
+					class="toolbar__filter"
+					type="search"
+					placeholder={i18n.t('toolbar.filter')}
+					aria-label={i18n.t('toolbar.filterLabel')}
+					bind:value={filter}
+				/>
+				<select class="toolbar__select" aria-label={i18n.t('toolbar.show')} bind:value={only}>
+					<option value="all">{i18n.t('toolbar.all')}</option>
+					<option value="ok">{i18n.t('toolbar.ok')}</option>
+					<option value="failed">{i18n.t('toolbar.failedOnly')}</option>
+					{#if query.advanced}
+						<option value="warnings">{i18n.t('toolbar.warnings')}</option>
 					{/if}
 				</select>
-			{/if}
-			<div class="toolbar__actions">
-				<button type="button" onclick={share}>{i18n.t('toolbar.share')}</button>
-				<button
-					type="button"
-					onclick={shortLink}
-					disabled={query.loading}
-					title={i18n.t('toolbar.shortLinkHint')}>{i18n.t('toolbar.shortLink')}</button
-				>
-				{#if query.failed && !query.loading}
-					<button type="button" onclick={() => query.retryFailed()}>
-						{i18n.t('toolbar.retry', { count: query.failed })}
-					</button>
+				{#if types.length + services.length > 1}
+					<select class="toolbar__select" aria-label={i18n.t('toolbar.type')} bind:value={kind}>
+						<option value="">{i18n.t('toolbar.allTypes')}</option>
+						<optgroup label={i18n.t('toolbar.typeGroup')}>
+							{#each types as t (t)}
+								<option value={t}>{typeName(t)}</option>
+							{/each}
+						</optgroup>
+						{#if services.length}
+							<optgroup label={i18n.t('toolbar.siteGroup')}>
+								{#each services as t (t)}
+									<option value={t}>{t}</option>
+								{/each}
+							</optgroup>
+						{/if}
+					</select>
 				{/if}
-				{#if view !== 'tiles'}
-					<button type="button" onclick={copyJson}>{i18n.t('toolbar.copyJson')}</button>
-					<button type="button" onclick={downloadJson}>{i18n.t('toolbar.downloadJson')}</button>
-					<button type="button" onclick={downloadCsv}>{i18n.t('toolbar.downloadCsv')}</button>
-				{/if}
+				<div class="toolbar__actions">
+					<button type="button" onclick={share}>{i18n.t('toolbar.share')}</button>
+					<button
+						type="button"
+						onclick={shortLink}
+						disabled={query.loading}
+						title={i18n.t('toolbar.shortLinkHint')}>{i18n.t('toolbar.shortLink')}</button
+					>
+					{#if query.failed && !query.loading}
+						<button type="button" onclick={() => query.retryFailed()}>
+							{i18n.t('toolbar.retry', { count: query.failed })}
+						</button>
+					{/if}
+					{#if view !== 'tiles'}
+						<button type="button" onclick={copyJson}>{i18n.t('toolbar.copyJson')}</button>
+						<button type="button" onclick={downloadJson}>{i18n.t('toolbar.downloadJson')}</button>
+						<button type="button" onclick={downloadCsv}>{i18n.t('toolbar.downloadCsv')}</button>
+					{/if}
+				</div>
 			</div>
-		</div>
-		{#if notice}
-			<p class="notice" role="status">{notice}</p>
-		{/if}
-		{#if removed}
-			<p class="notice" role="status">
-				{i18n.t('notices.removed', { name: removed.row.title || removed.row.url })}
-				<button type="button" class="notice__undo" onclick={undoRemove}
-					>{i18n.t('notices.undo')}</button
-				>
-			</p>
-		{/if}
-		{#if view === 'table' && !query.advanced && advanced}
-			<p class="notice">{i18n.t('notices.fetchAgain')}</p>
-		{/if}
+			{#if notice}
+				<p class="notice" role="status">{notice}</p>
+			{/if}
+			{#if removed}
+				<p class="notice" role="status">
+					{i18n.t('notices.removed', { name: removed.row.title || removed.row.url })}
+					<button type="button" class="notice__undo" onclick={undoRemove}
+						>{i18n.t('notices.undo')}</button
+					>
+				</p>
+			{/if}
+			{#if view === 'table' && !query.advanced && advanced}
+				<p class="notice">{i18n.t('notices.fetchAgain')}</p>
+			{/if}
 
-		{#if view === 'tiles'}
-			<Tiles urls={shown.map(toTileUrl)} {removable} {movable} onremove={remove} onmove={move} />
-		{:else if view === 'table'}
-			<ResultsTable
-				rows={shown}
-				advanced={query.advanced}
-				{removable}
-				{movable}
-				onremove={remove}
-				onmove={move}
-			/>
-		{:else}
-			<JsonView {json} />
-		{/if}
+			{#if view === 'tiles'}
+				<Tiles urls={shown.map(toTileUrl)} {removable} {movable} onremove={remove} onmove={move} />
+			{:else if view === 'table'}
+				<ResultsTable
+					rows={shown}
+					advanced={query.advanced}
+					{removable}
+					{movable}
+					onremove={remove}
+					onmove={move}
+				/>
+			{:else}
+				<JsonView {json} />
+			{/if}
+		</section>
 	{/if}
 </main>
 
@@ -393,6 +409,32 @@
 			-apple-system,
 			'Segoe UI',
 			sans-serif;
+	}
+
+	.results {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.results:focus {
+		outline: none;
+	}
+
+	/* Shown when reached with the keyboard: jumps over the form to the results */
+	.skip {
+		position: absolute;
+		left: 1rem;
+		top: -3rem;
+		z-index: 20;
+		padding: 0.5rem 0.75rem;
+		color: var(--on-accent);
+		background: var(--accent);
+		border-radius: 0.4rem;
+	}
+
+	.skip:focus {
+		top: 0.75rem;
 	}
 
 	.toolbar {
@@ -437,7 +479,7 @@
 		cursor: pointer;
 	}
 
-	.toolbar__tabs button.is-active {
+	.toolbar__tabs button[aria-pressed='true'] {
 		background: var(--surface);
 		box-shadow: 0 1px 3px var(--shadow);
 	}

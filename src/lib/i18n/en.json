@@ -276,5 +276,17 @@
 		"more": " +{count}",
 		"open": "Open them as tiles, a table or JSON on urlhub.",
 		"imageAlt": "urlhub: link previews as tiles, a table or JSON"
+	},
+	"a11y": {
+		"skip": "Skip to results",
+		"results": "Results",
+		"fetching": {
+			"one": "Fetching {count} link…",
+			"other": "Fetching {count} links…"
+		},
+		"done": {
+			"one": "Done: {count} link, {failed} failed.",
+			"other": "Done: {count} links, {failed} failed."
+		}
 	}
 }

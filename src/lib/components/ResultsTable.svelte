@@ -101,6 +101,10 @@
 	const ariaSort = (key: SortKey) =>
 		sortKey === key ? (descending ? 'descending' : 'ascending') : 'none';
 
+	// Columns only when something fills them: durations come with videos, issues with errors or SEO warnings
+	const hasDuration = $derived(rows.some((r) => r.duration));
+	const hasIssues = $derived(rows.some((r) => r.error || r.warnings?.length));
+
 	const open = new SvelteSet<string>();
 	const toggle = (url: string) => (open.has(url) ? open.delete(url) : open.add(url));
 
@@ -143,15 +147,15 @@
 			<tr>
 				<th class="table__img"><span class="table__sr">{i18n.t('table.picture')}</span></th>
 				<th aria-sort={ariaSort('title')}>{@render sortButton('title', i18n.t('table.title'))}</th>
-				<th class="table__seo" aria-sort={ariaSort('warnings')}
-					>{@render sortButton('warnings', i18n.t('table.issues'))}</th
-				>
+				{#if hasIssues}<th class="table__seo" aria-sort={ariaSort('warnings')}
+						>{@render sortButton('warnings', i18n.t('table.issues'))}</th
+					>{/if}
 				<th class="table__type" aria-sort={ariaSort('type')}
 					>{@render sortButton('type', i18n.t('table.type'))}</th
 				>
-				<th class="table__dur" aria-sort={ariaSort('duration')}
-					>{@render sortButton('duration', i18n.t('table.duration'))}</th
-				>
+				{#if hasDuration}<th class="table__dur" aria-sort={ariaSort('duration')}
+						>{@render sortButton('duration', i18n.t('table.duration'))}</th
+					>{/if}
 			</tr>
 		</thead>
 		<tbody>
@@ -272,7 +276,7 @@
 							<RowDetails {item} {advanced} />
 						{/if}
 					</td>
-					<td class="table__seo">{@render badges(item)}</td>
+					{#if hasIssues}<td class="table__seo">{@render badges(item)}</td>{/if}
 					<td class="table__type">
 						{item.pending
 							? ''
@@ -280,7 +284,7 @@
 								class="table__service">{item.service}</span
 							>{/if}
 					</td>
-					<td class="table__dur">{item.duration ?? ''}</td>
+					{#if hasDuration}<td class="table__dur">{item.duration ?? ''}</td>{/if}
 				</tr>
 			{/each}
 		</tbody>
@@ -484,7 +488,12 @@
 	}
 
 	.table__edit button {
-		padding: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.75rem;
+		min-height: 1.75rem;
+		padding: 0 0.25rem;
 		font: inherit;
 		font-size: 0.75rem;
 		font-weight: 600;
