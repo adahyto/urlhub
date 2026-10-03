@@ -10,13 +10,17 @@
 	import RecentMenu from '$lib/components/RecentMenu.svelte';
 	import Menu from '$lib/components/Menu.svelte';
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
+	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
+	import { featuredFor, type FeaturedSet } from '$lib/featured';
 	import { RecentQueries, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
 	import type { Row, View } from '$lib/types';
 	import { has, useI18n, type Key } from '$lib/i18n';
 	import { queryError } from '$lib/i18n/messages';
+	import type { PageProps } from './$types';
 
+	let { data }: PageProps = $props();
 	const i18n = useI18n();
 
 	// "Try an example": links checked to work, each with a picture; Wikipedia and kosmos in the page's language
@@ -120,6 +124,17 @@
 	// SEO details show in the table and the JSON: asking for them from the tiles opens the table
 	function advancedChanged(on: boolean) {
 		if (on && view === 'tiles') show('table');
+	}
+
+	const featured = $derived(featuredFor(i18n.lang, data.today));
+
+	/** A featured set opens like a pasted list, in the view that shows it best */
+	function openSet(set: FeaturedSet) {
+		text = set.urls.join('\n');
+		view = set.view;
+		advanced = false;
+		fetchLinks();
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 
 	/** A recent query comes back with its links, view and option, and is fetched again */
@@ -495,6 +510,7 @@
 			{/if}
 		</section>
 	{:else if !query.loading}
+		<FeaturedSets sets={featured} onopen={openSet} />
 		<ul class="features" aria-label={i18n.t('features.label')}>
 			{#each ['tiles', 'share', 'seo'] as const as f (f)}
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>

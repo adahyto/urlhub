@@ -362,6 +362,12 @@
 			"text": "Jeden link otwiera cały zestaw, np. listę prezentów albo porównanie sprzętu. Wyślij go znajomym – w komunikatorze pokaże się podgląd."
 		}
 	},
+	"featured": {
+		"title": "Polecane zestawy",
+		"seasonal": "Na teraz",
+		"more": "Więcej zestawów ({count})",
+		"less": "Mniej zestawów"
+	},
 	"privacy": {
 		"title": "Prywatność",
 		"intro": "urlhub nie używa ciasteczek, analityki ani reklam. Poniżej opisujemy, jakie dane powstają podczas korzystania z niego i co się z nimi dzieje.",

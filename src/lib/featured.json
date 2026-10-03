@@ -1,0 +1,293 @@
+[
+	{
+		"id": "halloween",
+		"lang": "pl",
+		"season": { "from": "10-01", "to": "11-02" },
+		"view": "tiles",
+		"title": "Halloween i Zaduszki",
+		"description": "Skąd się wzięło Halloween, polskie Zaduszki i klasyka grozy: Frankenstein, Drakula, Poe.",
+		"urls": [
+			"https://pl.wikipedia.org/wiki/Halloween",
+			"https://pl.wikipedia.org/wiki/Zaduszki",
+			"https://pl.wikipedia.org/wiki/Wszystkich_Świętych",
+			"https://pl.wikipedia.org/wiki/Frankenstein_(powieść)",
+			"https://pl.wikipedia.org/wiki/Drakula_(powieść)",
+			"https://pl.wikipedia.org/wiki/Legenda_o_Sennej_Kotlinie",
+			"https://pl.wikipedia.org/wiki/Edgar_Allan_Poe"
+		]
+	},
+	{
+		"id": "kosmos",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Kosmos na start",
+		"description": "Zdjęcie dnia NASA, Układ Słoneczny na żywo, porównanie wielkości gwiazd i godziny wschodu Słońca.",
+		"urls": [
+			"https://kosmos.info.pl/pl/home",
+			"https://slonce.info.pl/",
+			"https://apod.nasa.gov/apod/astropix.html",
+			"https://eyes.nasa.gov/apps/solar-system/",
+			"https://pl.wikipedia.org/wiki/Układ_Słoneczny",
+			"https://www.youtube.com/watch?v=GoW8Tf7hTGA",
+			"https://www.youtube.com/watch?v=wupToqz1e2g",
+			"https://polsa.gov.pl/",
+			"https://www.spaceweatherlive.com/"
+		]
+	},
+	{
+		"id": "filmy",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Filmy, które uczą",
+		"description": "Fizyka, matematyka i kosmos w kilkanaście minut: znane filmy i polskie kanały popularnonaukowe.",
+		"urls": [
+			"https://www.youtube.com/watch?v=DxL2HoqLbyA",
+			"https://www.youtube.com/watch?v=aircAruvnKk",
+			"https://www.youtube.com/watch?v=MBRqu0YOH14",
+			"https://www.youtube.com/watch?v=BxV14h0kFs0",
+			"https://www.youtube.com/watch?v=libKVRa01L8",
+			"https://www.youtube.com/@Astrofaza",
+			"https://www.youtube.com/@Polimaty",
+			"https://www.youtube.com/@NaukaToLubie",
+			"https://www.youtube.com/@kosmonauta"
+		]
+	},
+	{
+		"id": "ciekawe-strony",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Dziwne i ciekawe strony",
+		"description": "Radia z całego świata na globusie, widok z cudzego okna, wiatr na żywo i strony, które po prostu bawią.",
+		"urls": [
+			"https://radio.garden/",
+			"https://www.window-swap.com/",
+			"https://earth.nullschool.net/",
+			"https://thetruesize.com/",
+			"https://quickdraw.withgoogle.com/",
+			"https://pointerpointer.com/",
+			"https://www.drawastickman.com/",
+			"https://theuselessweb.com/"
+		]
+	},
+	{
+		"id": "programy",
+		"lang": "pl",
+		"view": "table",
+		"title": "Darmowe programy open source",
+		"description": "Zamienniki płatnych programów do zdjęć, grafiki, wideo, dźwięku i biura. W tabeli porównasz je po gwiazdkach na GitHubie.",
+		"urls": [
+			"https://github.com/GNOME/gimp",
+			"https://github.com/KDE/krita",
+			"https://github.com/darktable-org/darktable",
+			"https://github.com/RawTherapee/RawTherapee",
+			"https://github.com/inkscape/inkscape",
+			"https://github.com/upscayl/upscayl",
+			"https://github.com/blender/blender",
+			"https://github.com/KDE/kdenlive",
+			"https://github.com/obsproject/obs-studio",
+			"https://github.com/HandBrake/HandBrake",
+			"https://github.com/audacity/audacity",
+			"https://github.com/videolan/vlc",
+			"https://github.com/LibreOffice/core",
+			"https://github.com/keepassxreboot/keepassxc",
+			"https://github.com/localsend/localsend"
+		]
+	},
+	{
+		"id": "narzedzia",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Przydatne narzędzia online",
+		"description": "Usuwanie tła, zmniejszanie zdjęć, PDF-y, tłumacz, test łącza i sprawdzenie, czy Twój e-mail wyciekł.",
+		"urls": [
+			"https://www.remove.bg/",
+			"https://tinypng.com/",
+			"https://squoosh.app/",
+			"https://www.ilovepdf.com/",
+			"https://www.deepl.com/translator",
+			"https://excalidraw.com/",
+			"https://haveibeenpwned.com/",
+			"https://fast.com/",
+			"https://www.openstreetmap.org/",
+			"https://www.wolframalpha.com/"
+		]
+	},
+	{
+		"id": "pomoc",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Organizacje pomocowe",
+		"description": "Oficjalne strony organizacji, którym można pomóc pieniędzmi, czasem albo jako dawca szpiku. Kolejność alfabetyczna.",
+		"urls": [
+			"https://www.caritas.pl/",
+			"https://www.dkms.pl/",
+			"https://fdds.pl/",
+			"https://www.pajacyk.pl/",
+			"https://www.pah.org.pl/",
+			"https://pck.pl/",
+			"https://napaluchu.waw.pl/",
+			"https://www.unicef.pl/"
+		]
+	},
+	{
+		"id": "nauka",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Darmowa nauka",
+		"description": "Kursy uczelni, programowanie, języki obce, filmy i książki za darmo.",
+		"urls": [
+			"https://www.coursera.org/",
+			"https://cs50.harvard.edu/x/",
+			"https://ocw.mit.edu/",
+			"https://www.freecodecamp.org/",
+			"https://www.duolingo.com/",
+			"https://ninateka.pl/",
+			"https://wolnelektury.pl/"
+		]
+	},
+	{
+		"id": "halloween",
+		"lang": "en",
+		"season": { "from": "10-01", "to": "11-02" },
+		"view": "tiles",
+		"title": "Halloween classics",
+		"description": "Where Halloween comes from, and free classics to read on the night: Frankenstein, Dracula, Poe.",
+		"urls": [
+			"https://en.wikipedia.org/wiki/Halloween",
+			"https://en.wikipedia.org/wiki/Day_of_the_Dead",
+			"https://www.gutenberg.org/ebooks/84",
+			"https://www.gutenberg.org/ebooks/345",
+			"https://www.gutenberg.org/ebooks/41",
+			"https://www.gutenberg.org/ebooks/2148",
+			"https://www.gutenberg.org/ebooks/43",
+			"https://www.gutenberg.org/ebooks/209"
+		]
+	},
+	{
+		"id": "space",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Space for beginners",
+		"description": "NASA's picture of the day, the Solar System live, how big stars really are and when the Sun rises.",
+		"urls": [
+			"https://kosmos.info.pl/en/home",
+			"https://slonce.info.pl/en",
+			"https://apod.nasa.gov/apod/astropix.html",
+			"https://eyes.nasa.gov/apps/solar-system/",
+			"https://en.wikipedia.org/wiki/Solar_System",
+			"https://www.youtube.com/watch?v=GoW8Tf7hTGA",
+			"https://www.youtube.com/watch?v=wupToqz1e2g",
+			"https://science.nasa.gov/"
+		]
+	},
+	{
+		"id": "videos",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Videos that teach",
+		"description": "Physics, maths and space in a few minutes each: well-known videos and the channels behind them.",
+		"urls": [
+			"https://www.youtube.com/watch?v=DxL2HoqLbyA",
+			"https://www.youtube.com/watch?v=aircAruvnKk",
+			"https://www.youtube.com/watch?v=MBRqu0YOH14",
+			"https://www.youtube.com/watch?v=BxV14h0kFs0",
+			"https://www.youtube.com/watch?v=libKVRa01L8",
+			"https://www.youtube.com/@kurzgesagt",
+			"https://www.youtube.com/@veritasium",
+			"https://www.youtube.com/@smartereveryday",
+			"https://www.youtube.com/@3blue1brown",
+			"https://www.youtube.com/@minutephysics"
+		]
+	},
+	{
+		"id": "curious-websites",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Strange and wonderful websites",
+		"description": "Radio stations on a spinning globe, the view from a stranger's window, live winds and pages made just for fun.",
+		"urls": [
+			"https://radio.garden/",
+			"https://www.window-swap.com/",
+			"https://earth.nullschool.net/",
+			"https://thetruesize.com/",
+			"https://quickdraw.withgoogle.com/",
+			"https://pointerpointer.com/",
+			"https://www.drawastickman.com/",
+			"https://theuselessweb.com/"
+		]
+	},
+	{
+		"id": "software",
+		"lang": "en",
+		"view": "table",
+		"title": "Free open-source software",
+		"description": "Free alternatives for photos, graphics, video, sound and office work. The table compares them by GitHub stars.",
+		"urls": [
+			"https://github.com/GNOME/gimp",
+			"https://github.com/KDE/krita",
+			"https://github.com/darktable-org/darktable",
+			"https://github.com/RawTherapee/RawTherapee",
+			"https://github.com/inkscape/inkscape",
+			"https://github.com/upscayl/upscayl",
+			"https://github.com/blender/blender",
+			"https://github.com/KDE/kdenlive",
+			"https://github.com/obsproject/obs-studio",
+			"https://github.com/HandBrake/HandBrake",
+			"https://github.com/audacity/audacity",
+			"https://github.com/videolan/vlc",
+			"https://github.com/LibreOffice/core",
+			"https://github.com/keepassxreboot/keepassxc",
+			"https://github.com/localsend/localsend"
+		]
+	},
+	{
+		"id": "tools",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Handy online tools",
+		"description": "Remove a background, shrink photos, edit PDFs, translate, test your connection and check whether your email leaked.",
+		"urls": [
+			"https://www.remove.bg/",
+			"https://tinypng.com/",
+			"https://squoosh.app/",
+			"https://www.ilovepdf.com/",
+			"https://www.deepl.com/translator",
+			"https://excalidraw.com/",
+			"https://haveibeenpwned.com/",
+			"https://fast.com/",
+			"https://www.openstreetmap.org/",
+			"https://www.wolframalpha.com/"
+		]
+	},
+	{
+		"id": "giving",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Effective giving",
+		"description": "Official sites of charities and of the groups that research where a donation does the most good. In alphabetical order.",
+		"urls": [
+			"https://www.givedirectly.org/",
+			"https://www.givewell.org/",
+			"https://www.givingwhatwecan.org/",
+			"https://www.kiva.org/",
+			"https://www.msf.org/",
+			"https://www.unicef.org/"
+		]
+	},
+	{
+		"id": "learning",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Free learning",
+		"description": "University courses, coding, languages, films and books, all free.",
+		"urls": [
+			"https://www.coursera.org/",
+			"https://cs50.harvard.edu/x/",
+			"https://ocw.mit.edu/",
+			"https://www.freecodecamp.org/",
+			"https://www.duolingo.com/",
+			"https://www.openculture.com/",
+			"https://www.gutenberg.org/"
+		]
+	}
+]
