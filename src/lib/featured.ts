@@ -20,6 +20,10 @@ export interface FeaturedSet {
 	view: 'tiles' | 'table';
 	title: string;
 	description: string;
+	/** A few sentences above the links on the set's page: what the set is and why these links */
+	intro?: string;
+	/** The id of the same set in the other language, for search engines (hreflang) */
+	alternate?: string;
 	urls: string[];
 	/** Pictures (absolute addresses) shown on the card, through /img */
 	covers?: string[];
@@ -41,6 +45,9 @@ export function featuredFor(lang: Lang, today: string): FeaturedSet[] {
 		...sets.filter((s) => !s.season)
 	];
 }
+
+/** A set's page */
+export const setPath = (set: Pick<FeaturedSet, 'lang' | 'id'>) => `/s/${set.lang}/${set.id}`;
 
 /** How a set is named in the covers the page gets: "pl/halloween" */
 export const setKey = (set: Pick<FeaturedSet, 'lang' | 'id'>) => `${set.lang}/${set.id}`;

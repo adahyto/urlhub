@@ -283,17 +283,17 @@ test('the list can be edited: remove with undo, move with buttons and by draggin
 	await tile('a').hover();
 	await tile('a').getByRole('button', { name: 'Remove' }).click();
 	await expect(titles).toHaveText(['Title of /b', 'Title of /c']);
-	expect(urlsInAddress()).toBe(`${link('/b')} ${link('/c')}`);
+	await expect.poll(urlsInAddress).toBe(`${link('/b')} ${link('/c')}`);
 	await expect(field(page)).toHaveValue(`${link('/b')}\n${link('/c')}`);
 	await page.getByRole('button', { name: 'Undo' }).click();
 	await expect(titles).toHaveText(['Title of /a', 'Title of /b', 'Title of /c']);
-	expect(urlsInAddress()).toBe(`${link('/a')} ${link('/b')} ${link('/c')}`);
+	await expect.poll(urlsInAddress).toBe(`${link('/a')} ${link('/b')} ${link('/c')}`);
 
 	await tile('a').getByRole('button', { name: 'Move later' }).click();
 	await expect(titles).toHaveText(['Title of /b', 'Title of /a', 'Title of /c']);
 	await tile('c').dragTo(tile('b'));
 	await expect(titles).toHaveText(['Title of /c', 'Title of /b', 'Title of /a']);
-	expect(urlsInAddress()).toBe(`${link('/c')} ${link('/b')} ${link('/a')}`);
+	await expect.poll(urlsInAddress).toBe(`${link('/c')} ${link('/b')} ${link('/a')}`);
 	// Nothing was fetched again
 	expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
 
@@ -607,12 +607,14 @@ test('search engines get one canonical page per language, results stay out of th
 	expect(links(await head('/privacy'))[0]).toBe(`canonical ${O}/privacy`);
 
 	const sitemap = await (await request.get('/sitemap.xml')).text();
-	expect(sitemap.match(/<loc>[^<]+<\/loc>/g)).toEqual([
+	expect(sitemap.match(/<loc>[^<]+<\/loc>/g)?.slice(0, 4)).toEqual([
 		`<loc>${O}/?lang=en</loc>`,
 		`<loc>${O}/?lang=pl</loc>`,
 		`<loc>${O}/privacy?lang=en</loc>`,
 		`<loc>${O}/privacy?lang=pl</loc>`
 	]);
+	// Then every featured set's page (tests/e2e/featured.spec.ts)
+	expect(sitemap).toMatch(new RegExp(`<loc>${O}/s/pl/[a-z0-9-]+</loc>`));
 	const robots = await (await request.get('/robots.txt')).text();
 	expect(robots).toContain('Disallow: /api/');
 	expect(robots).toContain(`Sitemap: ${O}/sitemap.xml`);

@@ -10,6 +10,8 @@
 		"view": "tiles",
 		"title": "Halloween: przebrania i dekoracje",
 		"description": "Kostiumy, koszyk na cukierki, poduszka-dynia, kapcie-pająki i piżama, która świeci w ciemności.",
+		"intro": "Halloween wypada 31 października, a w Polsce zaraz po nim przychodzą Wszystkich Świętych i Zaduszki. Zebraliśmy rzeczy, które przydadzą się na tę noc: przebrania dla dzieci i dorosłych, koszyk na cukierki, dekoracje i coś na jesienne wieczory w domu. Każdy kafelek prowadzi prosto do sklepu.",
+		"alternate": "halloween-2026",
 		"urls": [
 			"https://www.reserved.com/pl/pl/kostium-na-halloween-243kz-99x",
 			"https://www.reserved.com/pl/pl/kostium-na-halloween-248kz-22x",
@@ -40,6 +42,8 @@
 		"view": "tiles",
 		"title": "Premiery kinowe: jesień i zima 2026",
 		"description": "Street Fighter, Godzilla, nowe Igrzyska śmierci, Avengers: Doomsday i Diuna: Część trzecia – plakaty i opisy z Filmwebu.",
+		"intro": "Największe premiery kinowe od października 2026 do stycznia 2027: od Street Fightera i Godzilli, przez nowe Igrzyska śmierci, po świąteczne Avengers: Doomsday i Diunę: Część trzecią. Każdy kafelek otwiera kartę filmu na Filmwebie z plakatem, opisem i datą premiery w Polsce.",
+		"alternate": "premieres-autumn-winter-2026",
 		"urls": [
 			"https://www.filmweb.pl/film/Street+Fighter.+Uliczny+wojownik-2026-10055813",
 			"https://www.filmweb.pl/film/Clayface-2026-10089272",
@@ -69,6 +73,8 @@
 		"view": "tiles",
 		"title": "Co robić zimą 2026/27",
 		"description": "Jarmarki świąteczne, Puchar Świata w skokach w Wiśle i Zakopanem, Geminidy, najkrótszy dzień roku, Turniej Czterech Skoczni i mistrzostwa świata w piłce ręcznej.",
+		"intro": "Pomysły na zimę 2026/27 w jednym miejscu: jarmarki bożonarodzeniowe w Zakopanem, Wrocławiu i Wiedniu, Puchar Świata w skokach w Wiśle i Zakopanem, Turniej Czterech Skoczni i mistrzostwa świata w piłce ręcznej. Do tego dwa zjawiska na niebie: Geminidy w połowie grudnia i przesilenie zimowe, najkrótszy dzień roku.",
+		"alternate": "winter-2026-27",
 		"urls": [
 			"https://www.zakopane.pl/strefa-miejska/aktualnosci/aktualnosci-zwykle/wrzesien-2026/znamy-date-jarmarku-bozonarodzeniowego-w-zakopanem",
 			"https://www.jarmarkbozonarodzeniowy.wroclaw.pl/",
@@ -97,6 +103,7 @@
 		"view": "tiles",
 		"title": "Muzyka z gier i anime na żywo – zima 2026/27",
 		"description": "Wiedźmin symfonicznie, epicka muzyka z gier, Studio Ghibli i anime przy świecach – koncerty z eBiletu i KupBilecik od października do lutego.",
+		"intro": "Muzyka z gier i anime coraz częściej trafia do filharmonii i na sceny z orkiestrą. Ten zestaw zbiera koncerty od października 2026 do lutego 2027: Wiedźmina symfonicznie, epicką muzykę z gier przy świecach, muzykę ze Studia Ghibli i anime. Bilety prowadzą do eBiletu i KupBilecik; terminy i miasta sprawdzisz na stronie każdego wydarzenia.",
 		"urls": [
 			"https://www.ebilet.pl/now/muzyka-z-wiedzmina-symfonicznie-na-zywo/",
 			"https://www.ebilet.pl/klasyka/muzyka-filmowa/epic-game-music",
@@ -124,6 +131,8 @@
 		"view": "tiles",
 		"title": "Ubierz się na nadchodzącą zimę",
 		"description": "Pikowana kurtka, płaszcz z wełną, ciepły sweter, czapki, szalik, rękawiczki i śniegowce z Reserved, Mohito, Cropp, House i Sinsay.",
+		"intro": "Komplet na zimę z pięciu polskich sieciówek: ciepła pikowana kurtka albo płaszcz z wełną, sweter, czapka, szalik, rękawiczki i śniegowce. W tabeli łatwo porównasz rzeczy z różnych sklepów, a „Edytuj kopię” pozwoli ułożyć własny zestaw i wysłać go dalej.",
+		"alternate": "dress-for-winter-2026",
 		"urls": [
 			"https://www.reserved.com/pl/pl/dluga-pikowana-kurtka-724ay-91x",
 			"https://www.mohito.com/pl/pl/klasyczny-plaszcz-z-welna-037kv-99x",
@@ -149,6 +158,8 @@
 		"view": "tiles",
 		"title": "Steal her look – Wednesday",
 		"description": "Czerń, biały kołnierzyk, plisy, paski i botki na platformie – ubrania w stylu Wednesday Addams z polskich sieciówek.",
+		"intro": "Styl Wednesday Addams to czerń, biel i porządek: sukienka z kołnierzykiem, biała koszula, plisowana spódnica, sweter w paski, zakolanówki i ciężkie botki. Wybraliśmy rzeczy z Mohito, Cropp, Reserved i House, z których złożysz ten look bez kostiumu.",
+		"alternate": "steal-her-look-wednesday",
 		"urls": [
 			"https://www.mohito.com/pl/pl/sukienka-mini-z-kolnierzem-polo-073ip-99x",
 			"https://www.cropp.com/pl/pl/czarna-sukienka-mini-ze-stojka-456ka-99x",
@@ -172,6 +183,8 @@
 		"view": "tiles",
 		"title": "Kawa w domu: jaki ekspres wybrać",
 		"description": "Automat czy kolba, rankingi i tanie ekspresy do 500 zł z YouTube, a do tego krótkie filmy baristów z Vimeo o parzeniu espresso i kawy przelewowej.",
+		"intro": "Zanim kupisz ekspres, warto zobaczyć, czym różni się automat od kolby i ile naprawdę trzeba wydać. Polscy bariści i recenzenci porównują ekspresy na YouTube, a filmy z Vimeo pokazują, jak parzyć espresso i kawę przelewową. Wszystkie filmy obejrzysz bez wychodzenia z listy.",
+		"alternate": "coffee-at-home",
 		"urls": [
 			"https://www.youtube.com/watch?v=A2zzcS9iPGA",
 			"https://www.youtube.com/watch?v=nPojzk7_fHw",
@@ -196,6 +209,8 @@
 		"view": "tiles",
 		"title": "Konsole przenośne 2026",
 		"description": "Steam Deck OLED, ROG Xbox Ally X, Lenovo Legion Go, Nintendo Switch 2, PlayStation Portal i retro konsolki Anbernic – strony producentów.",
+		"intro": "Granie w podróży to dziś wybór między kilkoma konsolami: Steam Deckiem z bibliotekami ze Steama, ROG Xbox Ally z Windowsem, Lenovo Legion Go, Nintendo Switch 2 i PlayStation Portal, który przesyła gry z PS5. Dla fanów klasyki są też retro konsolki Anbernic. Linki prowadzą do stron producentów.",
+		"alternate": "handheld-consoles-2026",
 		"urls": [
 			"https://www.steamdeck.com/",
 			"https://rog.asus.com/pl/gaming-handhelds/rog-ally/rog-xbox-ally-x-2025/",
@@ -217,6 +232,7 @@
 		"view": "tiles",
 		"title": "Promocje, gazetki i kody rabatowe",
 		"description": "Aktualne gazetki sklepów, okazje i kody rabatowe w jednym miejscu – zajrzyj, zanim pójdziesz na zakupy.",
+		"intro": "Gazetki sieci handlowych i kody rabatowe w jednym miejscu: Blix i Ding zbierają aktualne gazetki sklepów, a Picodi, kodyrabatowe.pl i Rabatio – kupony do sklepów internetowych. Zajrzyj tu przed większymi zakupami.",
 		"urls": [
 			"https://blix.pl/",
 			"https://www.ding.pl/",
@@ -236,6 +252,8 @@
 		"view": "tiles",
 		"title": "Aplikacje doner.cloud",
 		"description": "Nasze darmowe serwisy: urlhub, Zdjęcie Dnia NASA, planetoidy i pogoda na Marsie w kosmos.info.pl, wschody i zachody Słońca w slonce.info.pl oraz demo rezerwacji rezerwi.",
+		"intro": "doner.cloud to nasze małe, darmowe serwisy, bez reklam i bez śledzenia: urlhub do zestawów linków, kosmos.info.pl ze Zdjęciem Dnia NASA, planetoidami blisko Ziemi i pogodą na Marsie, slonce.info.pl z godzinami wschodu i zachodu Słońca dla setek miejsc oraz demo systemu rezerwacji rezerwi dla małych obiektów noclegowych.",
+		"alternate": "doner-cloud-apps",
 		"urls": [
 			"https://urlhub.cloud/",
 			"https://kosmos.info.pl/pl/home",
@@ -263,6 +281,8 @@
 		"view": "tiles",
 		"title": "Halloween: costumes and decorations",
 		"description": "Costumes, a trick-or-treat basket, pumpkin and skull cushions, spider slippers and glow-in-the-dark pyjamas.",
+		"intro": "Halloween falls on 31 October. Here are things for the night: costumes for children and adults, a trick-or-treat basket, decorations and something for cosy autumn evenings at home. Each tile leads straight to the shop.",
+		"alternate": "halloween-2026",
 		"urls": [
 			"https://www.reserved.com/gb/en/halloween-costume-243kz-99x",
 			"https://www.reserved.com/gb/en/halloween-costume-248kz-22x",
@@ -291,6 +311,8 @@
 		"view": "tiles",
 		"title": "In cinemas: autumn and winter 2026",
 		"description": "Street Fighter, Godzilla Minus Zero, the new Hunger Games, Avengers: Doomsday and Dune: Part Three – posters and details from Letterboxd.",
+		"intro": "The biggest cinema releases from October 2026 to January 2027: from Street Fighter and Godzilla Minus Zero to the new Hunger Games, Avengers: Doomsday and Dune: Part Three at Christmas. Each tile opens the film on Letterboxd with its poster and details.",
+		"alternate": "premiery-jesien-zima-2026",
 		"urls": [
 			"https://letterboxd.com/film/street-fighter-2026/",
 			"https://letterboxd.com/film/clayface/",
@@ -320,6 +342,8 @@
 		"view": "tiles",
 		"title": "What's on this winter (2026/27)",
 		"description": "Christmas markets, the Geminids, the shortest day, the Four Hills ski jumping, the handball world championship and the Australian Open.",
+		"intro": "Ideas for winter 2026/27: Vienna's Christmas market, the Four Hills ski jumping, the men's handball world championship and the Australian Open, plus two things in the sky – the Geminids in mid-December and the winter solstice, the shortest day of the year.",
+		"alternate": "zima-2026-27",
 		"urls": [
 			"https://www.christkindlmarkt.at/",
 			"https://en.wikipedia.org/wiki/Geminids",
@@ -346,6 +370,8 @@
 		"view": "tiles",
 		"title": "Dress for the coming winter",
 		"description": "A down jacket, a wool-blend coat, an alpaca-blend jumper, a beanie, a scarf, gloves and snow boots from Reserved.",
+		"intro": "A full winter outfit from Reserved: a down jacket or a wool-blend coat, an alpaca-blend jumper, a beanie, a scarf, gloves and snow boots. Compare them in the table, or use “Edit a copy” to put together and share your own.",
+		"alternate": "ubierz-sie-na-zime-2026",
 		"urls": [
 			"https://www.reserved.com/gb/en/down-quilted-jacket-159ky-99x",
 			"https://www.reserved.com/gb/en/blended-wool-coat-099ky-85m",
@@ -368,6 +394,8 @@
 		"view": "tiles",
 		"title": "Steal her look – Wednesday",
 		"description": "Black, a white collar, pleats, knee socks and loafers – clothes in the style of Wednesday Addams.",
+		"intro": "Wednesday Addams' style is black, white and neat: a collar dress, a white shirt, a pleated skirt, knee socks, tights and loafers. Pieces from Reserved to put the look together without a costume.",
+		"alternate": "steal-her-look-wednesday",
 		"urls": [
 			"https://www.reserved.com/gb/en/collar-dress-407ib-99x",
 			"https://www.reserved.com/gb/en/dress-with-pleated-skirt-181ex-99x",
@@ -391,6 +419,8 @@
 		"view": "tiles",
 		"title": "Coffee at home: brewing guides",
 		"description": "The ultimate V60 technique, V60, Chemex and AeroPress for beginners on YouTube, and short barista films on espresso and pour-over from Vimeo.",
+		"intro": "Better coffee at home starts with technique: the V60, Chemex and AeroPress explained on YouTube, and short films on Vimeo by baristas brewing espresso and pour-over. Every video plays right from the list.",
+		"alternate": "kawa-w-domu",
 		"urls": [
 			"https://www.youtube.com/watch?v=AI4ynXzkSQo",
 			"https://www.youtube.com/watch?v=rN3q1X3My5o",
@@ -411,6 +441,8 @@
 		"view": "tiles",
 		"title": "Handheld consoles 2026",
 		"description": "Steam Deck OLED, ROG Xbox Ally X, Lenovo Legion Go, Nintendo Switch 2, PlayStation Portal and Anbernic retro handhelds – the makers' own pages.",
+		"intro": "Playing on the go now means choosing between several handhelds: the Steam Deck with your Steam library, the ROG Xbox Ally with Windows, the Lenovo Legion Go, the Nintendo Switch 2 and the PlayStation Portal, which streams games from a PS5. For classic games there are Anbernic's retro handhelds. The links go to the makers' own pages.",
+		"alternate": "konsole-przenosne-2026",
 		"urls": [
 			"https://www.steamdeck.com/en/",
 			"https://rog.asus.com/uk/gaming-handhelds/rog-ally/rog-xbox-ally-x-2025/",
@@ -432,6 +464,7 @@
 		"view": "tiles",
 		"title": "Game deals: buy games for less",
 		"description": "Price trackers and stores with discounts: IsThereAnyDeal, CheapShark, Steam specials, GOG, Humble Bundle and Fanatical.",
+		"intro": "Before buying a game, check where it is cheapest: IsThereAnyDeal and CheapShark track prices across stores, and Steam, GOG, Humble Bundle and Fanatical have regular sales and bundles.",
 		"urls": [
 			"https://isthereanydeal.com/",
 			"https://www.cheapshark.com/",
@@ -452,6 +485,8 @@
 		"view": "tiles",
 		"title": "doner.cloud apps",
 		"description": "Our free sites: urlhub, NASA's picture of the day, near-Earth objects and Mars weather on kosmos.info.pl, sunrise and sunset times on slonce.info.pl, and the rezerwi booking demo.",
+		"intro": "doner.cloud makes small free sites with no ads and no tracking: urlhub for sets of links, kosmos.info.pl with NASA's picture of the day, near-Earth objects and Mars weather, slonce.info.pl with sunrise and sunset times for hundreds of places, and rezerwi, a booking demo for small guesthouses.",
+		"alternate": "aplikacje-doner-cloud",
 		"urls": [
 			"https://urlhub.cloud/?lang=en",
 			"https://kosmos.info.pl/en/home",

@@ -36,7 +36,11 @@ lists of links, separate for each language. Each card leads to the set's own pag
 published list (`src/lib/components/ListPage.svelte`: the title as the heading, no form, "Edit a copy"), with the
 links' details fetched when it opens, in the view that shows them best (tiles, or the table). A set redone each year has the
 year in its id (`halloween-2026`), so next year's set gets a new address and this one stays; `aliases` lists a set's
-earlier ids, whose addresses redirect (301) to the current one. Six show at first, the rest behind **More sets**. A set with a `season`
+earlier ids, whose addresses redirect (301) to the current one. Set pages are for search engines too: indexed, with the
+links' details in the HTML (read by the server through ldb-api, kept an hour, `src/lib/server/featured-details.ts`;
+after 8 s without an answer the browser fetches them), an `intro`, a canonical address, `hreflang` to the same set
+in the other language (`alternate`), `<html lang>` of the set, schema.org `CollectionPage` with an `ItemList`, and
+a place in `/sitemap.xml`. Published lists stay noindex. Six show at first, the rest behind **More sets**. A set with a `season`
 (`"MM-DD"` to `"MM-DD"`, may run over the new year) shows only then, first; the day is taken in Poland. Before
 adding links, and from time to time after, check them with the real ldb-api on the server:
 `npm run featured:check` (ldb-api at `LDB_API_URL`, by default `http://127.0.0.1:84/json`) lists the links that

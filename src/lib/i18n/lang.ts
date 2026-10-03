@@ -30,10 +30,13 @@ export const pickLanguage = (acceptLanguage: string): Lang =>
 		.find(isLang) ?? DEFAULT_LANG;
 
 /**
- * The language of a request: ?lang= in the address when it names one, otherwise the browser's. Nothing is stored
- * on the visitor's device: a shared link carries its language.
+ * The language of a request: ?lang= in the address when it names one, then the language of a featured set's page
+ * (/s/<lang>/...: its content is in that language), otherwise the browser's. Nothing is stored on the visitor's
+ * device: a shared link carries its language.
  */
 export const langOf = (url: URL, acceptLanguage: string | null): Lang => {
 	const asked = url.searchParams.get('lang');
-	return isLang(asked) ? asked : pickLanguage(acceptLanguage ?? '');
+	if (isLang(asked)) return asked;
+	const ofSet = /^\/s\/([a-z]{2})(\/|$)/.exec(url.pathname)?.[1];
+	return isLang(ofSet) ? ofSet : pickLanguage(acceptLanguage ?? '');
 };

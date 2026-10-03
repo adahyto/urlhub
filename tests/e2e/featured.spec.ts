@@ -107,10 +107,8 @@ test('the empty page offers featured sets; each opens as a page with its title a
 	await expect(
 		page.getByRole('button', { name: set.view === 'table' ? 'Tabela' : 'Kafelki' })
 	).toHaveAttribute('aria-pressed', 'true');
-	// The details are read now, through the same proxy as the home page
 	await expect(page.getByText(`Title of ${new URL(set.urls[0]).pathname}`).first()).toBeVisible();
-	const sent = (await (await page.request.get(`${API}/__requests`)).json()).at(-1);
-	expect(sent.text.split('\n')).toEqual(set.urls);
+	if (set.intro) await expect(page.getByText(set.intro)).toBeVisible();
 	await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', set.title);
 
 	// It joins Recent, and "Edit a copy" makes it an ordinary list on the home page
@@ -118,6 +116,34 @@ test('the empty page offers featured sets; each opens as a page with its title a
 	await expect(page.getByLabel('Linki', { exact: true })).toHaveValue(set.urls.join('\n'));
 	await page.getByRole('button', { name: /^Ostatnie/ }).click();
 	await expect(page.locator('.recent__open').first()).toContainText(`${set.urls.length} link`);
+});
+
+test("a set's page is made for search engines: links in the HTML, canonical, languages, JSON-LD", async ({
+	request
+}) => {
+	const set = FEATURED.find((s) => s.lang === 'pl' && s.alternate)!;
+	const html = await (
+		await request.get(`/s/pl/${set.id}`, { headers: { 'accept-language': 'en' } })
+	).text();
+	// Served with its links' details, read by the server
+	expect(html).toContain(`Title of ${new URL(set.urls[0]).pathname}`);
+	// In the set's language, whatever the browser's
+	expect(html).toMatch(/<html lang="pl"/);
+	expect(html).toMatch(/<meta name="robots" content="index, follow"/);
+	const O = 'http://127.0.0.1:4173';
+	expect(html).toContain(`<link rel="canonical" href="${O}/s/pl/${set.id}"`);
+	expect(html).toContain(`hreflang="en" href="${O}/s/en/${set.alternate}"`);
+	const ld = JSON.parse(/<script type="application\/ld\+json">([^<]+)<\/script>/.exec(html)![1]);
+	expect(ld['@type']).toBe('CollectionPage');
+	expect(ld.mainEntity.numberOfItems).toBe(set.urls.length);
+	expect(ld.mainEntity.itemListElement[0].url).toBe(set.urls[0]);
+
+	// Published lists stay out of search results
+	const res = await request.post('/api/lists', {
+		data: { title: 'Mine', urls: [set.urls[0]], view: 'tiles', lang: 'pl' }
+	});
+	const own = await (await request.get((await res.json()).path)).text();
+	expect(own).toMatch(/<meta name="robots" content="noindex, follow"/);
 });
 
 test('an earlier address of a set leads to its address now', async ({ page }) => {
