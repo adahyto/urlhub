@@ -281,7 +281,9 @@
 		"shortLinkText": "It may have expired: short links unused for 90 days are deleted. Ask whoever shared it for a new one.",
 		"other": "Something went wrong.",
 		"savedListTitle": "This published list does not exist",
-		"savedListText": "It may have been removed after a report, or expired: lists unopened for a year are deleted."
+		"savedListText": "It may have been removed after a report, or expired: lists unopened for a year are deleted.",
+		"featuredTitle": "This set is gone",
+		"featuredText": "Featured sets change with the seasons. The current ones are on the home page."
 	},
 	"og": {
 		"title": {
@@ -330,7 +332,9 @@
 		"title": "Featured sets",
 		"seasonal": "In season",
 		"more": "More sets ({count})",
-		"less": "Fewer sets"
+		"less": "Fewer sets",
+		"meta": "a featured set by urlhub",
+		"note": "A set put together by urlhub. “Edit a copy” opens its links as your own list."
 	},
 	"saved": {
 		"savedOn": "published {date}",

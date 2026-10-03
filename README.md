@@ -32,8 +32,9 @@ kosmos.info.pl in the page's language, Spotify). The duration and issues columns
 Menus open with Enter, move with ↑ ↓ and close with Escape (`src/lib/components/Menu.svelte`).
 
 The empty page also offers **featured sets** (`src/lib/featured.json`, read by `src/lib/featured.ts`): ready
-lists of links, separate for each language, that open with one click in the view that shows them best (tiles,
-or the table for GitHub projects). Six show at first, the rest behind **More sets**. A set with a `season`
+lists of links, separate for each language. Each card leads to the set's own page, `/s/<lang>/<id>`, shown like a
+published list (`src/lib/components/ListPage.svelte`: the title as the heading, no form, "Edit a copy"), with the
+links' details fetched when it opens, in the view that shows them best (tiles, or the table). Six show at first, the rest behind **More sets**. A set with a `season`
 (`"MM-DD"` to `"MM-DD"`, may run over the new year) shows only then, first; the day is taken in Poland. Before
 adding links, and from time to time after, check them with the real ldb-api on the server:
 `npm run featured:check` (ldb-api at `LDB_API_URL`, by default `http://127.0.0.1:84/json`) lists the links that

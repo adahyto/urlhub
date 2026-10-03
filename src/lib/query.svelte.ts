@@ -34,7 +34,8 @@ const failure = (err: unknown): QueryError =>
 export const isBlocked = (r: Row) => r.error === 'blocked';
 export const isFailed = (r: Row) => !r.pending && !!r.error && !isBlocked(r);
 
-const waiting = (url: string): Row => ({
+/** A row waiting for its details */
+export const waiting = (url: string): Row => ({
 	url,
 	type: 'page',
 	title: '',

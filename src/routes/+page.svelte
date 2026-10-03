@@ -12,7 +12,7 @@
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
 	import ShareDialog from '$lib/components/ShareDialog.svelte';
 	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
-	import { featuredFor, type FeaturedSet } from '$lib/featured';
+	import { featuredFor } from '$lib/featured';
 	import { copyText, download } from '$lib/files';
 	import { recent, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
@@ -129,15 +129,6 @@
 	}
 
 	const featured = $derived(featuredFor(i18n.lang, data.today));
-
-	/** A featured set opens like a pasted list, in the view that shows it best */
-	function openSet(set: FeaturedSet) {
-		text = set.urls.join('\n');
-		view = set.view;
-		advanced = false;
-		fetchLinks();
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}
 
 	/** The empty home page: no list, no results, the options as they start */
 	function reset() {
@@ -515,7 +506,7 @@
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
 			{/each}
 		</ul>
-		<FeaturedSets sets={featured} covers={data.covers} onopen={openSet} />
+		<FeaturedSets sets={featured} covers={data.covers} />
 	{/if}
 </main>
 

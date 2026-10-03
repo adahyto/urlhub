@@ -1,0 +1,306 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
+	import Tiles from './Tiles.svelte';
+	import ResultsTable from './ResultsTable.svelte';
+	import Menu from './Menu.svelte';
+	import { copyText, download } from '$lib/files';
+	import { asCsv, asJson } from '$lib/query.svelte';
+	import { toTileUrl } from '$lib/tiles';
+	import { useI18n } from '$lib/i18n';
+	import type { Row } from '$lib/types';
+
+	/*
+	 * A list shown as a page of its own, to look at and share, with no form: a published list (/l/<id>) and a
+	 * featured set (/s/<lang>/<id>). Its title is the heading; "Edit a copy" opens its links on the home page.
+	 */
+
+	interface Props {
+		title: string;
+		description: string;
+		urls: string[];
+		/** Their details; pending ones fill in as they come */
+		rows: Row[];
+		/** The view it opens in */
+		view: 'tiles' | 'table';
+		/** The line under the description, after the number of links */
+		meta: string;
+		/** For messengers: an absolute address */
+		image: string;
+		/** Downloads are named after it */
+		name: string;
+		/** The note at the bottom */
+		note: string;
+		/** A mailto: to report the page, if it is someone's */
+		report?: string;
+	}
+
+	let { title, description, urls, rows, view, meta, image, name, note, report }: Props = $props();
+	const i18n = useI18n();
+
+	// The view it opens in, until the visitor picks another
+	let chosen = $state<'tiles' | 'table' | null>(null);
+	const shown = $derived(chosen ?? view);
+	let notice = $state('');
+
+	const sites = $derived(
+		urls
+			.map((u) => {
+				try {
+					return new URL(u).hostname.replace(/^www\./, '');
+				} catch {
+					return '';
+				}
+			})
+			.filter((h, i, all) => h && all.indexOf(h) === i)
+	);
+	const summary = $derived(
+		i18n.t('og.title', {
+			count: urls.length,
+			sites:
+				sites.slice(0, 3).join(', ') +
+				(sites.length > 3 ? i18n.t('og.more', { count: sites.length - 3 }) : '')
+		})
+	);
+	const about = $derived(description || summary);
+	const address = $derived(`${page.url.origin}${page.url.pathname}`);
+
+	/** The links as an ordinary list on the home page, to change there; this one stays as it is */
+	const copyHref = $derived.by(() => {
+		const lang = page.url.searchParams.get('lang');
+		const params = [
+			['urls', urls.join(' ')],
+			...(view === 'table' ? [['view', 'table']] : []),
+			...(lang ? [['lang', lang]] : [])
+		];
+		return `${resolve('/')}?${new URLSearchParams(params)}`;
+	});
+
+	let noticeTimer: ReturnType<typeof setTimeout> | undefined;
+	async function copyLink() {
+		await copyText(address);
+		notice = i18n.t('saved.linkCopied');
+		clearTimeout(noticeTimer);
+		noticeTimer = setTimeout(() => (notice = ''), 2500);
+	}
+
+	// Phones offer their own sharing (messengers, mail); known only in the browser
+	let canSend = $state(false);
+	onMount(() => (canSend = typeof navigator.share === 'function'));
+	async function send() {
+		try {
+			await navigator.share({ title, url: address });
+		} catch {
+			// cancelled
+		}
+	}
+</script>
+
+<svelte:head>
+	<title>{title} – urlhub</title>
+	<meta name="description" content={about} />
+	<!-- A list to share: worth a preview in messengers, not a place in search results -->
+	<meta name="robots" content="noindex, follow" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="urlhub" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={about} />
+	<meta property="og:url" content={address} />
+	<meta property="og:image" content={image} />
+	<meta property="og:locale" content={i18n.lang === 'pl' ? 'pl_PL' : 'en_GB'} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={about} />
+	<meta name="twitter:image" content={image} />
+</svelte:head>
+
+<!-- Links: the home page with a query (built with resolve) and a mailto: nothing more to resolve -->
+<!-- eslint-disable svelte/no-navigation-without-resolve -->
+<main class="saved shell">
+	<header class="saved__head">
+		<h1 class="saved__title">{title}</h1>
+		{#if description}
+			<p class="saved__description">{description}</p>
+		{/if}
+		<p class="saved__meta">{i18n.t('form.links', { count: urls.length })} · {meta}</p>
+	</header>
+
+	<div class="toolbar">
+		<div class="toolbar__views" role="group" aria-label={i18n.t('views.label')}>
+			{#each ['tiles', 'table'] as const as v (v)}
+				<button type="button" aria-pressed={shown === v} onclick={() => (chosen = v)}
+					>{i18n.t(`views.${v}`)}</button
+				>
+			{/each}
+		</div>
+		<span class="toolbar__spacer"></span>
+		<button type="button" class="toolbar__button" onclick={copyLink}
+			>{i18n.t('saved.copyLink')}</button
+		>
+		{#if canSend}
+			<button type="button" class="toolbar__button" onclick={send}>{i18n.t('saved.send')}</button>
+		{/if}
+		<Menu label={i18n.t('toolbar.export')}>
+			{#snippet children(close)}
+				<button
+					type="button"
+					class="menu__item"
+					onclick={() => {
+						close();
+						download(asJson(rows), 'application/json', `${name}.json`);
+					}}>{i18n.t('toolbar.downloadJson')}</button
+				>
+				<button
+					type="button"
+					class="menu__item"
+					onclick={() => {
+						close();
+						download(asCsv(rows), 'text/csv;charset=utf-8', `${name}.csv`);
+					}}>{i18n.t('toolbar.downloadCsv')}<small>{i18n.t('toolbar.csvHint')}</small></button
+				>
+			{/snippet}
+		</Menu>
+		<a class="toolbar__button toolbar__button--primary" href={copyHref}
+			>{i18n.t('saved.editCopy')}</a
+		>
+	</div>
+
+	{#if notice}
+		<p class="notice" role="status">{notice}</p>
+	{/if}
+
+	<section aria-label={i18n.t('a11y.results')}>
+		{#if shown === 'tiles'}
+			<Tiles urls={rows.map(toTileUrl)} />
+		{:else}
+			<ResultsTable {rows} advanced={false} />
+		{/if}
+	</section>
+
+	<footer class="saved__foot">
+		<p>{note}</p>
+		{#if report}
+			<p><a href={report}>{i18n.t('saved.report')}</a></p>
+		{/if}
+	</footer>
+</main>
+
+<style>
+	.saved {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+		padding-block: 1.5rem 2.5rem;
+	}
+
+	.saved__head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.saved__title {
+		margin: 0;
+		font-size: clamp(1.5rem, 4vw, 2.1rem);
+		line-height: 1.2;
+		overflow-wrap: anywhere;
+	}
+
+	.saved__description {
+		margin: 0;
+		max-width: 60ch;
+		color: var(--ink-2);
+		line-height: 1.5;
+		overflow-wrap: anywhere;
+	}
+
+	.saved__meta {
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--muted);
+	}
+
+	.toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 0.75rem;
+	}
+
+	.toolbar__views {
+		display: flex;
+		gap: 0.15rem;
+		padding: 0.2rem;
+		background: var(--surface-3);
+		border-radius: 0.5rem;
+	}
+
+	.toolbar__views button {
+		min-height: 2.25rem;
+		padding: 0.35rem 0.75rem;
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--ink-2);
+		background: none;
+		border: 0;
+		border-radius: 0.35rem;
+		cursor: pointer;
+	}
+
+	.toolbar__views button[aria-pressed='true'] {
+		color: var(--ink);
+		background: var(--surface);
+		box-shadow: 0 1px 2px var(--shadow);
+	}
+
+	.toolbar__spacer {
+		flex: 1;
+	}
+
+	.toolbar__button {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.25rem;
+		padding: 0.35rem 0.85rem;
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--ink);
+		text-decoration: none;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 0.5rem;
+		cursor: pointer;
+	}
+
+	.toolbar__button--primary {
+		color: var(--on-accent);
+		background: var(--accent);
+		border-color: var(--accent);
+	}
+
+	.notice {
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--success);
+	}
+
+	.saved__foot {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+
+	.saved__foot p {
+		margin: 0;
+	}
+
+	.saved__foot a {
+		color: inherit;
+	}
+</style>

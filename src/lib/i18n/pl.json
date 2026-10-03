@@ -313,7 +313,9 @@
 		"shortLinkText": "Mógł wygasnąć: krótkie linki nieużywane przez 90 dni są usuwane. Poproś osobę, która go udostępniła, o nowy.",
 		"other": "Coś poszło nie tak.",
 		"savedListTitle": "Ta opublikowana lista nie istnieje",
-		"savedListText": "Mogła zostać usunięta po zgłoszeniu albo wygasnąć: listy nieotwierane przez rok są usuwane."
+		"savedListText": "Mogła zostać usunięta po zgłoszeniu albo wygasnąć: listy nieotwierane przez rok są usuwane.",
+		"featuredTitle": "Tego zestawu już nie ma",
+		"featuredText": "Polecane zestawy zmieniają się z porami roku. Aktualne znajdziesz na stronie głównej."
 	},
 	"og": {
 		"title": {
@@ -368,7 +370,9 @@
 		"title": "Polecane zestawy",
 		"seasonal": "Na teraz",
 		"more": "Więcej zestawów ({count})",
-		"less": "Mniej zestawów"
+		"less": "Mniej zestawów",
+		"meta": "polecany zestaw urlhub",
+		"note": "Zestaw przygotowany przez urlhub. „Edytuj kopię” otwiera jego linki jako Twoją listę."
 	},
 	"saved": {
 		"savedOn": "opublikowano {date}",
