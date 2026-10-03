@@ -391,11 +391,17 @@
 
 	/* Many site icons are black (GitHub, X): on the dark theme they get a light square, as in browser tabs */
 	@media (prefers-color-scheme: dark) {
-		.table__favicon {
+		:global(:root:not([data-theme='light'])) .table__favicon {
 			padding: 1px;
 			background: #fff;
 			border-radius: 0.2rem;
 		}
+	}
+
+	:global(:root[data-theme='dark']) .table__favicon {
+		padding: 1px;
+		background: #fff;
+		border-radius: 0.2rem;
 	}
 
 	.table__title {

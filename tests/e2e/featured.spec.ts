@@ -5,6 +5,7 @@ import {
 	SHOWN_FIRST,
 	featuredFor,
 	inSeason,
+	outOfSeason,
 	todayInPoland
 } from '../../src/lib/featured';
 
@@ -44,7 +45,7 @@ test('the featured sets are well formed, in both languages', () => {
 	}
 });
 
-test('a seasonal set shows only in its season, first; a season may run over the new year', () => {
+test('a seasonal set shows only in its season, in the order of the file; a season may run over the new year', () => {
 	expect(inSeason({ from: '10-01', to: '11-02' }, '10-01')).toBe(true);
 	expect(inSeason({ from: '10-01', to: '11-02' }, '11-02')).toBe(true);
 	expect(inSeason({ from: '10-01', to: '11-02' }, '11-03')).toBe(false);
@@ -53,18 +54,12 @@ test('a seasonal set shows only in its season, first; a season may run over the 
 	expect(inSeason({ from: '12-20', to: '01-31' }, '02-01')).toBe(false);
 
 	for (const lang of ['en', 'pl'] as const) {
-		const seasonal = FEATURED.filter((s) => s.lang === lang && s.season);
-		const always = FEATURED.filter((s) => s.lang === lang && !s.season);
-		for (const set of seasonal) {
-			const during = featuredFor(lang, set.season!.from);
-			// In season: among the first ones, before every set without a season
-			expect(during.indexOf(set)).toBeGreaterThanOrEqual(0);
-			expect(during.indexOf(set)).toBeLessThan(during.length - always.length);
-		}
+		const all = FEATURED.filter((s) => s.lang === lang);
 		for (const day of ['01-15', '04-15', '07-15', '10-15']) {
-			const sets = featuredFor(lang, day);
-			expect(sets.filter((s) => s.season && !inSeason(s.season, day))).toEqual([]);
-			expect(sets.filter((s) => !s.season)).toEqual(always);
+			const shown = featuredFor(lang, day);
+			// The file's order, without the sets out of season, which are the archive
+			expect(shown).toEqual(all.filter((s) => !s.season || inSeason(s.season, day)));
+			expect([...shown, ...outOfSeason(lang, day)].length).toBe(all.length);
 		}
 	}
 });
@@ -73,7 +68,7 @@ test('the empty page offers featured sets; each opens as a page with its title a
 	page
 }) => {
 	await page.goto('/?lang=pl');
-	const region = page.getByRole('region', { name: 'Polecane zestawy' });
+	const region = page.getByRole('region', { name: 'Jeden link, cały zestaw' });
 	const cards = region.getByRole('listitem');
 	const total = featuredFor('pl', todayInPoland()).length;
 	await expect(cards).toHaveCount(Math.min(total, SHOWN_FIRST));
@@ -161,11 +156,42 @@ test('a featured set that is gone says so', async ({ page }) => {
 
 test('the English page has its own sets', async ({ page }) => {
 	await page.goto('/?lang=en');
-	const region = page.getByRole('region', { name: 'Featured sets' });
+	const region = page.getByRole('region', { name: 'One link, a whole set' });
 	const first = featuredFor('en', todayInPoland())[0];
 	await expect(region.getByRole('link', { name: named(first.title) })).toBeVisible();
 	const english = FEATURED.filter((s) => s.lang === 'en').map((s) => s.title);
 	for (const set of FEATURED.filter((s) => s.lang === 'pl' && !english.includes(s.title))) {
 		await expect(region.getByText(set.title, { exact: true })).toHaveCount(0);
 	}
+});
+
+test('all sets have a page: the ones of now, then the archive, linked from the home page', async ({
+	page
+}) => {
+	await page.goto('/?lang=pl');
+	await page.getByRole('link', { name: 'Wszystkie zestawy →' }).click();
+	await expect(page).toHaveURL(/\/s\/pl\?lang=pl$/);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+		'Zestawy linków do udostępniania'
+	);
+	const now = featuredFor('pl', todayInPoland());
+	const archive = outOfSeason('pl', todayInPoland());
+	await expect(page.getByRole('region', { name: 'Na teraz' }).getByRole('link')).toHaveCount(
+		now.length
+	);
+	await expect(page.getByRole('region', { name: 'Poza sezonem' })).toHaveCount(
+		archive.length ? 1 : 0
+	);
+
+	// A set's page leads back through it
+	await page.getByRole('region', { name: 'Na teraz' }).getByRole('link').first().click();
+	const crumbs = page.getByRole('navigation', { name: 'Ścieżka' });
+	await expect(crumbs.getByRole('link')).toHaveText(['urlhub', 'Zestawy linków do udostępniania']);
+	await crumbs.getByRole('link', { name: 'Zestawy linków do udostępniania' }).click();
+	await expect(page).toHaveURL(/\/s\/pl\?lang=pl$/);
+
+	expect((await page.request.get('/s/de')).status()).toBe(404);
+	const sitemap = await (await page.request.get('/sitemap.xml')).text();
+	expect(sitemap).toContain('/s/pl</loc>');
+	expect(sitemap).toContain('/s/en</loc>');
 });

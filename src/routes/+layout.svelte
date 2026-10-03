@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { LANGS, provideI18n, translator } from '$lib/i18n';
 	import { COPYRIGHT_HOLDER } from '$lib/privacy';
+	import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
 
 	let { children, data } = $props();
 
@@ -58,6 +59,7 @@
 					>
 				{/each}
 			</span>
+			<ThemeSwitch />
 		</nav>
 	</div>
 </header>

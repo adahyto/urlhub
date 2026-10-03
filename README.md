@@ -40,7 +40,9 @@ earlier ids, whose addresses redirect (301) to the current one. Set pages are fo
 links' details in the HTML (read by the server through ldb-api, kept an hour, `src/lib/server/featured-details.ts`;
 after 8 s without an answer the browser fetches them), an `intro`, a canonical address, `hreflang` to the same set
 in the other language (`alternate`), `<html lang>` of the set, schema.org `CollectionPage` with an `ItemList`, and
-a place in `/sitemap.xml`. Published lists stay noindex. Six show at first, the rest behind **More sets**. A set with a `season`
+a place in `/sitemap.xml`. Published lists stay noindex. The home page shows them in the file's order (a seasonal set only in its season): six at first, the rest behind
+**More sets**, and **All sets** leads to `/s/pl` and `/s/en`, every set of the language with those out of season
+as an archive. A set with a `season`
 (`"MM-DD"` to `"MM-DD"`, may run over the new year) shows only then, first; the day is taken in Poland. Before
 adding links, and from time to time after, check them with the real ldb-api on the server:
 `npm run featured:check` (ldb-api at `LDB_API_URL`, by default `http://127.0.0.1:84/json`) lists the links that
@@ -54,8 +56,9 @@ like `/c/k7Qm2xAb`, which opens the list with its view, option and language (`sr
 JSON file per list in `DATA_DIR` (the `data` volume, `/var/lib/docker/volumes/urlhub_data` on the server, in its
 daily backup). Only the links, the view, the option and the language are kept (no address, account or cookie);
 the same list always gets the same id; a list nobody opened for 90 days is deleted; 10 short links a minute per
-visitor. The notice after the click says so. The dark theme follows the system setting (colours in
-`src/app.css`; no switch, which would have to remember the choice on the device).
+visitor. The notice after the click says so. The dark theme follows the system setting, unless the visitor picks light or dark with
+the switch in the header (`ThemeSwitch.svelte`); the choice is kept in `localStorage` only after that click, and
+`src/app.html` applies it before the page shows. Colours are in `src/app.css`.
 
 **Share** opens a dialog (`src/lib/components/ShareDialog.svelte`): first a link to the list as it is, to keep
 changing it (the address, a short link, or "Send…", the phone's own sharing, where the browser has it), then

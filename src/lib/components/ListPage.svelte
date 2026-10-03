@@ -42,6 +42,8 @@
 		alternates?: { hreflang: string; href: string }[];
 		/** schema.org JSON-LD, "<" already escaped */
 		jsonLd?: string;
+		/** Where the page sits: links above the heading, the page itself last (not a link) */
+		crumbs?: { name: string; href: string }[];
 	}
 
 	let {
@@ -59,7 +61,8 @@
 		robots = 'noindex, follow',
 		canonical,
 		alternates = [],
-		jsonLd
+		jsonLd,
+		crumbs = []
 	}: Props = $props();
 	// The closing tag is split so that it does not end this component's own script
 	const jsonLdTag = $derived(
@@ -158,6 +161,16 @@
 <!-- eslint-disable svelte/no-navigation-without-resolve -->
 <main class="saved shell">
 	<header class="saved__head">
+		{#if crumbs.length}
+			<nav class="saved__crumbs" aria-label={i18n.t('featured.crumbs')}>
+				<ol>
+					{#each crumbs as crumb (crumb.href)}
+						<li><a href={crumb.href}>{crumb.name}</a></li>
+					{/each}
+					<li aria-current="page">{title}</li>
+				</ol>
+			</nav>
+		{/if}
 		<h1 class="saved__title">{title}</h1>
 		{#if description}
 			<p class="saved__description">{description}</p>
@@ -250,6 +263,26 @@
 		color: var(--ink-2);
 		line-height: 1.5;
 		overflow-wrap: anywhere;
+	}
+
+	.saved__crumbs ol {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+		margin: 0;
+		padding: 0;
+		font-size: 0.8rem;
+		color: var(--muted);
+		list-style: none;
+	}
+
+	.saved__crumbs li + li::before {
+		content: '›';
+		margin-right: 0.25rem;
+	}
+
+	.saved__crumbs a {
+		color: inherit;
 	}
 
 	.saved__intro {

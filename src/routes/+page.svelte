@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { afterNavigate, goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { onMount } from 'svelte';
 	import Tiles from '$lib/components/Tiles.svelte';
@@ -129,6 +130,11 @@
 	}
 
 	const featured = $derived(featuredFor(i18n.lang, data.today));
+	// The page of all sets (and the archive), in the language chosen in the address
+	const allSets = $derived(
+		resolve('/s/[lang]', { lang: i18n.lang }) +
+			(page.url.searchParams.has('lang') ? `?lang=${i18n.lang}` : '')
+	);
 
 	/** The empty home page: no list, no results, the options as they start */
 	function reset() {
@@ -507,7 +513,13 @@
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
 			{/each}
 		</ol>
-		<FeaturedSets sets={featured} covers={data.covers} />
+		<FeaturedSets
+			sets={featured}
+			covers={data.covers}
+			heading={i18n.t('featured.title')}
+			lead={i18n.t('featured.lead')}
+			allHref={allSets}
+		/>
 	{/if}
 </main>
 
@@ -676,9 +688,13 @@
 
 	/* The arrow is a picture, so the dark theme needs its own (light) one */
 	@media (prefers-color-scheme: dark) {
-		.toolbar__select {
+		:global(:root:not([data-theme='light'])) .toolbar__select {
 			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ececea' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 		}
+	}
+
+	:global(:root[data-theme='dark']) .toolbar__select {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ececea' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 	}
 
 	.toolbar__views button:focus-visible,

@@ -34,9 +34,16 @@ ${alternates(url.origin, path)
     <loc>${url.origin}${setPath(set)}</loc>
 ${versions}  </url>`;
 	});
+	// The pages of all sets, in both languages
+	const indexes = LANGS.map(
+		(lang) => `  <url>
+    <loc>${url.origin}/s/${lang}</loc>
+${LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${url.origin}/s/${l}"/>`).join('\n')}
+  </url>`
+	);
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${[...entries, ...sets].join('\n')}
+${[...entries, ...indexes, ...sets].join('\n')}
 </urlset>
 `;
 	return new Response(xml, { headers: { 'content-type': 'application/xml; charset=utf-8' } });

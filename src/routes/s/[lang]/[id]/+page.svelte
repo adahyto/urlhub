@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 	import ListPage from '$lib/components/ListPage.svelte';
 	import { FEATURED, setPath } from '$lib/featured';
 	import { recent } from '$lib/history.svelte';
@@ -40,6 +41,17 @@
 		{ hreflang: set.lang, href: canonical },
 		...(other ? [{ hreflang: other.lang, href: `${origin}${setPath(other)}` }] : [])
 	]);
+	// The way back: the home page and all sets, in the language chosen in the address
+	const crumbs = $derived.by(() => {
+		const query = page.url.searchParams.has('lang') ? `?lang=${i18n.lang}` : '';
+		return [
+			{ name: 'urlhub', href: `${resolve('/')}${query}` },
+			{
+				name: i18n.t('featured.indexTitle'),
+				href: `${resolve('/s/[lang]', { lang: set.lang })}${query}`
+			}
+		];
+	});
 	const titleOf = (url: string) => rows.find((r) => r.url === url && r.title)?.title || url;
 	// What the page is, for search engines: a collection of links, with the way back to the home page
 	const jsonLd = $derived(
@@ -55,7 +67,13 @@
 				'@type': 'BreadcrumbList',
 				itemListElement: [
 					{ '@type': 'ListItem', position: 1, name: 'urlhub', item: `${origin}/` },
-					{ '@type': 'ListItem', position: 2, name: set.title, item: canonical }
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: i18n.t('featured.indexTitle'),
+						item: `${origin}/s/${set.lang}`
+					},
+					{ '@type': 'ListItem', position: 3, name: set.title, item: canonical }
 				]
 			},
 			mainEntity: {
@@ -87,4 +105,5 @@
 	{canonical}
 	{alternates}
 	{jsonLd}
+	{crumbs}
 />
