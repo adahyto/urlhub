@@ -33,9 +33,41 @@
 		note: string;
 		/** A mailto: to report the page, if it is someone's */
 		report?: string;
+		/** A few sentences under the heading */
+		intro?: string;
+		/** Someone's list stays out of search results; a featured set is meant to be found */
+		robots?: string;
+		/** For search engines: the page's own address, and its versions in other languages */
+		canonical?: string;
+		alternates?: { hreflang: string; href: string }[];
+		/** schema.org JSON-LD, "<" already escaped */
+		jsonLd?: string;
+		/** Where the page sits: links above the heading, the page itself last (not a link) */
+		crumbs?: { name: string; href: string }[];
 	}
 
-	let { title, description, urls, rows, view, meta, image, name, note, report }: Props = $props();
+	let {
+		title,
+		description,
+		urls,
+		rows,
+		view,
+		meta,
+		image,
+		name,
+		note,
+		report,
+		intro,
+		robots = 'noindex, follow',
+		canonical,
+		alternates = [],
+		jsonLd,
+		crumbs = []
+	}: Props = $props();
+	// The closing tag is split so that it does not end this component's own script
+	const jsonLdTag = $derived(
+		jsonLd ? `<script type="application/ld+json">${jsonLd}</scr` + `ipt>` : ''
+	);
 	const i18n = useI18n();
 
 	// The view it opens in, until the visitor picks another
@@ -101,13 +133,22 @@
 <svelte:head>
 	<title>{title} – urlhub</title>
 	<meta name="description" content={about} />
-	<!-- A list to share: worth a preview in messengers, not a place in search results -->
-	<meta name="robots" content="noindex, follow" />
+	<meta name="robots" content={robots} />
+	{#if canonical}
+		<link rel="canonical" href={canonical} />
+	{/if}
+	{#each alternates as a (a.hreflang)}
+		<link rel="alternate" hreflang={a.hreflang} href={a.href} />
+	{/each}
+	{#if jsonLdTag}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- JSON-LD built by the page, "<" escaped -->
+		{@html jsonLdTag}
+	{/if}
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="urlhub" />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={about} />
-	<meta property="og:url" content={address} />
+	<meta property="og:url" content={canonical ?? address} />
 	<meta property="og:image" content={image} />
 	<meta property="og:locale" content={i18n.lang === 'pl' ? 'pl_PL' : 'en_GB'} />
 	<meta name="twitter:card" content="summary_large_image" />
@@ -120,11 +161,24 @@
 <!-- eslint-disable svelte/no-navigation-without-resolve -->
 <main class="saved shell">
 	<header class="saved__head">
+		{#if crumbs.length}
+			<nav class="saved__crumbs" aria-label={i18n.t('featured.crumbs')}>
+				<ol>
+					{#each crumbs as crumb (crumb.href)}
+						<li><a href={crumb.href}>{crumb.name}</a></li>
+					{/each}
+					<li aria-current="page">{title}</li>
+				</ol>
+			</nav>
+		{/if}
 		<h1 class="saved__title">{title}</h1>
 		{#if description}
 			<p class="saved__description">{description}</p>
 		{/if}
 		<p class="saved__meta">{i18n.t('form.links', { count: urls.length })} · {meta}</p>
+		{#if intro}
+			<p class="saved__intro">{intro}</p>
+		{/if}
 	</header>
 
 	<div class="toolbar">
@@ -209,6 +263,33 @@
 		color: var(--ink-2);
 		line-height: 1.5;
 		overflow-wrap: anywhere;
+	}
+
+	.saved__crumbs ol {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+		margin: 0;
+		padding: 0;
+		font-size: 0.8rem;
+		color: var(--muted);
+		list-style: none;
+	}
+
+	.saved__crumbs li + li::before {
+		content: '›';
+		margin-right: 0.25rem;
+	}
+
+	.saved__crumbs a {
+		color: inherit;
+	}
+
+	.saved__intro {
+		margin: 0.4rem 0 0;
+		max-width: 70ch;
+		line-height: 1.6;
+		color: var(--ink-2);
 	}
 
 	.saved__meta {

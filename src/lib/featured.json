@@ -1,5 +1,146 @@
 [
 	{
+		"id": "ubierz-sie-na-zime-2026",
+		"lang": "pl",
+		"season": {
+			"from": "10-01",
+			"to": "02-28"
+		},
+		"view": "tiles",
+		"title": "Ubierz się na nadchodzącą zimę",
+		"description": "Pikowana kurtka, płaszcz z wełną, ciepły sweter, czapki, szalik, rękawiczki i śniegowce z Reserved, Mohito, Cropp, House i Sinsay.",
+		"intro": "Komplet na zimę z pięciu polskich sieciówek: ciepła pikowana kurtka albo płaszcz z wełną, sweter, czapka, szalik, rękawiczki i śniegowce. W tabeli łatwo porównasz rzeczy z różnych sklepów, a „Edytuj kopię” pozwoli ułożyć własny zestaw i wysłać go dalej.",
+		"alternate": "dress-for-winter-2026",
+		"urls": [
+			"https://www.reserved.com/pl/pl/dluga-pikowana-kurtka-724ay-91x",
+			"https://www.mohito.com/pl/pl/klasyczny-plaszcz-z-welna-037kv-99x",
+			"https://www.cropp.com/pl/pl/bialo-czarna-pufferka-z-kapturem-178ka-00x",
+			"https://www.mohito.com/pl/pl/sweter-z-dodatkiem-welny-017ip-33x",
+			"https://www.reserved.com/pl/pl/czapka-beanie-z-domieszka-welny-781co-89x",
+			"https://www.cropp.com/pl/pl/blekitna-czapka-beanie-z-domieszka-welny-345au-05x",
+			"https://www.cropp.com/pl/pl/czarny-szalik-2615z-99x",
+			"https://www.cropp.com/pl/pl/czarne-klasyczne-rekawiczki-264au-99x",
+			"https://www.sinsay.com/pl/pl/bawelniane-rekawiczki-3-pack-9579p-mlc",
+			"https://www.housebrand.com/pl/pl/czane-botki-sniegowce-ze-sztucznym-kozuszkiem-2703x-99x"
+		],
+		"covers": [
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/7/2/724AY-91X-001-1-1141870_7.jpg",
+			"https://static.mohito.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/0/3/037KV-99X-003-1-1315478.jpg",
+			"https://static.cropp.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/1/7/178KA-00X-001-1-1340748.jpg"
+		]
+	},
+	{
+		"id": "steal-her-look-wednesday",
+		"lang": "pl",
+		"aliases": ["wednesday"],
+		"view": "tiles",
+		"title": "Steal her look – Wednesday",
+		"description": "Czerń, biały kołnierzyk, plisy, paski i botki na platformie – ubrania w stylu Wednesday Addams z polskich sieciówek.",
+		"intro": "Styl Wednesday Addams to czerń, biel i porządek: sukienka z kołnierzykiem, biała koszula, plisowana spódnica, sweter w paski, zakolanówki i ciężkie botki. Wybraliśmy rzeczy z Mohito, Cropp, Reserved i House, z których złożysz ten look bez kostiumu.",
+		"alternate": "steal-her-look-wednesday",
+		"urls": [
+			"https://www.mohito.com/pl/pl/sukienka-mini-z-kolnierzem-polo-073ip-99x",
+			"https://www.cropp.com/pl/pl/czarna-sukienka-mini-ze-stojka-456ka-99x",
+			"https://www.reserved.com/pl/pl/biala-koszula-z-krawatem-467fw-01x",
+			"https://www.mohito.com/pl/pl/plisowana-spodnica-midi-547gg-99x",
+			"https://www.cropp.com/pl/pl/czarna-plisowana-spodnica-mini-134hx-99x",
+			"https://www.cropp.com/pl/pl/sweter-w-czarno-biale-paski-632ka-99m",
+			"https://www.mohito.com/pl/pl/dopasowana-marynarka-942jh-99x",
+			"https://www.cropp.com/pl/pl/biale-zakolanowki-107fy-00x",
+			"https://www.housebrand.com/pl/pl/botki-na-platformie-czarne-6482x-99x"
+		],
+		"covers": [
+			"https://static.mohito.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/0/7/073IP-99X-002-1-1222857.jpg",
+			"https://static.cropp.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/4/5/456KA-99X-001-1-1343505.jpg",
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/4/6/467FW-01X-050-1-1321805.jpg"
+		]
+	},
+	{
+		"id": "koncerty-gry-anime-2026-27",
+		"lang": "pl",
+		"season": {
+			"from": "10-01",
+			"to": "03-31"
+		},
+		"view": "tiles",
+		"title": "Muzyka z gier i anime na żywo – zima 2026/27",
+		"description": "Wiedźmin symfonicznie, epicka muzyka z gier, Studio Ghibli i anime przy świecach – koncerty z eBiletu i KupBilecik od października do lutego.",
+		"intro": "Muzyka z gier i anime coraz częściej trafia do filharmonii i na sceny z orkiestrą. Ten zestaw zbiera koncerty od października 2026 do lutego 2027: Wiedźmina symfonicznie, epicką muzykę z gier przy świecach, muzykę ze Studia Ghibli i anime. Bilety prowadzą do eBiletu i KupBilecik; terminy i miasta sprawdzisz na stronie każdego wydarzenia.",
+		"urls": [
+			"https://www.ebilet.pl/now/muzyka-z-wiedzmina-symfonicznie-na-zywo/",
+			"https://www.ebilet.pl/klasyka/muzyka-filmowa/epic-game-music",
+			"https://www.ebilet.pl/klasyka/muzyka-filmowa/epicka-muzyka-z-gier-i-filmow",
+			"https://www.ebilet.pl/klasyka/muzyka-filmowa/muzyka-z-filmow-anime",
+			"https://www.kupbilecik.pl/pl/event/221742/warszawa/gramuzyka-potega-anime-gdy-budza-sie-legendy",
+			"https://www.kupbilecik.pl/pl/event/220856/bydgoszcz/gramuzyka-muzyka-z-filmow-studia-ghibli",
+			"https://www.kupbilecik.pl/pl/event/221067/bialystok/gramuzyka-muzyka-z-filmow-studia-ghibli",
+			"https://www.kupbilecik.pl/pl/event/220802/katowice/epicka-muzyka-z-gier-i-filmow-koncert-przy-swiecach",
+			"https://www.kupbilecik.pl/pl/event/220801/wroclaw/epicka-muzyka-z-gier-i-filmow-koncert-przy-swiecach"
+		],
+		"covers": [
+			"https://www.ebilet.pl/now/app/uploads/2024/05/geralt.jpg",
+			"https://www.ebilet.pl/media/cms/media/ensjyehx/1080x1080px-gaming-concert-1e7d0645-86d1-441f-b729-cff4192bbc81.webp",
+			"https://www.ebilet.pl/media/cms/media/eqcgzuz2/yyyy-70fe19d2-8658-4afc-ba42-d6993942628d.webp"
+		]
+	},
+	{
+		"id": "zima-2026-27",
+		"lang": "pl",
+		"aliases": ["zima"],
+		"season": {
+			"from": "10-01",
+			"to": "02-28"
+		},
+		"view": "tiles",
+		"title": "Co robić zimą 2026/27",
+		"description": "Jarmarki świąteczne, Puchar Świata w skokach w Wiśle i Zakopanem, Geminidy, najkrótszy dzień roku, Turniej Czterech Skoczni i mistrzostwa świata w piłce ręcznej.",
+		"intro": "Pomysły na zimę 2026/27 w jednym miejscu: jarmarki bożonarodzeniowe w Zakopanem, Wrocławiu i Wiedniu, Puchar Świata w skokach w Wiśle i Zakopanem, Turniej Czterech Skoczni i mistrzostwa świata w piłce ręcznej. Do tego dwa zjawiska na niebie: Geminidy w połowie grudnia i przesilenie zimowe, najkrótszy dzień roku.",
+		"alternate": "winter-2026-27",
+		"urls": [
+			"https://www.zakopane.pl/strefa-miejska/aktualnosci/aktualnosci-zwykle/wrzesien-2026/znamy-date-jarmarku-bozonarodzeniowego-w-zakopanem",
+			"https://www.jarmarkbozonarodzeniowy.wroclaw.pl/",
+			"https://www.christkindlmarkt.at/",
+			"https://www.ebilet.pl/sport/pozostale/skoki-narciarskie",
+			"https://www.skijumping.pl/wiadomosci/37947/wstepny-kalendarz-pucharu-swiata-na-sezon-20262027/",
+			"https://pl.wikipedia.org/wiki/Geminidy",
+			"https://pl.wikipedia.org/wiki/Przesilenie_zimowe",
+			"https://slonce.info.pl/",
+			"https://www.vierschanzentournee.com/",
+			"https://pl.wikipedia.org/wiki/Mistrzostwa_Świata_w_Piłce_Ręcznej_Mężczyzn_2027"
+		],
+		"covers": [
+			"http://www.zakopane.pl/assets/zakopane25/media/files/c4adbb24-3bd1-4013-92de-c76698d2854f/pmu-4452.JPG",
+			"https://www.ebilet.pl/media/cms/media/1bkb2fwc/razem-03-social-media-0df7d40d-4553-4832-9151-0607636b9563.webp",
+			"https://www.skijumping.pl/content/images/news/powieksz/pucharswiata_2023-10-09_18-08-32.jpg"
+		]
+	},
+	{
+		"id": "ferie-w-gorach-2027",
+		"lang": "pl",
+		"season": {
+			"from": "10-01",
+			"to": "03-15"
+		},
+		"view": "tiles",
+		"title": "Ferie zimowe w górach 2027",
+		"description": "Stoki w Białce, Szczyrku i Czarnej Górze, termy na Podhalu, Zakopane i warunki narciarskie – plan na ferie w jednym linku.",
+		"intro": "Ferie zimowe 2027 to dla wielu rodzin wyjazd w góry. Zebraliśmy ośrodki narciarskie z Tatr, Beskidów i Sudetów, termy na deszczowy dzień i serwis z aktualnymi warunkami na stokach. Taki zestaw łatwo wysłać rodzinie albo znajomym, z którymi planujesz wyjazd.",
+		"urls": [
+			"https://bialkatatrzanska.pl/",
+			"https://www.szczyrkowski.pl/",
+			"https://www.czarnagora.pl/",
+			"https://www.zakopane.pl/",
+			"https://www.termybukovina.pl/",
+			"https://www.termychocholowskie.pl/",
+			"https://www.skionline.pl/"
+		],
+		"covers": [
+			"https://bialkatatrzanska.pl/og-image.jpg",
+			"https://www.zakopane.pl/assets/zakopane25/media/files/28d8ce6b-0267-4039-a529-86afb2e3dd78/intro-1.jpg",
+			"https://u.profitroom.pl/2015.termabukowina.pl/thumb/1200x630/uploads/zdjciemniejsze.jpg"
+		]
+	},
+	{
 		"id": "halloween-2026",
 		"lang": "pl",
 		"aliases": ["halloween"],
@@ -10,6 +151,8 @@
 		"view": "tiles",
 		"title": "Halloween: przebrania i dekoracje",
 		"description": "Kostiumy, koszyk na cukierki, poduszka-dynia, kapcie-pająki i piżama, która świeci w ciemności.",
+		"intro": "Halloween wypada 31 października, a w Polsce zaraz po nim przychodzą Wszystkich Świętych i Zaduszki. Zebraliśmy rzeczy, które przydadzą się na tę noc: przebrania dla dzieci i dorosłych, koszyk na cukierki, dekoracje i coś na jesienne wieczory w domu. Każdy kafelek prowadzi prosto do sklepu.",
+		"alternate": "halloween-2026",
 		"urls": [
 			"https://www.reserved.com/pl/pl/kostium-na-halloween-243kz-99x",
 			"https://www.reserved.com/pl/pl/kostium-na-halloween-248kz-22x",
@@ -40,6 +183,8 @@
 		"view": "tiles",
 		"title": "Premiery kinowe: jesień i zima 2026",
 		"description": "Street Fighter, Godzilla, nowe Igrzyska śmierci, Avengers: Doomsday i Diuna: Część trzecia – plakaty i opisy z Filmwebu.",
+		"intro": "Największe premiery kinowe od października 2026 do stycznia 2027: od Street Fightera i Godzilli, przez nowe Igrzyska śmierci, po świąteczne Avengers: Doomsday i Diunę: Część trzecią. Każdy kafelek otwiera kartę filmu na Filmwebie z plakatem, opisem i datą premiery w Polsce.",
+		"alternate": "premieres-autumn-winter-2026",
 		"urls": [
 			"https://www.filmweb.pl/film/Street+Fighter.+Uliczny+wojownik-2026-10055813",
 			"https://www.filmweb.pl/film/Clayface-2026-10089272",
@@ -59,111 +204,56 @@
 		]
 	},
 	{
-		"id": "zima-2026-27",
-		"lang": "pl",
-		"aliases": ["zima"],
-		"season": {
-			"from": "10-01",
-			"to": "02-28"
-		},
-		"view": "tiles",
-		"title": "Co robić zimą 2026/27",
-		"description": "Jarmarki świąteczne, Puchar Świata w skokach w Wiśle i Zakopanem, Geminidy, najkrótszy dzień roku, Turniej Czterech Skoczni i mistrzostwa świata w piłce ręcznej.",
-		"urls": [
-			"https://www.zakopane.pl/strefa-miejska/aktualnosci/aktualnosci-zwykle/wrzesien-2026/znamy-date-jarmarku-bozonarodzeniowego-w-zakopanem",
-			"https://www.jarmarkbozonarodzeniowy.wroclaw.pl/",
-			"https://www.christkindlmarkt.at/",
-			"https://www.ebilet.pl/sport/pozostale/skoki-narciarskie",
-			"https://www.skijumping.pl/wiadomosci/37947/wstepny-kalendarz-pucharu-swiata-na-sezon-20262027/",
-			"https://pl.wikipedia.org/wiki/Geminidy",
-			"https://pl.wikipedia.org/wiki/Przesilenie_zimowe",
-			"https://slonce.info.pl/",
-			"https://www.vierschanzentournee.com/",
-			"https://pl.wikipedia.org/wiki/Mistrzostwa_Świata_w_Piłce_Ręcznej_Mężczyzn_2027"
-		],
-		"covers": [
-			"http://www.zakopane.pl/assets/zakopane25/media/files/c4adbb24-3bd1-4013-92de-c76698d2854f/pmu-4452.JPG",
-			"https://www.ebilet.pl/media/cms/media/1bkb2fwc/razem-03-social-media-0df7d40d-4553-4832-9151-0607636b9563.webp",
-			"https://www.skijumping.pl/content/images/news/powieksz/pucharswiata_2023-10-09_18-08-32.jpg"
-		]
-	},
-	{
-		"id": "koncerty-gry-anime-2026-27",
-		"lang": "pl",
-		"season": {
-			"from": "10-01",
-			"to": "03-31"
-		},
-		"view": "tiles",
-		"title": "Muzyka z gier i anime na żywo – zima 2026/27",
-		"description": "Wiedźmin symfonicznie, epicka muzyka z gier, Studio Ghibli i anime przy świecach – koncerty z eBiletu i KupBilecik od października do lutego.",
-		"urls": [
-			"https://www.ebilet.pl/now/muzyka-z-wiedzmina-symfonicznie-na-zywo/",
-			"https://www.ebilet.pl/klasyka/muzyka-filmowa/epic-game-music",
-			"https://www.ebilet.pl/klasyka/muzyka-filmowa/epicka-muzyka-z-gier-i-filmow",
-			"https://www.ebilet.pl/klasyka/muzyka-filmowa/muzyka-z-filmow-anime",
-			"https://www.kupbilecik.pl/pl/event/221742/warszawa/gramuzyka-potega-anime-gdy-budza-sie-legendy",
-			"https://www.kupbilecik.pl/pl/event/220856/bydgoszcz/gramuzyka-muzyka-z-filmow-studia-ghibli",
-			"https://www.kupbilecik.pl/pl/event/221067/bialystok/gramuzyka-muzyka-z-filmow-studia-ghibli",
-			"https://www.kupbilecik.pl/pl/event/220802/katowice/epicka-muzyka-z-gier-i-filmow-koncert-przy-swiecach",
-			"https://www.kupbilecik.pl/pl/event/220801/wroclaw/epicka-muzyka-z-gier-i-filmow-koncert-przy-swiecach"
-		],
-		"covers": [
-			"https://www.ebilet.pl/now/app/uploads/2024/05/geralt.jpg",
-			"https://www.ebilet.pl/media/cms/media/ensjyehx/1080x1080px-gaming-concert-1e7d0645-86d1-441f-b729-cff4192bbc81.webp",
-			"https://www.ebilet.pl/media/cms/media/eqcgzuz2/yyyy-70fe19d2-8658-4afc-ba42-d6993942628d.webp"
-		]
-	},
-	{
-		"id": "ubierz-sie-na-zime-2026",
+		"id": "zimowe-przepisy-2026",
 		"lang": "pl",
 		"season": {
 			"from": "10-01",
 			"to": "02-28"
 		},
 		"view": "tiles",
-		"title": "Ubierz się na nadchodzącą zimę",
-		"description": "Pikowana kurtka, płaszcz z wełną, ciepły sweter, czapki, szalik, rękawiczki i śniegowce z Reserved, Mohito, Cropp, House i Sinsay.",
+		"title": "Zimowe przepisy z blogów kulinarnych",
+		"description": "Piernik, pierniczki, makowiec, barszcz, pierogi, bigos i grzane wino – sprawdzone przepisy z Ani Gotuje, Moich Wypieków, Jadłonomii i Smakera.",
+		"intro": "Zima to czas pieczenia i długiego gotowania. Wybraliśmy przepisy z popularnych polskich blogów kulinarnych: od piernika staropolskiego, który warto upiec z wyprzedzeniem, przez barszcz i pierogi, po grzane wino. Blogerka kulinarna może tak podać obserwującym wszystkie swoje przepisy na święta jednym linkiem.",
 		"urls": [
-			"https://www.reserved.com/pl/pl/dluga-pikowana-kurtka-724ay-91x",
-			"https://www.mohito.com/pl/pl/klasyczny-plaszcz-z-welna-037kv-99x",
-			"https://www.cropp.com/pl/pl/bialo-czarna-pufferka-z-kapturem-178ka-00x",
-			"https://www.mohito.com/pl/pl/sweter-z-dodatkiem-welny-017ip-33x",
-			"https://www.reserved.com/pl/pl/czapka-beanie-z-domieszka-welny-781co-89x",
-			"https://www.cropp.com/pl/pl/blekitna-czapka-beanie-z-domieszka-welny-345au-05x",
-			"https://www.cropp.com/pl/pl/czarny-szalik-2615z-99x",
-			"https://www.cropp.com/pl/pl/czarne-klasyczne-rekawiczki-264au-99x",
-			"https://www.sinsay.com/pl/pl/bawelniane-rekawiczki-3-pack-9579p-mlc",
-			"https://www.housebrand.com/pl/pl/czane-botki-sniegowce-ze-sztucznym-kozuszkiem-2703x-99x"
+			"https://www.mojewypieki.com/przepis/piernik-staropolski",
+			"https://www.mojewypieki.com/przepis/pierniczki",
+			"https://aniagotuje.pl/przepis/piernik",
+			"https://www.jadlonomia.com/przepisy/piernik/",
+			"https://www.mojewypieki.com/przepis/makowiec",
+			"https://aniagotuje.pl/przepis/barszcz-czerwony",
+			"https://aniagotuje.pl/przepis/pierogi-ruskie",
+			"https://aniagotuje.pl/przepis/tradycyjna-kapusta-z-grzybami",
+			"https://smaker.pl/informacje-jak-zrobic-dobry-swiateczny-bigos,1899407,a,.html",
+			"https://aniagotuje.pl/przepis/grzane-wino"
 		],
 		"covers": [
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/7/2/724AY-91X-001-1-1141870_7.jpg",
-			"https://static.mohito.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/0/3/037KV-99X-003-1-1315478.jpg",
-			"https://static.cropp.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/1/7/178KA-00X-001-1-1340748.jpg"
+			"https://mojewypieki.com/wp-content/uploads/2020/03/IMG_7447.jpg",
+			"https://mojewypieki.com/wp-content/uploads/2022/11/DSC_2646.jpg",
+			"https://cdn.aniagotuje.com/pictures/articles/2021/11/21503463-v-1500x1500.jpg"
 		]
 	},
 	{
-		"id": "steal-her-look-wednesday",
+		"id": "planszowki-na-zime",
 		"lang": "pl",
-		"aliases": ["wednesday"],
 		"view": "tiles",
-		"title": "Steal her look – Wednesday",
-		"description": "Czerń, biały kołnierzyk, plisy, paski i botki na platformie – ubrania w stylu Wednesday Addams z polskich sieciówek.",
+		"title": "Planszówki na zimowe wieczory",
+		"description": "Dixit, Tajniacy, Carcassonne, Splendor, Wsiąść do Pociągu, Na skrzydłach i Wiedźmin: Stary Świat – gry dla rodziny, znajomych i we dwoje.",
+		"intro": "Planszówki to sposób na długie zimowe wieczory. Są tu gry na imprezę (Dixit, Tajniacy), rodzinne klasyki (Carcassonne, Wsiąść do Pociągu, Splendor), gry dla dwojga (7 Cudów Świata: Pojedynek) i coś dla fanów Wiedźmina. Wszystkie z polskiego sklepu specjalistycznego Rebel – tak sklep albo recenzent może polecić swoją listę jednym linkiem.",
 		"urls": [
-			"https://www.mohito.com/pl/pl/sukienka-mini-z-kolnierzem-polo-073ip-99x",
-			"https://www.cropp.com/pl/pl/czarna-sukienka-mini-ze-stojka-456ka-99x",
-			"https://www.reserved.com/pl/pl/biala-koszula-z-krawatem-467fw-01x",
-			"https://www.mohito.com/pl/pl/plisowana-spodnica-midi-547gg-99x",
-			"https://www.cropp.com/pl/pl/czarna-plisowana-spodnica-mini-134hx-99x",
-			"https://www.cropp.com/pl/pl/sweter-w-czarno-biale-paski-632ka-99m",
-			"https://www.mohito.com/pl/pl/dopasowana-marynarka-942jh-99x",
-			"https://www.cropp.com/pl/pl/biale-zakolanowki-107fy-00x",
-			"https://www.housebrand.com/pl/pl/botki-na-platformie-czarne-6482x-99x"
+			"https://www.rebel.pl/gry-planszowe/dixit-2001605.html",
+			"https://www.rebel.pl/gry-planszowe/tajniacy-2027329.html",
+			"https://www.rebel.pl/gry-planszowe/carcassonne-2225.html",
+			"https://www.rebel.pl/gry-planszowe/wsiasc-do-pociagu-europa-9665.html",
+			"https://www.rebel.pl/gry-planszowe/splendor-2022998.html",
+			"https://www.rebel.pl/gry-planszowe/na-skrzydlach-108556.html",
+			"https://www.rebel.pl/gry-planszowe/domek-100893.html",
+			"https://www.rebel.pl/gry-planszowe/7-cudow-swiata-pojedynek-98221.html",
+			"https://www.rebel.pl/gry-planszowe/wiedzmin-stary-swiat-2003250.html"
 		],
 		"covers": [
-			"https://static.mohito.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/0/7/073IP-99X-002-1-1222857.jpg",
-			"https://static.cropp.com/media/catalog/product/cache/small_image/960/9df78eab33525d08d6e5fb8d27136e95/4/5/456KA-99X-001-1-1343505.jpg",
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/4/6/467FW-01X-050-1-1321805.jpg"
+			"https://files.rebel.pl/products/100/606/_2001605/rebel-gra-rodzinna-dixit-box-3d-2024-2000x2000-k-ffffff.png",
+			"https://files.rebel.pl/products/100/1203/_2027329/rebel-gra-imprezowa-tajniacy-2025-box3d-2000x2000-k-ffffff.png",
+			"https://files.rebel.pl/products/100/606/_2225/Carcassonne2021-2000x2000-k-ffffff.png"
 		]
 	},
 	{
@@ -172,6 +262,8 @@
 		"view": "tiles",
 		"title": "Kawa w domu: jaki ekspres wybrać",
 		"description": "Automat czy kolba, rankingi i tanie ekspresy do 500 zł z YouTube, a do tego krótkie filmy baristów z Vimeo o parzeniu espresso i kawy przelewowej.",
+		"intro": "Zanim kupisz ekspres, warto zobaczyć, czym różni się automat od kolby i ile naprawdę trzeba wydać. Polscy bariści i recenzenci porównują ekspresy na YouTube, a filmy z Vimeo pokazują, jak parzyć espresso i kawę przelewową. Wszystkie filmy obejrzysz bez wychodzenia z listy.",
+		"alternate": "coffee-at-home",
 		"urls": [
 			"https://www.youtube.com/watch?v=A2zzcS9iPGA",
 			"https://www.youtube.com/watch?v=nPojzk7_fHw",
@@ -196,6 +288,8 @@
 		"view": "tiles",
 		"title": "Konsole przenośne 2026",
 		"description": "Steam Deck OLED, ROG Xbox Ally X, Lenovo Legion Go, Nintendo Switch 2, PlayStation Portal i retro konsolki Anbernic – strony producentów.",
+		"intro": "Granie w podróży to dziś wybór między kilkoma konsolami: Steam Deckiem z bibliotekami ze Steama, ROG Xbox Ally z Windowsem, Lenovo Legion Go, Nintendo Switch 2 i PlayStation Portal, który przesyła gry z PS5. Dla fanów klasyki są też retro konsolki Anbernic. Linki prowadzą do stron producentów.",
+		"alternate": "handheld-consoles-2026",
 		"urls": [
 			"https://www.steamdeck.com/",
 			"https://rog.asus.com/pl/gaming-handhelds/rog-ally/rog-xbox-ally-x-2025/",
@@ -217,6 +311,7 @@
 		"view": "tiles",
 		"title": "Promocje, gazetki i kody rabatowe",
 		"description": "Aktualne gazetki sklepów, okazje i kody rabatowe w jednym miejscu – zajrzyj, zanim pójdziesz na zakupy.",
+		"intro": "Gazetki sieci handlowych i kody rabatowe w jednym miejscu: Blix i Ding zbierają aktualne gazetki sklepów, a Picodi, kodyrabatowe.pl i Rabatio – kupony do sklepów internetowych. Zajrzyj tu przed większymi zakupami.",
 		"urls": [
 			"https://blix.pl/",
 			"https://www.ding.pl/",
@@ -235,21 +330,102 @@
 		"lang": "pl",
 		"view": "tiles",
 		"title": "Aplikacje doner.cloud",
-		"description": "Nasze darmowe serwisy: urlhub, Zdjęcie Dnia NASA, planetoidy i pogoda na Marsie w kosmos.info.pl, wschody i zachody Słońca w slonce.info.pl oraz demo rezerwacji rezerwi.",
+		"description": "Nasze serwisy: rezerwi – system rezerwacji dla pensjonatów i jego demo, kosmos.info.pl, slonce.info.pl i urlhub.",
+		"intro": "doner.cloud tworzy małe serwisy bez reklam i śledzenia: rezerwi to system rezerwacji dla pensjonatów i agroturystyk (z demo do wypróbowania), kosmos.info.pl pokazuje Zdjęcie Dnia NASA i planetoidy blisko Ziemi, slonce.info.pl godziny wschodu i zachodu Słońca, a urlhub – na którym właśnie jesteś – zbiera linki w zestawy.",
+		"alternate": "doner-cloud-apps",
 		"urls": [
-			"https://urlhub.cloud/",
-			"https://kosmos.info.pl/pl/home",
-			"https://kosmos.info.pl/pl/apod",
-			"https://kosmos.info.pl/pl/neosw",
-			"https://kosmos.info.pl/pl/insight",
+			"https://rezerwi.pl/",
+			"https://kosmos.info.pl/",
 			"https://slonce.info.pl/",
-			"https://slonce.info.pl/warszawa",
+			"https://urlhub.cloud/",
 			"https://demo.rezerwi.pl/"
 		],
 		"covers": [
-			"https://urlhub.cloud/og.png",
+			"https://rezerwi.pl/img/rezerwi/og.jpg",
 			"https://kosmos.info.pl/og/kosmos-info-og-1200x630.png",
 			"https://slonce.info.pl/assets/og/slonce-1200x630.png"
+		]
+	},
+	{
+		"id": "dress-for-winter-2026",
+		"lang": "en",
+		"season": {
+			"from": "10-01",
+			"to": "02-28"
+		},
+		"view": "tiles",
+		"title": "Dress for the coming winter",
+		"description": "A down jacket, a wool-blend coat, an alpaca-blend jumper, a beanie, a scarf, gloves and snow boots from Reserved.",
+		"intro": "A full winter outfit from Reserved: a down jacket or a wool-blend coat, an alpaca-blend jumper, a beanie, a scarf, gloves and snow boots. Compare them in the table, or use “Edit a copy” to put together and share your own.",
+		"alternate": "ubierz-sie-na-zime-2026",
+		"urls": [
+			"https://www.reserved.com/gb/en/down-quilted-jacket-159ky-99x",
+			"https://www.reserved.com/gb/en/blended-wool-coat-099ky-85m",
+			"https://www.reserved.com/gb/en/alpaca-wool-blend-jumper-178km-05m",
+			"https://www.reserved.com/gb/en/beanie-026ks-89x",
+			"https://www.reserved.com/gb/en/animal-print-scarf-937kr-90x",
+			"https://www.reserved.com/gb/en/classic-gloves-3-pack-866hj-mlc",
+			"https://www.reserved.com/gb/en/insulated-lace-up-snow-boots-592lc-03x"
+		],
+		"covers": [
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/1/5/159KY-99X-050-1-1338269.jpg",
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/0/9/099KY-85M-002-1-1318171.jpg",
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/1/7/178KM-05M-001-1-1319264.jpg"
+		]
+	},
+	{
+		"id": "steal-her-look-wednesday",
+		"lang": "en",
+		"aliases": ["wednesday"],
+		"view": "tiles",
+		"title": "Steal her look – Wednesday",
+		"description": "Black, a white collar, pleats, knee socks and loafers – clothes in the style of Wednesday Addams.",
+		"intro": "Wednesday Addams' style is black, white and neat: a collar dress, a white shirt, a pleated skirt, knee socks, tights and loafers. Pieces from Reserved to put the look together without a costume.",
+		"alternate": "steal-her-look-wednesday",
+		"urls": [
+			"https://www.reserved.com/gb/en/collar-dress-407ib-99x",
+			"https://www.reserved.com/gb/en/dress-with-pleated-skirt-181ex-99x",
+			"https://www.reserved.com/gb/en/white-shirt-with-tie-467fw-01x",
+			"https://www.reserved.com/gb/en/pleated-skirt-546ib-99x",
+			"https://www.reserved.com/gb/en/pleated-midi-skirt-707ke-99x",
+			"https://www.reserved.com/gb/en/blazer-with-collar-264ky-99x",
+			"https://www.reserved.com/gb/en/knee-socks-3-pack-129fq-00x",
+			"https://www.reserved.com/gb/en/black-tights-60-denier-268ge-99x",
+			"https://www.reserved.com/gb/en/classic-loafers-304jx-99x"
+		],
+		"covers": [
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/4/0/407IB-99X-001-1-1293793.jpg",
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/1/8/181EX-99X-050-1-1302890.jpg",
+			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/4/6/467FW-01X-050-1-1321805.jpg"
+		]
+	},
+	{
+		"id": "winter-2026-27",
+		"lang": "en",
+		"aliases": ["winter"],
+		"season": {
+			"from": "10-01",
+			"to": "02-28"
+		},
+		"view": "tiles",
+		"title": "What's on this winter (2026/27)",
+		"description": "Christmas markets, the Geminids, the shortest day, the Four Hills ski jumping, the handball world championship and the Australian Open.",
+		"intro": "Ideas for winter 2026/27: Vienna's Christmas market, the Four Hills ski jumping, the men's handball world championship and the Australian Open, plus two things in the sky – the Geminids in mid-December and the winter solstice, the shortest day of the year.",
+		"alternate": "zima-2026-27",
+		"urls": [
+			"https://www.christkindlmarkt.at/",
+			"https://en.wikipedia.org/wiki/Geminids",
+			"https://en.wikipedia.org/wiki/Winter_solstice",
+			"https://slonce.info.pl/en",
+			"https://www.vierschanzentournee.com/en/",
+			"https://www.fis-ski.com/",
+			"https://handball2027.com/en",
+			"https://ausopen.com/"
+		],
+		"covers": [
+			"https://upload.wikimedia.org/wikipedia/commons/0/0d/Geminids.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+			"https://upload.wikimedia.org/wikipedia/commons/a/a6/Stonehege_%282148722919%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+			"https://slonce.info.pl/assets/og/slonce-en-1200x630.png"
 		]
 	},
 	{
@@ -263,6 +439,8 @@
 		"view": "tiles",
 		"title": "Halloween: costumes and decorations",
 		"description": "Costumes, a trick-or-treat basket, pumpkin and skull cushions, spider slippers and glow-in-the-dark pyjamas.",
+		"intro": "Halloween falls on 31 October. Here are things for the night: costumes for children and adults, a trick-or-treat basket, decorations and something for cosy autumn evenings at home. Each tile leads straight to the shop.",
+		"alternate": "halloween-2026",
 		"urls": [
 			"https://www.reserved.com/gb/en/halloween-costume-243kz-99x",
 			"https://www.reserved.com/gb/en/halloween-costume-248kz-22x",
@@ -291,6 +469,8 @@
 		"view": "tiles",
 		"title": "In cinemas: autumn and winter 2026",
 		"description": "Street Fighter, Godzilla Minus Zero, the new Hunger Games, Avengers: Doomsday and Dune: Part Three – posters and details from Letterboxd.",
+		"intro": "The biggest cinema releases from October 2026 to January 2027: from Street Fighter and Godzilla Minus Zero to the new Hunger Games, Avengers: Doomsday and Dune: Part Three at Christmas. Each tile opens the film on Letterboxd with its poster and details.",
+		"alternate": "premiery-jesien-zima-2026",
 		"urls": [
 			"https://letterboxd.com/film/street-fighter-2026/",
 			"https://letterboxd.com/film/clayface/",
@@ -310,87 +490,13 @@
 		]
 	},
 	{
-		"id": "winter-2026-27",
-		"lang": "en",
-		"aliases": ["winter"],
-		"season": {
-			"from": "10-01",
-			"to": "02-28"
-		},
-		"view": "tiles",
-		"title": "What's on this winter (2026/27)",
-		"description": "Christmas markets, the Geminids, the shortest day, the Four Hills ski jumping, the handball world championship and the Australian Open.",
-		"urls": [
-			"https://www.christkindlmarkt.at/",
-			"https://en.wikipedia.org/wiki/Geminids",
-			"https://en.wikipedia.org/wiki/Winter_solstice",
-			"https://slonce.info.pl/en",
-			"https://www.vierschanzentournee.com/en/",
-			"https://www.fis-ski.com/",
-			"https://handball2027.com/en",
-			"https://ausopen.com/"
-		],
-		"covers": [
-			"https://upload.wikimedia.org/wikipedia/commons/0/0d/Geminids.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-			"https://upload.wikimedia.org/wikipedia/commons/a/a6/Stonehege_%282148722919%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-			"https://slonce.info.pl/assets/og/slonce-en-1200x630.png"
-		]
-	},
-	{
-		"id": "dress-for-winter-2026",
-		"lang": "en",
-		"season": {
-			"from": "10-01",
-			"to": "02-28"
-		},
-		"view": "tiles",
-		"title": "Dress for the coming winter",
-		"description": "A down jacket, a wool-blend coat, an alpaca-blend jumper, a beanie, a scarf, gloves and snow boots from Reserved.",
-		"urls": [
-			"https://www.reserved.com/gb/en/down-quilted-jacket-159ky-99x",
-			"https://www.reserved.com/gb/en/blended-wool-coat-099ky-85m",
-			"https://www.reserved.com/gb/en/alpaca-wool-blend-jumper-178km-05m",
-			"https://www.reserved.com/gb/en/beanie-026ks-89x",
-			"https://www.reserved.com/gb/en/animal-print-scarf-937kr-90x",
-			"https://www.reserved.com/gb/en/classic-gloves-3-pack-866hj-mlc",
-			"https://www.reserved.com/gb/en/insulated-lace-up-snow-boots-592lc-03x"
-		],
-		"covers": [
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/1/5/159KY-99X-050-1-1338269.jpg",
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/0/9/099KY-85M-002-1-1318171.jpg",
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/1/7/178KM-05M-001-1-1319264.jpg"
-		]
-	},
-	{
-		"id": "steal-her-look-wednesday",
-		"lang": "en",
-		"aliases": ["wednesday"],
-		"view": "tiles",
-		"title": "Steal her look – Wednesday",
-		"description": "Black, a white collar, pleats, knee socks and loafers – clothes in the style of Wednesday Addams.",
-		"urls": [
-			"https://www.reserved.com/gb/en/collar-dress-407ib-99x",
-			"https://www.reserved.com/gb/en/dress-with-pleated-skirt-181ex-99x",
-			"https://www.reserved.com/gb/en/white-shirt-with-tie-467fw-01x",
-			"https://www.reserved.com/gb/en/pleated-skirt-546ib-99x",
-			"https://www.reserved.com/gb/en/pleated-midi-skirt-707ke-99x",
-			"https://www.reserved.com/gb/en/blazer-with-collar-264ky-99x",
-			"https://www.reserved.com/gb/en/knee-socks-3-pack-129fq-00x",
-			"https://www.reserved.com/gb/en/black-tights-60-denier-268ge-99x",
-			"https://www.reserved.com/gb/en/classic-loafers-304jx-99x"
-		],
-		"covers": [
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/4/0/407IB-99X-001-1-1293793.jpg",
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/1/8/181EX-99X-050-1-1302890.jpg",
-			"https://static.reserved.com/media/catalog/product/cache/850/a4e40ebdc3e371adff845072e1c73f37/4/6/467FW-01X-050-1-1321805.jpg"
-		]
-	},
-	{
 		"id": "coffee-at-home",
 		"lang": "en",
 		"view": "tiles",
 		"title": "Coffee at home: brewing guides",
 		"description": "The ultimate V60 technique, V60, Chemex and AeroPress for beginners on YouTube, and short barista films on espresso and pour-over from Vimeo.",
+		"intro": "Better coffee at home starts with technique: the V60, Chemex and AeroPress explained on YouTube, and short films on Vimeo by baristas brewing espresso and pour-over. Every video plays right from the list.",
+		"alternate": "kawa-w-domu",
 		"urls": [
 			"https://www.youtube.com/watch?v=AI4ynXzkSQo",
 			"https://www.youtube.com/watch?v=rN3q1X3My5o",
@@ -411,6 +517,8 @@
 		"view": "tiles",
 		"title": "Handheld consoles 2026",
 		"description": "Steam Deck OLED, ROG Xbox Ally X, Lenovo Legion Go, Nintendo Switch 2, PlayStation Portal and Anbernic retro handhelds – the makers' own pages.",
+		"intro": "Playing on the go now means choosing between several handhelds: the Steam Deck with your Steam library, the ROG Xbox Ally with Windows, the Lenovo Legion Go, the Nintendo Switch 2 and the PlayStation Portal, which streams games from a PS5. For classic games there are Anbernic's retro handhelds. The links go to the makers' own pages.",
+		"alternate": "konsole-przenosne-2026",
 		"urls": [
 			"https://www.steamdeck.com/en/",
 			"https://rog.asus.com/uk/gaming-handhelds/rog-ally/rog-xbox-ally-x-2025/",
@@ -432,6 +540,7 @@
 		"view": "tiles",
 		"title": "Game deals: buy games for less",
 		"description": "Price trackers and stores with discounts: IsThereAnyDeal, CheapShark, Steam specials, GOG, Humble Bundle and Fanatical.",
+		"intro": "Before buying a game, check where it is cheapest: IsThereAnyDeal and CheapShark track prices across stores, and Steam, GOG, Humble Bundle and Fanatical have regular sales and bundles.",
 		"urls": [
 			"https://isthereanydeal.com/",
 			"https://www.cheapshark.com/",
@@ -451,19 +560,18 @@
 		"lang": "en",
 		"view": "tiles",
 		"title": "doner.cloud apps",
-		"description": "Our free sites: urlhub, NASA's picture of the day, near-Earth objects and Mars weather on kosmos.info.pl, sunrise and sunset times on slonce.info.pl, and the rezerwi booking demo.",
+		"description": "Our sites: rezerwi, a booking system for guesthouses, and its demo, kosmos.info.pl, slonce.info.pl and urlhub.",
+		"intro": "doner.cloud makes small sites with no ads and no tracking: rezerwi is a booking system for guesthouses (with a demo to try), kosmos.info.pl shows NASA's picture of the day and near-Earth objects, slonce.info.pl sunrise and sunset times, and urlhub – where you are now – gathers links into sets.",
+		"alternate": "aplikacje-doner-cloud",
 		"urls": [
-			"https://urlhub.cloud/?lang=en",
+			"https://rezerwi.pl/",
 			"https://kosmos.info.pl/en/home",
-			"https://kosmos.info.pl/en/apod",
-			"https://kosmos.info.pl/en/neosw",
-			"https://kosmos.info.pl/en/insight",
 			"https://slonce.info.pl/en",
-			"https://slonce.info.pl/en/london",
+			"https://urlhub.cloud/?lang=en",
 			"https://demo.rezerwi.pl/"
 		],
 		"covers": [
-			"https://urlhub.cloud/og.png",
+			"https://rezerwi.pl/img/rezerwi/og.jpg",
 			"https://kosmos.info.pl/og/kosmos-info-og-1200x630.png",
 			"https://slonce.info.pl/assets/og/slonce-en-1200x630.png"
 		]

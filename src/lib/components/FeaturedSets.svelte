@@ -11,10 +11,26 @@
 		sets: FeaturedSet[];
 		/** The cards' pictures through /img, by setKey (signed on the server) */
 		covers: Record<string, string[]>;
-		/** Puts the set's links in the field and fetches them */
+		/** The section's heading and the sentence under it */
+		heading: string;
+		lead?: string;
+		/** How many show before "More sets"; all on the page of all sets */
+		limit?: number;
+		/** The page of all sets, linked under the cards */
+		allHref?: string;
+		/** The heading's id, unique on the page */
+		id?: string;
 	}
 
-	let { sets, covers }: Props = $props();
+	let {
+		sets,
+		covers,
+		heading,
+		lead,
+		limit = SHOWN_FIRST,
+		allHref,
+		id = 'featured-heading'
+	}: Props = $props();
 
 	/** A set is a page of its own (/s/<lang>/<id>), in the interface language chosen in the address */
 	const hrefOf = (set: FeaturedSet) => {
@@ -27,8 +43,8 @@
 	const hide = (event: Event) => ((event.currentTarget as HTMLElement).style.visibility = 'hidden');
 
 	let all = $state(false);
-	const shown = $derived(all ? sets : sets.slice(0, SHOWN_FIRST));
-	const hidden = $derived(sets.length - SHOWN_FIRST);
+	const shown = $derived(all ? sets : sets.slice(0, limit));
+	const hidden = $derived(sets.length - limit);
 
 	/** The sites of a set, as a card names them: the first few, then how many more */
 	function sitesOf(set: FeaturedSet) {
@@ -41,8 +57,11 @@
 </script>
 
 {#if sets.length}
-	<section class="featured" aria-labelledby="featured-heading">
-		<h2 id="featured-heading" class="featured__heading">{i18n.t('featured.title')}</h2>
+	<section class="featured" aria-labelledby={id}>
+		<div class="featured__head">
+			<h2 {id} class="featured__heading">{heading}</h2>
+			{#if lead}<p class="featured__lead">{lead}</p>{/if}
+		</div>
 		<ul class="featured__list">
 			{#each shown as set (set.id)}
 				<li>
@@ -86,10 +105,22 @@
 				</li>
 			{/each}
 		</ul>
-		{#if hidden > 0}
-			<button type="button" class="featured__more" aria-expanded={all} onclick={() => (all = !all)}
-				>{all ? i18n.t('featured.less') : i18n.t('featured.more', { count: hidden })}</button
-			>
+		{#if hidden > 0 || allHref}
+			<div class="featured__actions">
+				{#if hidden > 0}
+					<button
+						type="button"
+						class="featured__more"
+						aria-expanded={all}
+						onclick={() => (all = !all)}
+						>{all ? i18n.t('featured.less') : i18n.t('featured.more', { count: hidden })}</button
+					>
+				{/if}
+				{#if allHref}
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- built with resolve() by the page -->
+					<a class="featured__all" href={allHref}>{i18n.t('featured.all')}</a>
+				{/if}
+			</div>
 		{/if}
 	</section>
 {/if}
@@ -99,6 +130,33 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
+	}
+
+	.featured__head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.featured__lead {
+		margin: 0;
+		max-width: 70ch;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: var(--ink-3);
+	}
+
+	.featured__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+	}
+
+	.featured__all {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--ink);
 	}
 
 	.featured__heading {

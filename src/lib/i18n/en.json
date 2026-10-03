@@ -307,7 +307,8 @@
 	},
 	"header": {
 		"tagline": "Collect links into sets and share them",
-		"nav": "Language"
+		"nav": "Language",
+		"theme": "Switch between light and dark"
 	},
 	"footer": {
 		"privacy": "Privacy"
@@ -328,12 +329,19 @@
 		}
 	},
 	"featured": {
-		"title": "Featured sets",
+		"title": "One link, a whole set",
 		"seasonal": "In season",
 		"more": "More sets ({count})",
 		"less": "Fewer sets",
 		"meta": "a featured set by urlhub",
-		"note": "A set put together by urlhub. “Edit a copy” opens its links as your own list."
+		"note": "A set put together by urlhub. “Edit a copy” opens its links as your own list.",
+		"lead": "This is urlhub in practice: a creator gives viewers one link to the clothes from a video, a shop to its season's picks, an organiser to the concerts, a blogger to their recipes. Open any set and see.",
+		"all": "All sets →",
+		"indexTitle": "Sets of links to share",
+		"now": "In season",
+		"archive": "Out of season",
+		"archiveLead": "Sets from earlier seasons. Links to them keep working, and new ones come every year.",
+		"crumbs": "Breadcrumb"
 	},
 	"saved": {
 		"savedOn": "published {date}",
@@ -393,7 +401,7 @@
 		},
 		"storage": {
 			"title": "Cookies and browser storage",
-			"text": "urlhub stores no cookies. Recent queries go to your browser's storage (localStorage) only at your request, after you turn on \"Remember recent queries on this device\". They are never sent anywhere, and turning the switch off deletes them. Without the switch, Recent shows only this visit's queries: they are kept in the open tab's memory and are gone when it is closed or reloaded."
+			"text": "urlhub stores no cookies. Recent queries go to your browser's storage (localStorage) only at your request, after you turn on \"Remember recent queries on this device\". They are never sent anywhere, and turning the switch off deletes them. Without the switch, Recent shows only this visit's queries: they are kept in the open tab's memory and are gone when it is closed or reloaded. The light or dark theme picked with the switch in the header is also remembered in your browser, only once you click it."
 		},
 		"logs": {
 			"title": "Server logs",

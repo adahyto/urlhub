@@ -1,7 +1,7 @@
 /*
- * Colours of the whole app, light and dark. The dark ones follow the visitor's system setting (no switch: a
- * switch would have to remember the choice on the device). Components use these variables, never fixed colours;
- * /status keeps its own set.
+ * Colours of the whole app, light and dark. The dark ones follow the visitor's system setting, unless the visitor
+ * picked one with the switch in the header (data-theme on <html>, remembered on the device only after that click).
+ * Components use these variables, never fixed colours; /status keeps its own set.
  */
 :root {
 	color-scheme: light dark;
@@ -45,7 +45,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
+	:root:not([data-theme='light']) {
 		--ink: #ececea;
 		--ink-2: #d6d6d3;
 		--ink-3: #b3b3b0;
@@ -81,6 +81,50 @@
 		--tile-error-b: #2b1a18;
 		--tile-error-ink: #f2a59d;
 	}
+}
+
+/* The switch in the header (ThemeSwitch.svelte) wins over the system's setting */
+:root[data-theme='dark'] {
+	color-scheme: dark;
+
+	--ink: #ececea;
+	--ink-2: #d6d6d3;
+	--ink-3: #b3b3b0;
+	--muted: #9a9a97;
+	--faint: #969693;
+	--surface: #161615;
+	--surface-2: #222221;
+	--surface-3: #2b2b29;
+	--border: #3a3a37;
+	--border-soft: #2c2c2a;
+	--accent: #ececea;
+	--on-accent: #161615;
+	--focus-ring: rgba(236, 236, 234, 0.18);
+	--shadow: rgba(0, 0, 0, 0.5);
+
+	--error: #f07167;
+	--error-bg: rgba(240, 113, 103, 0.14);
+	--row-error: #2a1d1b;
+	--row-open: #1c1c1b;
+	--warning-ink: #f3cf6e;
+	--warning-bg: #3d3112;
+	--info-ink: #c8c8c5;
+	--info-bg: #2f2f2d;
+	--success: #7bd47f;
+
+	--skeleton-a: #262624;
+	--skeleton-b: #31312f;
+	--tile-a: #2a2a28;
+	--tile-b: #1e1e1d;
+	--tile-ink: #e2e2df;
+	--tile-pending-ink: #6f6f6c;
+	--tile-error-a: #3a2421;
+	--tile-error-b: #2b1a18;
+	--tile-error-ink: #f2a59d;
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
 }
 
 /* Read by screen readers, not shown */

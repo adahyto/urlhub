@@ -261,7 +261,7 @@
 	}
 
 	@media (prefers-color-scheme: dark) {
-		.status {
+		:global(:root:not([data-theme='light'])) .status {
 			--ink: #ececea;
 			--muted: #a3a3a0;
 			--surface: #1a1a19;
@@ -270,6 +270,16 @@
 			--bar: #3987e5;
 			--bar-track: #184f95;
 		}
+	}
+
+	:global(:root[data-theme='dark']) .status {
+		--ink: #ececea;
+		--muted: #a3a3a0;
+		--surface: #1a1a19;
+		--card: #262624;
+		--border: #383835;
+		--bar: #3987e5;
+		--bar-track: #184f95;
 	}
 
 	:global(body) {

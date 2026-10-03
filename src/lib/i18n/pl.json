@@ -345,7 +345,8 @@
 	},
 	"header": {
 		"tagline": "Zbieraj linki w zestawy i dziel się nimi",
-		"nav": "Język"
+		"nav": "Język",
+		"theme": "Przełącz jasny i ciemny motyw"
 	},
 	"footer": {
 		"privacy": "Prywatność"
@@ -366,12 +367,19 @@
 		}
 	},
 	"featured": {
-		"title": "Polecane zestawy",
+		"title": "Jeden link, cały zestaw",
 		"seasonal": "Na teraz",
 		"more": "Więcej zestawów ({count})",
 		"less": "Mniej zestawów",
 		"meta": "polecany zestaw urlhub",
-		"note": "Zestaw przygotowany przez urlhub. „Edytuj kopię” otwiera jego linki jako Twoją listę."
+		"note": "Zestaw przygotowany przez urlhub. „Edytuj kopię” otwiera jego linki jako Twoją listę.",
+		"lead": "Tak wygląda urlhub w praktyce: influencerka podaje widzom jeden link do ubrań z filmu, sklep – do kolekcji na sezon, organizator – do koncertów, a bloger – do swoich przepisów. Otwórz dowolny zestaw i zobacz.",
+		"all": "Wszystkie zestawy →",
+		"indexTitle": "Zestawy linków do udostępniania",
+		"now": "Na teraz",
+		"archive": "Poza sezonem",
+		"archiveLead": "Zestawy z poprzednich sezonów. Linki do nich dalej działają, a co roku dochodzą nowe.",
+		"crumbs": "Ścieżka"
 	},
 	"saved": {
 		"savedOn": "opublikowano {date}",
@@ -431,7 +439,7 @@
 		},
 		"storage": {
 			"title": "Ciasteczka i pamięć przeglądarki",
-			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa. Bez przełącznika „Ostatnie” pokazuje tylko zapytania z bieżącej wizyty: są w pamięci otwartej karty i znikają po jej zamknięciu albo odświeżeniu."
+			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa. Bez przełącznika „Ostatnie” pokazuje tylko zapytania z bieżącej wizyty: są w pamięci otwartej karty i znikają po jej zamknięciu albo odświeżeniu. Jasny albo ciemny motyw wybrany przełącznikiem w nagłówku też zapamiętujemy w przeglądarce, dopiero po kliknięciu."
 		},
 		"logs": {
 			"title": "Logi serwera",

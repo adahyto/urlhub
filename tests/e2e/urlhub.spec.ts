@@ -10,6 +10,8 @@ const link = (path: string) => `https://example.test${path}`;
 
 const field = (page: Page) => page.getByLabel('Links', { exact: true });
 const summary = (page: Page) => page.locator('.toolbar__summary');
+/** A parameter of the page's address, which the page updates after it changes (wait for it with expect.poll) */
+const param = (page: Page, name: string) => new URL(page.url()).searchParams.get(name);
 const lastRequest = async (page: Page) =>
 	(await (await page.request.get(`${API}/__requests`)).json()).at(-1);
 
@@ -29,7 +31,7 @@ test('a list with & and ? in its links survives sharing and a reload', async ({ 
 	await expect(page.locator('.tiles__title')).toHaveText(['Title of /a', 'Title of /b']);
 	// The text went as typed; ldb-api found the links
 	expect((await lastRequest(page)).text).toBe(`see ${link('/a?x=1&y=2')}, and ${link('/b')}.`);
-	expect(new URL(page.url()).searchParams.get('urls')).toBe(`${link('/a?x=1&y=2')} ${link('/b')}`);
+	await expect.poll(() => param(page, 'urls')).toBe(`${link('/a?x=1&y=2')} ${link('/b')}`);
 
 	await page.reload();
 	await expect(field(page)).toHaveValue(`${link('/a?x=1&y=2')}\n${link('/b')}`);
@@ -110,14 +112,13 @@ test('the table: advanced details, filters, sorting, JSON and CSV', async ({ pag
 	expect(lines).toHaveLength(5);
 
 	await page.getByRole('button', { name: 'JSON', exact: true }).click();
-	expect(new URL(page.url()).searchParams.get('view')).toBe('json');
+	await expect.poll(() => param(page, 'view')).toBe('json');
 	const json = JSON.parse(await page.getByRole('region', { name: 'Results as JSON' }).innerText());
 	expect(json.urls).toHaveLength(4);
 
 	await page.getByRole('button', { name: 'Tiles', exact: true }).click();
 	await expect(page.locator('.tiles__item')).toHaveCount(4);
-	const address = new URL(page.url()).searchParams;
-	expect([address.get('view'), address.get('advanced')]).toEqual([null, null]);
+	await expect.poll(() => [param(page, 'view'), param(page, 'advanced')]).toEqual([null, null]);
 	// Asking for the SEO details from the tiles opens the table, where they show
 	await page.getByLabel('Check SEO').uncheck();
 	await page.getByLabel('Check SEO').check();
@@ -182,7 +183,7 @@ test('the logo leads back to the empty home page, the list waits in Recent, Back
 	await expect(page).toHaveURL(/\/$/);
 	await expect(field(page)).toHaveValue('');
 	await expect(summary(page)).toHaveCount(0);
-	await expect(page.getByRole('region', { name: 'Featured sets' })).toBeVisible();
+	await expect(page.getByRole('region', { name: 'One link, a whole set' })).toBeVisible();
 
 	const recentMenu = page.getByRole('button', { name: /^Recent/ });
 	await recentMenu.click();
@@ -254,6 +255,31 @@ test('Share → Copy link copies the link that opens these results', async ({ pa
 	await expect(page.locator('tbody tr')).toHaveCount(2);
 });
 
+test('the switch in the header picks light or dark over the system, remembered only after the click', async ({
+	page
+}) => {
+	await page.emulateMedia({ colorScheme: 'light' });
+	await page.goto('/');
+	expect(await page.evaluate(() => localStorage.length)).toBe(0);
+	const html = page.locator('html');
+	await expect(html).not.toHaveAttribute('data-theme', /.*/);
+
+	const switcher = page.getByRole('button', { name: 'Switch between light and dark' });
+	await switcher.click();
+	await expect(html).toHaveAttribute('data-theme', 'dark');
+	const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+	expect(await background()).toBe('rgb(22, 22, 21)');
+	expect(await page.evaluate(() => localStorage.getItem('urlhub.theme'))).toBe('dark');
+
+	// Applied before the page shows, after a reload too
+	await page.reload();
+	await expect(html).toHaveAttribute('data-theme', 'dark');
+	await switcher.click();
+	await expect(html).toHaveAttribute('data-theme', 'light');
+	await page.emulateMedia({ colorScheme: 'dark' });
+	expect(await background()).toBe('rgb(255, 255, 255)');
+});
+
 test('the dark theme follows the system setting', async ({ page }) => {
 	await page.emulateMedia({ colorScheme: 'dark' });
 	await page.goto(`/?urls=${link('/a')}&view=table`);
@@ -283,17 +309,17 @@ test('the list can be edited: remove with undo, move with buttons and by draggin
 	await tile('a').hover();
 	await tile('a').getByRole('button', { name: 'Remove' }).click();
 	await expect(titles).toHaveText(['Title of /b', 'Title of /c']);
-	expect(urlsInAddress()).toBe(`${link('/b')} ${link('/c')}`);
+	await expect.poll(urlsInAddress).toBe(`${link('/b')} ${link('/c')}`);
 	await expect(field(page)).toHaveValue(`${link('/b')}\n${link('/c')}`);
 	await page.getByRole('button', { name: 'Undo' }).click();
 	await expect(titles).toHaveText(['Title of /a', 'Title of /b', 'Title of /c']);
-	expect(urlsInAddress()).toBe(`${link('/a')} ${link('/b')} ${link('/c')}`);
+	await expect.poll(urlsInAddress).toBe(`${link('/a')} ${link('/b')} ${link('/c')}`);
 
 	await tile('a').getByRole('button', { name: 'Move later' }).click();
 	await expect(titles).toHaveText(['Title of /b', 'Title of /a', 'Title of /c']);
 	await tile('c').dragTo(tile('b'));
 	await expect(titles).toHaveText(['Title of /c', 'Title of /b', 'Title of /a']);
-	expect(urlsInAddress()).toBe(`${link('/c')} ${link('/b')} ${link('/a')}`);
+	await expect.poll(urlsInAddress).toBe(`${link('/c')} ${link('/b')} ${link('/a')}`);
 	// Nothing was fetched again
 	expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
 
@@ -378,8 +404,8 @@ test.describe('in Polish', () => {
 		await expect(page.getByRole('button', { name: 'Preview', exact: true })).toBeVisible();
 		await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 		await expect(summary(page)).toHaveText('1 link');
-		expect(new URL(page.url()).searchParams.get('lang')).toBe('en');
-		expect(new URL(page.url()).searchParams.get('urls')).toBe(link('/a'));
+		await expect.poll(() => param(page, 'lang')).toBe('en');
+		expect(param(page, 'urls')).toBe(link('/a'));
 		// The results stayed; nothing was fetched again
 		expect((await (await page.request.get(`${API}/__requests`)).json()).length).toBe(1);
 
@@ -607,12 +633,14 @@ test('search engines get one canonical page per language, results stay out of th
 	expect(links(await head('/privacy'))[0]).toBe(`canonical ${O}/privacy`);
 
 	const sitemap = await (await request.get('/sitemap.xml')).text();
-	expect(sitemap.match(/<loc>[^<]+<\/loc>/g)).toEqual([
+	expect(sitemap.match(/<loc>[^<]+<\/loc>/g)?.slice(0, 4)).toEqual([
 		`<loc>${O}/?lang=en</loc>`,
 		`<loc>${O}/?lang=pl</loc>`,
 		`<loc>${O}/privacy?lang=en</loc>`,
 		`<loc>${O}/privacy?lang=pl</loc>`
 	]);
+	// Then every featured set's page (tests/e2e/featured.spec.ts)
+	expect(sitemap).toMatch(new RegExp(`<loc>${O}/s/pl/[a-z0-9-]+</loc>`));
 	const robots = await (await request.get('/robots.txt')).text();
 	expect(robots).toContain('Disallow: /api/');
 	expect(robots).toContain(`Sitemap: ${O}/sitemap.xml`);
