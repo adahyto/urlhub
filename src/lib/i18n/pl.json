@@ -312,7 +312,9 @@
 	"errorPage": {
 		"shortLinkTitle": "Ten krótki link nie istnieje",
 		"shortLinkText": "Mógł wygasnąć: krótkie linki nieużywane przez 90 dni są usuwane. Poproś osobę, która go udostępniła, o nowy.",
-		"other": "Coś poszło nie tak."
+		"other": "Coś poszło nie tak.",
+		"savedListTitle": "Ta zapisana lista nie istnieje",
+		"savedListText": "Mogła zostać usunięta po zgłoszeniu albo wygasnąć: listy nieotwierane przez rok są usuwane."
 	},
 	"og": {
 		"title": {
@@ -368,6 +370,16 @@
 		"seasonal": "Na teraz",
 		"more": "Więcej zestawów ({count})",
 		"less": "Mniej zestawów"
+	},
+	"saved": {
+		"savedOn": "zapisano {date}",
+		"copyLink": "Kopiuj link",
+		"linkCopied": "Skopiowano link do tej listy",
+		"editCopy": "Edytuj kopię",
+		"fixed": "Tę listę zapisano na stałe: nikt jej nie zmieni. „Edytuj kopię” otwiera jej linki jako nową listę.",
+		"report": "Zgłoś nadużycie",
+		"reportSubject": "Zgłoszenie listy urlhub",
+		"reportBody": "Lista: {url}\nCo jest nie tak:"
 	},
 	"privacy": {
 		"title": "Prywatność",

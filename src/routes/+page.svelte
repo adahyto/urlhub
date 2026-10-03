@@ -12,6 +12,7 @@
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
 	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
 	import { featuredFor, type FeaturedSet } from '$lib/featured';
+	import { copyText, download } from '$lib/files';
 	import { recent, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
@@ -220,29 +221,14 @@
 		if (message) noticeTimer = setTimeout(() => (notice = ''), ms);
 	}
 
-	// navigator.clipboard needs HTTPS; this site is plain HTTP, so fall back to the old way
 	async function copy(content: string, done: string) {
-		try {
-			await navigator.clipboard.writeText(content);
-		} catch {
-			const area = Object.assign(document.createElement('textarea'), { value: content });
-			document.body.append(area);
-			area.select();
-			document.execCommand('copy');
-			area.remove();
-		}
+		await copyText(content);
 		if (done) flash(done);
 	}
 
 	const copyJson = () => copy(json, i18n.t('notices.jsonCopied'));
 	// The address already holds the links, the view and the option: it is the link to share
 	const share = () => copy(page.url.href, i18n.t('notices.linkCopied'));
-
-	function download(content: string, type: string, name: string) {
-		const url = URL.createObjectURL(new Blob([content], { type }));
-		Object.assign(document.createElement('a'), { href: url, download: name }).click();
-		URL.revokeObjectURL(url);
-	}
 
 	// A short address for the list, kept on the server (lib/server/collections.ts); the notice says so
 	async function shortLink() {
