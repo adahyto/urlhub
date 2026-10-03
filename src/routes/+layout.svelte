@@ -49,10 +49,13 @@
 <!-- eslint-disable svelte/no-navigation-without-resolve -->
 <header class="site-header">
 	<div class="shell site-header__inner">
-		{#if !isHome}<BackButton />{/if}
-		<svelte:element this={isHome ? 'h1' : 'p'} class="site-header__brand">
-			<a href={hrefTo('/')}>urlhub</a>
-		</svelte:element>
+		<!-- The back arrow (an app from the home screen) centred on the name, which has no text to share a baseline -->
+		<div class="site-header__title">
+			{#if !isHome}<BackButton />{/if}
+			<svelte:element this={isHome ? 'h1' : 'p'} class="site-header__brand">
+				<a href={hrefTo('/')}>urlhub</a>
+			</svelte:element>
+		</div>
 		<p class="site-header__tagline">{t('header.tagline')}</p>
 		<nav class="site-header__nav" aria-label={t('header.nav')}>
 			<span class="lang">
@@ -127,6 +130,11 @@
 		align-items: baseline;
 		gap: 0.25rem 1rem;
 		padding-block: 1rem;
+	}
+
+	.site-header__title {
+		display: flex;
+		align-items: center;
 	}
 
 	.site-header__brand {
