@@ -10,7 +10,7 @@
 	import RecentMenu from '$lib/components/RecentMenu.svelte';
 	import Menu from '$lib/components/Menu.svelte';
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
-	import SaveDialog from '$lib/components/SaveDialog.svelte';
+	import ShareDialog from '$lib/components/ShareDialog.svelte';
 	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
 	import { featuredFor, type FeaturedSet } from '$lib/featured';
 	import { copyText, download } from '$lib/files';
@@ -406,10 +406,11 @@
 						{/each}
 					</div>
 					<span class="toolbar__spacer"></span>
-					<SaveDialog
+					<ShareDialog
 						urls={query.rows.map((r) => r.url)}
 						{view}
 						lang={i18n.lang}
+						link={page.url.href}
 						disabled={query.loading}
 						oncopylink={share}
 						onshortlink={shortLink}

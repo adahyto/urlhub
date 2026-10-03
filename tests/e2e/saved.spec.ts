@@ -31,7 +31,7 @@ test('a saved list is a page of its own: its title, the links as saved, no form'
 	await page.goto(path);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Two links');
 	await expect(page.getByText('For the tests')).toBeVisible();
-	await expect(page.getByText(/^2 links · saved /)).toBeVisible();
+	await expect(page.getByText(/^2 links · published /)).toBeVisible();
 	await expect(page.getByLabel('Links', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('Title of /a').first()).toBeVisible();
 	await expect(page.getByText('Made up')).toHaveCount(0);
@@ -75,11 +75,11 @@ test('an unknown saved list says what happened, in both languages', async ({ pag
 	const res = await page.goto('/l/AAAAAAAA');
 	expect(res?.status()).toBe(404);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-		'This saved list does not exist'
+		'This published list does not exist'
 	);
 	await page.goto('/l/AAAAAAAA?lang=pl');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-		'Ta zapisana lista nie istnieje'
+		'Ta opublikowana lista nie istnieje'
 	);
 });
 
@@ -93,7 +93,7 @@ test('a saved list has a way to report it', async ({ page }) => {
 	);
 });
 
-test('Save makes the list a page: title, link, open; Escape closes and gives the focus back', async ({
+test('Share: a link first, then publish the list as a page; Escape closes and gives the focus back', async ({
 	page
 }) => {
 	await page.goto('/');
@@ -101,24 +101,24 @@ test('Save makes the list a page: title, link, open; Escape closes and gives the
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('.toolbar__summary')).toHaveText('2 links');
 
-	const button = page.getByRole('button', { name: 'Save', exact: true });
+	const button = page.getByRole('button', { name: 'Share', exact: true });
 	await button.click();
-	const dialog = page.getByRole('dialog', { name: 'Save the list' });
+	const dialog = page.getByRole('dialog', { name: 'Share the list' });
 	await expect(dialog).toBeVisible();
-	await expect(dialog.getByLabel('Title', { exact: true })).toBeFocused();
+	await expect(dialog.getByRole('button', { name: /^Copy link/ })).toBeFocused();
 	await page.keyboard.press('Escape');
 	await expect(dialog).toBeHidden();
 	await expect(button).toBeFocused();
 
 	await button.click();
-	const save = dialog.getByRole('button', { name: 'Save the page' });
+	const save = dialog.getByRole('button', { name: 'Publish', exact: true });
 	await expect(save).toBeDisabled();
 	await dialog.getByLabel('Title', { exact: true }).fill('My two links');
 	await dialog.getByLabel('Description (optional)').fill('Saved from the page');
 	await expect(dialog.getByText('12 / 80')).toBeVisible();
 	await save.click();
-	await expect(dialog.getByText('Saved. The link to the page:')).toBeVisible();
-	const saved = await dialog.getByLabel('Link to the saved page').inputValue();
+	await expect(dialog.getByText('Published. The link to the page:')).toBeVisible();
+	const saved = await dialog.getByLabel('Link to the published page').inputValue();
 	expect(saved).toMatch(/\/l\/[0-9A-Za-z]{8}$/);
 
 	await dialog.getByRole('link', { name: 'Open' }).click();

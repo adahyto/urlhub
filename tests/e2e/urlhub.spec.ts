@@ -235,13 +235,13 @@ test('the status page shows urlhub and ldb-api up', async ({ page }) => {
 	await expect(page.getByText('Links per hour, last 24 hours')).toBeVisible();
 });
 
-test('Save → Copy link copies the link that opens these results', async ({ page, context }) => {
+test('Share → Copy link copies the link that opens these results', async ({ page, context }) => {
 	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 	await page.goto('/');
 	await fetchLinks(page, `${link('/a?x=1&y=2')} ${link('/video')}`);
 	await expect(summary(page)).toHaveText('2 links');
 	await page.getByRole('button', { name: 'Table', exact: true }).click();
-	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	await page.getByRole('button', { name: 'Share', exact: true }).click();
 	await page.getByRole('button', { name: /Copy link/ }).click();
 	await expect(page.locator('.notice[role="status"]')).toHaveText(
 		'Link copied: it opens these results'
@@ -407,7 +407,7 @@ test('a short link opens the same list, and the same list gets the same link', a
 	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 	await page.goto(`/?urls=${encodeURIComponent(`${link('/a?x=1&y=2')} ${link('/b')}`)}&view=table`);
 	await expect(summary(page)).toHaveText('2 links');
-	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	await page.getByRole('button', { name: 'Share', exact: true }).click();
 	await page.getByRole('button', { name: /Short link/ }).click();
 	await expect(page.locator('.notice[role="status"]')).toContainText(
 		'Short link copied: http://127.0.0.1:4173/c/'
@@ -428,7 +428,7 @@ test('a short link opens the same list, and the same list gets the same link', a
 		lang: 'en'
 	});
 
-	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	await page.getByRole('button', { name: 'Share', exact: true }).click();
 	await page.getByRole('button', { name: /Short link/ }).click();
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(short.href);
 

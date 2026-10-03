@@ -87,15 +87,15 @@ test('Polish', async ({ page }) => {
 	await expectAccessible(page);
 });
 
-test('the Save dialog', async ({ page }) => {
+test('the Share dialog', async ({ page }) => {
 	await page.goto(results());
 	await settled(page);
-	await page.getByRole('button', { name: 'Save', exact: true }).click();
-	await expectAccessible(page, '.save');
+	await page.getByRole('button', { name: 'Share', exact: true }).click();
+	await expectAccessible(page, '.share');
 	await page.getByLabel('Title', { exact: true }).fill('A list');
-	await page.getByRole('button', { name: 'Save the page' }).click();
-	await expect(page.getByText('Saved. The link to the page:')).toBeVisible();
-	await expectAccessible(page, '.save');
+	await page.getByRole('button', { name: 'Publish', exact: true }).click();
+	await expect(page.getByText('Published. The link to the page:')).toBeVisible();
+	await expectAccessible(page, '.share');
 });
 
 test('a saved list: tiles and table, light and dark', async ({ page }) => {

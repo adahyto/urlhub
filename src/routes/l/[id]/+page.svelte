@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import Tiles from '$lib/components/Tiles.svelte';
@@ -75,6 +76,17 @@
 	}
 
 	const name = $derived(`urlhub-${data.id}`);
+
+	// Phones offer their own sharing (messengers, mail); known only in the browser
+	let canSend = $state(false);
+	onMount(() => (canSend = typeof navigator.share === 'function'));
+	async function send() {
+		try {
+			await navigator.share({ title: list.title, url: `${page.url.origin}${page.url.pathname}` });
+		} catch {
+			// cancelled
+		}
+	}
 </script>
 
 <svelte:head>
@@ -122,6 +134,9 @@
 		<button type="button" class="toolbar__button" onclick={copyLink}
 			>{i18n.t('saved.copyLink')}</button
 		>
+		{#if canSend}
+			<button type="button" class="toolbar__button" onclick={send}>{i18n.t('saved.send')}</button>
+		{/if}
 		<Menu label={i18n.t('toolbar.export')}>
 			{#snippet children(close)}
 				<button
