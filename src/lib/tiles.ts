@@ -21,6 +21,7 @@ export function toTileUrl(item: Row): TileUrl {
 		duration: item.duration ?? '',
 		error: item.error ?? '',
 		site: item.siteName ?? '',
+		images: item.images ?? {},
 		pending: item.pending
 	};
 }

@@ -337,7 +337,7 @@
 		},
 		"pictures": {
 			"title": "Preview pictures",
-			"text": "Your browser loads the pictures in the tiles and the table directly from the servers of the pages the links point to, and passes them its IP address. Those servers may be outside the European Union and may set their own cookies under their own privacy policies; we have no say in that."
+			"text": "The pictures in the tiles and the table are fetched by our server – from the servers of the sites the links lead to – made smaller and only then shown to your browser. Those servers therefore see our server's address, not yours, and cannot set cookies on you. The smaller pictures are kept briefly in the server's memory (gone at a restart) and by your browser for up to a day. Links straight to video files are shown without a preview, since the film would play from another server."
 		},
 		"address": {
 			"title": "The page address and short links",

@@ -52,11 +52,19 @@ results (`?urls=`) are `noindex, follow`; `/sitemap.xml` lists the indexed pages
 
 `/status` shows whether urlhub and ldb-api answer, and ldb-api's counts (no links).
 
-Runs on the server at http://51.75.116.68:98 (SvelteKit, adapter-node). Link details come from
+Runs on the server at https://urlhub.cloud (SvelteKit, adapter-node; Cloudflare → Apache → the app on 127.0.0.1:98,
+the visitor's address from `X-Forwarded-For`). Link details come from
 [ldb-api](https://github.com/adahyto/ldb-api): the browser posts the text as typed to this app's `/api/json`
 (`src/routes/api/json/+server.ts`), and the app's server passes it on to ldb-api at `LDB_API_URL` (set in
 `docker-compose.yaml`; without it, the public address of ldb-api). ldb-api finds the links in the text and lists
 them on the first line of its answer, so this app has no link finder of its own (`src/lib/query.svelte.ts`).
+
+Preview pictures (tiles, the table's thumbnails and favicons) go through this server: `/api/json` adds to each
+result the signed addresses of its pictures on `/img` (`src/lib/server/images.ts`), which fetches the picture from
+public addresses only, makes it at most 480 px wide (favicons 64 px) as WebP with `sharp`, and keeps it in memory
+for a while. The browser shows no picture straight from another site. `IMAGE_PROXY_SECRET` in `.env` signs the
+addresses (otherwise a new secret at each start); the end-to-end tests allow 127.0.0.1 with
+`IMAGE_PROXY_ALLOW_PRIVATE=1`.
 
 ```sh
 npm install

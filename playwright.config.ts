@@ -34,7 +34,9 @@ export default defineConfig({
 				HOST: '127.0.0.1',
 				LDB_API_URL: `http://127.0.0.1:${API_PORT}/json`,
 				// Short links of the tests, out of the repository's way (test-results is ignored by git)
-				DATA_DIR: 'test-results/data'
+				DATA_DIR: 'test-results/data',
+				// The fake ldb-api's pictures are on 127.0.0.1, which /img refuses on the server
+				IMAGE_PROXY_ALLOW_PRIVATE: '1'
 			},
 			reuseExistingServer: !process.env.CI
 		}

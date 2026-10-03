@@ -609,3 +609,43 @@ test('a .txt file adds only its links; pasted text becomes the list of links onc
 	await expect(summary(page)).toHaveText('2 links');
 	await expect(field(page)).toHaveValue(`${link('/c')}\n${link('/d')}`);
 });
+
+test('pictures come through urlhub (/img), never straight from other sites', async ({ page }) => {
+	// every request the page makes must go to urlhub itself
+	const elsewhere: string[] = [];
+	page.on('request', (request) => {
+		if (new URL(request.url()).host !== '127.0.0.1:4173') elsewhere.push(request.url());
+	});
+	await page.goto(`/?urls=${link('/picture')}`);
+	const tile = page.locator('.tiles__image');
+	await expect(tile).toHaveAttribute(
+		'src',
+		/^\/img\?u=http%3A%2F%2F127\.0\.0\.1%3A\d+%2F__image\.png&w=480&s=[\w-]{22}$/
+	);
+	await expect
+		.poll(() => tile.evaluate((img: HTMLImageElement) => img.naturalWidth))
+		.toBeGreaterThan(0);
+
+	await page.goto(`/?urls=${link('/picture')}&view=table`);
+	const favicon = page.locator('.table__favicon');
+	await expect(favicon).toHaveAttribute('src', /^\/img\?u=.*__favicon\.png&w=64&s=/);
+	await expect
+		.poll(() => favicon.evaluate((img: HTMLImageElement) => img.naturalWidth))
+		.toBeGreaterThan(0);
+	expect(elsewhere).toEqual([]);
+
+	// as WebP, kept for a day; a wrong signature or width gets nothing
+	const src = (await favicon.getAttribute('src')) ?? '';
+	const answer = await page.request.get(src);
+	expect(answer.headers()['content-type']).toBe('image/webp');
+	expect(answer.headers()['cache-control']).toBe('public, max-age=86400, immutable');
+	expect(
+		(await page.request.get(src.replace(/s=[\w-]+/, 's=AAAAAAAAAAAAAAAAAAAAAA'))).status()
+	).toBe(404);
+	expect((await page.request.get(src.replace('w=64', 'w=2000'))).status()).toBe(404);
+	expect(
+		(
+			await page.request.get(`/img?u=${encodeURIComponent('http://127.0.0.1:1/x.png')}&w=64&s=x`)
+		).status()
+	).toBe(404);
+});

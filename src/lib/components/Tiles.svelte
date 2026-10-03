@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { proxied } from '$lib/images';
 	import type { TileUrl } from '$lib/types';
 	import { useI18n } from '$lib/i18n';
 	import { linkError } from '$lib/i18n/messages';
@@ -37,9 +38,9 @@
 	const VIDEO_RE = /\.(mp4|webm|ogv|ogg|mov|m4v)(\?.*)?$/i;
 
 	type TileView = {
-		// og: picture from the page; image: the link is a picture; video: a video file;
-		// text: no picture (or the link failed), the site's name instead; pending: still being fetched
-		kind: 'og' | 'image' | 'video' | 'text' | 'pending';
+		// og: picture from the page; image: the link is a picture; text: no picture (or the link failed, or it is a
+		// video file), the site's name instead; pending: still being fetched
+		kind: 'og' | 'image' | 'text' | 'pending';
 		src: string;
 		alt: string;
 		title: string;
@@ -79,18 +80,23 @@
 				desc: `${item.url} — ${linkError(i18n.t, item.error)}`
 			};
 		}
+		// A video file would play straight from its site, which would then see the visitor: its name instead
 		if (VIDEO_RE.test(item.url)) {
-			return { kind: 'video', src: `${item.url}#t=0.1`, alt: i18n.t('tiles.video'), ...fromUrl };
-		}
-		if (item.type === 'image' || IMAGE_RE.test(item.url)) {
 			return {
-				kind: 'image',
-				src: item.ogImg.src || item.url,
-				alt: item.ogImg.alt || '',
-				...fromUrl
+				kind: 'text',
+				src: '',
+				alt: '',
+				title: item.title || hostOf(item.url),
+				desc: item.url
 			};
 		}
-		if (!item.ogImg.src) {
+		// Pictures only through this server (/img); a picture it has no address for is not shown
+		if (item.type === 'image' || IMAGE_RE.test(item.url)) {
+			const src = proxied(item, item.ogImg.src || item.url);
+			if (src) return { kind: 'image', src, alt: item.ogImg.alt || '', ...fromUrl };
+		}
+		const og = proxied(item, item.ogImg.src);
+		if (!og) {
 			return {
 				kind: 'text',
 				src: '',
@@ -101,7 +107,7 @@
 		}
 		return {
 			kind: 'og',
-			src: item.ogImg.src,
+			src: og,
 			alt: item.ogImg.alt || '',
 			title: item.title || hostOf(item.url),
 			desc: [item.channel, item.desc].filter(Boolean).join(' — ') || item.url
@@ -142,19 +148,7 @@
 				rel="external noopener"
 				draggable="false"
 			>
-				{#if view.kind === 'video'}
-					<video
-						class="tiles__image"
-						src={view.src}
-						muted
-						loop
-						autoplay
-						playsinline
-						preload="metadata"
-						aria-label={view.alt}
-						onerror={(e) => ((e.currentTarget as HTMLVideoElement).style.opacity = '0.15')}
-					></video>
-				{:else if view.kind === 'pending'}
+				{#if view.kind === 'pending'}
 					<span class="tiles__placeholder tiles__placeholder--pending" aria-hidden="true"
 						>{hostOf(item.url)}</span
 					>
