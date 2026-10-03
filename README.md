@@ -37,7 +37,9 @@ or the table for GitHub projects). Six show at first, the rest behind **More set
 (`"MM-DD"` to `"MM-DD"`, may run over the new year) shows only then, first; the day is taken in Poland. Before
 adding links, and from time to time after, check them with the real ldb-api on the server:
 `npm run featured:check` (ldb-api at `LDB_API_URL`, by default `http://127.0.0.1:84/json`) lists the links that
-fail, are blocked by their site or have no picture, and exits with 1 on the first two. Charities link only to
+fail, are blocked by their site or have no picture, and exits with 1 on the first two. With `-- --covers` it also
+writes each set's `covers`, the first three pictures of its links (logos skipped), shown across the top of its
+card through `/img` at 240 px; run Prettier on `featured.json` after. Charities link only to
 their official sites.
 
 **Copy link** (under Save) copies the address of the results. **Short link** keeps the list on the server and copies an address

@@ -7,6 +7,7 @@ import data from './featured.json' with { type: 'json' };
  * little in English. Every link is checked with ldb-api before it goes in, and again from time to time:
  * `npm run featured:check` on the server lists the links that fail, are blocked or have no picture.
  * A set with a season ("MM-DD" to "MM-DD", both included, may run over the new year) shows only then, first.
+ * `covers`: up to three pictures of its links for its card, written by `npm run featured:check -- --covers`.
  */
 
 export interface FeaturedSet {
@@ -18,6 +19,8 @@ export interface FeaturedSet {
 	title: string;
 	description: string;
 	urls: string[];
+	/** Pictures (absolute addresses) shown on the card, through /img */
+	covers?: string[];
 }
 
 export const FEATURED = data as FeaturedSet[];
@@ -36,6 +39,9 @@ export function featuredFor(lang: Lang, today: string): FeaturedSet[] {
 		...sets.filter((s) => !s.season)
 	];
 }
+
+/** How a set is named in the covers the page gets: "pl/halloween" */
+export const setKey = (set: Pick<FeaturedSet, 'lang' | 'id'>) => `${set.lang}/${set.id}`;
 
 /** Today as "MM-DD" in Poland, where the seasons are decided */
 export const todayInPoland = (now = new Date()) =>

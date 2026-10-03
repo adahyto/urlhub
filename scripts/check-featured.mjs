@@ -5,14 +5,16 @@
 //   npm run featured:check                 (ldb-api at LDB_API_URL, by default http://127.0.0.1:84/json)
 //
 // Exits with 1 when a link fails or is blocked; a missing picture is only reported (the tile still works).
-import { readFile } from 'node:fs/promises';
+//
+//   npm run featured:check -- --covers   also writes each set's `covers` (the first three pictures of its links)
+//                                         into featured.json; run Prettier on it after
+import { readFile, writeFile } from 'node:fs/promises';
 
 const API = process.env.LDB_API_URL || 'http://127.0.0.1:84/json';
 const BATCH = 200;
 
-const sets = JSON.parse(
-	await readFile(new URL('../src/lib/featured.json', import.meta.url), 'utf8')
-);
+const FILE = new URL('../src/lib/featured.json', import.meta.url);
+const sets = JSON.parse(await readFile(FILE, 'utf8'));
 const urls = [...new Set(sets.flatMap((set) => set.urls))];
 
 const results = new Map();
@@ -49,4 +51,25 @@ for (const set of sets) {
 console.log(
 	`\n${urls.length} links checked: ${broken} failing or blocked, ${pictureless} without a picture`
 );
+if (process.argv.includes('--covers')) {
+	const pictureOf = (url) => {
+		const result = results.get(url);
+		const src = result?.error ? '' : result?.ogImg?.ogImg;
+		// A logo makes a poor picture of what a link is about: the next link's picture instead
+		if (/logo/i.test(src ?? '')) return '';
+		try {
+			return src ? new URL(src, result.finalUrl || url).href : '';
+		} catch {
+			return '';
+		}
+	};
+	for (const set of sets) {
+		const covers = [...new Set(set.urls.map(pictureOf).filter(Boolean))].slice(0, 3);
+		if (covers.length) set.covers = covers;
+		else delete set.covers;
+	}
+	await writeFile(FILE, `${JSON.stringify(sets, null, '\t')}\n`);
+	console.log('Covers written to src/lib/featured.json; run Prettier on it.');
+}
+
 process.exitCode = broken ? 1 : 0;
