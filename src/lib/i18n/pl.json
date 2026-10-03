@@ -420,9 +420,13 @@
 			"title": "Adres strony i krótkie linki",
 			"text": "Lista linków, widok, opcja zaawansowana i język są częścią adresu strony, żeby dało się go udostępnić. Krótki link (/c/…) tworzysz przyciskiem i zapisuje on na naszym serwerze tylko te cztery rzeczy, bez adresu IP i bez konta; każdy, kto go zna, zobaczy listę. Krótki link, którego nikt nie otworzył przez 90 dni, jest usuwany, a z codziennych kopii zapasowych znika po kolejnych 14 dniach."
 		},
+		"saved": {
+			"title": "Zapisane listy (strony z tytułem)",
+			"text": "Przyciskiem „Zapisz” możesz zapisać listę jako stronę (/l/…). Na naszym serwerze zapisujemy wtedy podany tytuł i opis, linki, widok, język, datę zapisu oraz tytuły, opisy i adresy obrazków stron z chwili zapisu – bez adresu IP i bez konta. Robimy to na Twoją prośbę, żeby udostępnić tę stronę (wykonanie usługi, art. 6 ust. 1 lit. b RODO). Każdy, kto zna link, zobaczy stronę; nie trafia ona do wyszukiwarek. Zapisanej strony nie da się zmienić ani usunąć w serwisie, więc nie wpisuj w tytule ani opisie danych osobowych. Strona, której nikt nie otworzył przez rok, jest usuwana, a z codziennych kopii zapasowych znika po kolejnych 14 dniach. Jeśli chcesz usunąć swoją stronę albo zgłosić treść niezgodną z prawem, napisz na {email} (link „Zgłoś nadużycie” jest na każdej zapisanej stronie)."
+		},
 		"storage": {
 			"title": "Ciasteczka i pamięć przeglądarki",
-			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa."
+			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa. Bez przełącznika „Ostatnie” pokazuje tylko zapytania z bieżącej wizyty: są w pamięci otwartej karty i znikają po jej zamknięciu albo odświeżeniu."
 		},
 		"logs": {
 			"title": "Logi serwera",

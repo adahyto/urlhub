@@ -11,6 +11,7 @@
 		'links',
 		'pictures',
 		'address',
+		'saved',
 		'storage',
 		'logs',
 		'where',

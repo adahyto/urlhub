@@ -382,9 +382,13 @@
 			"title": "The page address and short links",
 			"text": "The list of links, the view, the advanced option and the language are part of the page address, so it can be shared. A short link (/c/…) is made with a button and stores only these four things on our server, with no IP address and no account; anyone who has it sees the list. A short link nobody opened for 90 days is deleted, and it leaves the daily backups 14 days later."
 		},
+		"saved": {
+			"title": "Saved lists (pages with a title)",
+			"text": "With “Save” you can save a list as a page (/l/…). Our server then stores the title and description you give, the links, the view, the language, the date, and the pages' titles, descriptions and picture addresses as they were when saved – with no IP address and no account. We do this at your request, to provide that page (performance of the service, art. 6(1)(b) GDPR). Anyone who has the link sees the page; it is kept out of search engines. A saved page cannot be changed or deleted on the site, so do not put personal data in its title or description. A page nobody opened for a year is deleted, and it leaves the daily backups 14 days later. To have your page deleted or to report illegal content, write to {email} (the “Report abuse” link is on every saved page)."
+		},
 		"storage": {
 			"title": "Cookies and browser storage",
-			"text": "urlhub stores no cookies. Recent queries go to your browser's storage (localStorage) only at your request, after you turn on \"Remember recent queries on this device\". They are never sent anywhere, and turning the switch off deletes them."
+			"text": "urlhub stores no cookies. Recent queries go to your browser's storage (localStorage) only at your request, after you turn on \"Remember recent queries on this device\". They are never sent anywhere, and turning the switch off deletes them. Without the switch, Recent shows only this visit's queries: they are kept in the open tab's memory and are gone when it is closed or reloaded."
 		},
 		"logs": {
 			"title": "Server logs",
