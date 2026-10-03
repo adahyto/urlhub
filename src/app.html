@@ -10,6 +10,8 @@
 			try {
 				var theme = localStorage.getItem('urlhub.theme');
 				if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme;
+				// Opened from the home screen on an iPhone or iPad: an app without a browser bar
+				if (navigator.standalone) document.documentElement.classList.add('is-standalone');
 			} catch (e) {}
 		</script>
 		%sveltekit.head%

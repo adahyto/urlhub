@@ -195,3 +195,34 @@ test('all sets have a page: the ones of now, then the archive, linked from the h
 	expect(sitemap).toContain('/s/pl</loc>');
 	expect(sitemap).toContain('/s/en</loc>');
 });
+
+test('urlhub installs as an app; there, a set page has a way back', async ({ page, request }) => {
+	const manifest = await (await request.get('/manifest.webmanifest')).json();
+	expect(manifest).toMatchObject({ short_name: 'urlhub', start_url: '/', display: 'standalone' });
+	for (const icon of manifest.icons)
+		expect((await request.get(icon.src)).headers()['content-type']).toBe('image/png');
+
+	// In a browser tab the browser has its own back button
+	await page.goto('/?lang=pl');
+	const back = page.getByRole('button', { name: 'Wróć' });
+	await page
+		.getByRole('region', { name: 'Jeden link, cały zestaw' })
+		.getByRole('link')
+		.first()
+		.click();
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+	await expect(back).toBeHidden();
+
+	// As an app (iOS marks it like this before the page shows): back where it came from
+	await page.evaluate(() => document.documentElement.classList.add('is-standalone'));
+	await back.click();
+	await expect(page).toHaveURL(/\/\?lang=pl$/);
+	await expect(back).toHaveCount(0);
+
+	// Opened straight from a link: back to the home page
+	const set = featuredFor('pl', todayInPoland())[0];
+	await page.goto(`/s/pl/${set.id}?lang=pl`);
+	await page.evaluate(() => document.documentElement.classList.add('is-standalone'));
+	await page.getByRole('button', { name: 'Wróć' }).click();
+	await expect(page).toHaveURL(/\/\?lang=pl$/);
+});

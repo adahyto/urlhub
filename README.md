@@ -58,7 +58,9 @@ daily backup). Only the links, the view, the option and the language are kept (n
 the same list always gets the same id; a list nobody opened for 90 days is deleted; 10 short links a minute per
 visitor. The notice after the click says so. The dark theme follows the system setting, unless the visitor picks light or dark with
 the switch in the header (`ThemeSwitch.svelte`); the choice is kept in `localStorage` only after that click, and
-`src/app.html` applies it before the page shows. Colours are in `src/app.css`.
+`src/app.html` applies it before the page shows. Colours are in `src/app.css`. Added to a phone's home screen, urlhub opens as an
+app (`static/manifest.webmanifest`, icons from the favicon, `theme-color`); with no browser bar there, pages other
+than the home page get a back button in the header (`BackButton.svelte`).
 
 **Share** opens a dialog (`src/lib/components/ShareDialog.svelte`): first a link to the list as it is, to keep
 changing it (the address, a short link, or "Send…", the phone's own sharing, where the browser has it), then

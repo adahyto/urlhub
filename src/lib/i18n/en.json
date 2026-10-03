@@ -308,7 +308,8 @@
 	"header": {
 		"tagline": "Collect links into sets and share them",
 		"nav": "Language",
-		"theme": "Switch between light and dark"
+		"theme": "Switch between light and dark",
+		"back": "Back"
 	},
 	"footer": {
 		"privacy": "Privacy"
