@@ -31,7 +31,9 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<!-- Tiles in a grid, as on the share picture (static/og.png); favicon.ico for programs that ask for it by name -->
+	<link rel="icon" href={favicon} type="image/svg+xml" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </svelte:head>
 
 <!-- Links within the site, with ?lang= when one was chosen: nothing to resolve -->
