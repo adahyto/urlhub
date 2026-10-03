@@ -330,13 +330,13 @@
 		}
 	},
 	"featured": {
-		"title": "One link, a whole set",
+		"title": "Featured sets",
 		"seasonal": "In season",
 		"more": "More sets ({count})",
 		"less": "Fewer sets",
 		"meta": "a featured set by urlhub",
 		"note": "A set put together by urlhub. “Edit a copy” opens its links as your own list.",
-		"lead": "This is urlhub in practice: a creator gives viewers one link to the clothes from a video, a shop to its season's picks, an organiser to the concerts, a blogger to their recipes. Open any set and see.",
+		"lead": "Ready-made lists of links: fashion, events, recipes, games and more. Open any of them, share it with one link, or copy it and make it your own.",
 		"all": "All sets →",
 		"indexTitle": "Sets of links to share",
 		"now": "In season",

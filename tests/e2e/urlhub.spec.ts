@@ -183,7 +183,7 @@ test('the logo leads back to the empty home page, the list waits in Recent, Back
 	await expect(page).toHaveURL(/\/$/);
 	await expect(field(page)).toHaveValue('');
 	await expect(summary(page)).toHaveCount(0);
-	await expect(page.getByRole('region', { name: 'One link, a whole set' })).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Featured sets' })).toBeVisible();
 
 	const recentMenu = page.getByRole('button', { name: /^Recent/ });
 	await recentMenu.click();

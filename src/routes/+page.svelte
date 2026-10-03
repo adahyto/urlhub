@@ -517,7 +517,6 @@
 			sets={featured}
 			covers={data.covers}
 			heading={i18n.t('featured.title')}
-			lead={i18n.t('featured.lead')}
 			allHref={allSets}
 		/>
 	{/if}

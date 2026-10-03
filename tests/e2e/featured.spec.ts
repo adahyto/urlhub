@@ -68,7 +68,7 @@ test('the empty page offers featured sets; each opens as a page with its title a
 	page
 }) => {
 	await page.goto('/?lang=pl');
-	const region = page.getByRole('region', { name: 'Jeden link, cały zestaw' });
+	const region = page.getByRole('region', { name: 'Polecane zestawy' });
 	const cards = region.getByRole('listitem');
 	const total = featuredFor('pl', todayInPoland()).length;
 	await expect(cards).toHaveCount(Math.min(total, SHOWN_FIRST));
@@ -156,7 +156,7 @@ test('a featured set that is gone says so', async ({ page }) => {
 
 test('the English page has its own sets', async ({ page }) => {
 	await page.goto('/?lang=en');
-	const region = page.getByRole('region', { name: 'One link, a whole set' });
+	const region = page.getByRole('region', { name: 'Featured sets' });
 	const first = featuredFor('en', todayInPoland())[0];
 	await expect(region.getByRole('link', { name: named(first.title) })).toBeVisible();
 	const english = FEATURED.filter((s) => s.lang === 'en').map((s) => s.title);
@@ -205,11 +205,7 @@ test('urlhub installs as an app; there, a set page has a way back', async ({ pag
 	// In a browser tab the browser has its own back button
 	await page.goto('/?lang=pl');
 	const back = page.getByRole('button', { name: 'Wróć' });
-	await page
-		.getByRole('region', { name: 'Jeden link, cały zestaw' })
-		.getByRole('link')
-		.first()
-		.click();
+	await page.getByRole('region', { name: 'Polecane zestawy' }).getByRole('link').first().click();
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	await expect(back).toBeHidden();
 

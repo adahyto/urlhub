@@ -368,13 +368,13 @@
 		}
 	},
 	"featured": {
-		"title": "Jeden link, cały zestaw",
+		"title": "Polecane zestawy",
 		"seasonal": "Na teraz",
 		"more": "Więcej zestawów ({count})",
 		"less": "Mniej zestawów",
 		"meta": "polecany zestaw urlhub",
 		"note": "Zestaw przygotowany przez urlhub. „Edytuj kopię” otwiera jego linki jako Twoją listę.",
-		"lead": "Tak wygląda urlhub w praktyce: influencerka podaje widzom jeden link do ubrań z filmu, sklep – do kolekcji na sezon, organizator – do koncertów, a bloger – do swoich przepisów. Otwórz dowolny zestaw i zobacz.",
+		"lead": "Gotowe listy linków: moda, wydarzenia, przepisy, gry i więcej. Każdą otworzysz, udostępnisz jednym linkiem albo skopiujesz i ułożysz po swojemu.",
 		"all": "Wszystkie zestawy →",
 		"indexTitle": "Zestawy linków do udostępniania",
 		"now": "Na teraz",

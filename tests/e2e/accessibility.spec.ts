@@ -89,11 +89,7 @@ test('Polish', async ({ page }) => {
 
 test('a featured set as a page', async ({ page }) => {
 	await page.goto('/');
-	await page
-		.getByRole('region', { name: 'One link, a whole set' })
-		.getByRole('link')
-		.first()
-		.click();
+	await page.getByRole('region', { name: 'Featured sets' }).getByRole('link').first().click();
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	await expect(page.locator('.is-pending')).toHaveCount(0);
 	await expectAccessible(page);
