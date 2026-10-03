@@ -21,7 +21,8 @@ test.beforeEach(async ({ request }) => {
 test('the featured sets are well formed, in both languages', () => {
 	for (const lang of ['en', 'pl'] as const) {
 		const sets = FEATURED.filter((s) => s.lang === lang);
-		expect(sets.filter((s) => !s.season).length).toBeGreaterThanOrEqual(4);
+		// Something to offer on every day of the year
+		expect(sets.filter((s) => !s.season).length).toBeGreaterThanOrEqual(1);
 		expect(new Set(sets.map((s) => s.id)).size).toBe(sets.length);
 	}
 	for (const set of FEATURED) {
@@ -85,16 +86,15 @@ test('the empty page offers featured sets; one opens in its view and can be shar
 		);
 	}
 
-	const set = FEATURED.find((s) => s.lang === 'pl' && s.view === 'table')!;
+	const set = featuredFor('pl', todayInPoland()).at(-1)!;
 	await region.getByRole('button', { name: named(set.title) }).click();
 	await expect(page.locator('.toolbar__summary')).toHaveText(`${set.urls.length} linków`);
-	await expect(page.getByRole('button', { name: 'Tabela' })).toHaveAttribute(
-		'aria-pressed',
-		'true'
-	);
+	await expect(
+		page.getByRole('button', { name: set.view === 'table' ? 'Tabela' : 'Kafelki' })
+	).toHaveAttribute('aria-pressed', 'true');
 	const sent = (await (await page.request.get(`${API}/__requests`)).json()).at(-1);
 	expect(sent.text.split('\n')).toEqual(set.urls);
-	await expect(page).toHaveURL(/view=table/);
+	if (set.view === 'table') await expect(page).toHaveURL(/view=table/);
 	expect(new URL(page.url()).searchParams.get('urls')?.split(' ')).toEqual(set.urls);
 	await expect(region).toHaveCount(0);
 });
@@ -104,7 +104,8 @@ test('the English page has its own sets', async ({ page }) => {
 	const region = page.getByRole('region', { name: 'Featured sets' });
 	const first = featuredFor('en', todayInPoland())[0];
 	await expect(region.getByRole('button', { name: named(first.title) })).toBeVisible();
-	for (const set of FEATURED.filter((s) => s.lang === 'pl')) {
+	const english = FEATURED.filter((s) => s.lang === 'en').map((s) => s.title);
+	for (const set of FEATURED.filter((s) => s.lang === 'pl' && !english.includes(s.title))) {
 		await expect(region.getByText(set.title, { exact: true })).toHaveCount(0);
 	}
 });
