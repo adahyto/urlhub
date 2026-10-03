@@ -280,7 +280,7 @@
 		"shortLinkTitle": "This short link does not exist",
 		"shortLinkText": "It may have expired: short links unused for 90 days are deleted. Ask whoever shared it for a new one.",
 		"other": "Something went wrong.",
-		"savedListTitle": "This saved list does not exist",
+		"savedListTitle": "This published list does not exist",
 		"savedListText": "It may have been removed after a report, or expired: lists unopened for a year are deleted."
 	},
 	"og": {
@@ -333,35 +333,38 @@
 		"less": "Fewer sets"
 	},
 	"saved": {
-		"savedOn": "saved {date}",
+		"savedOn": "published {date}",
 		"copyLink": "Copy link",
 		"linkCopied": "Link to this list copied",
 		"editCopy": "Edit a copy",
-		"fixed": "This list is saved for good: nobody can change it. “Edit a copy” opens its links as a new list.",
+		"fixed": "This page is published for good: nobody can change it. “Edit a copy” opens its links as a new list.",
 		"report": "Report abuse",
 		"reportSubject": "Report of a urlhub list",
-		"reportBody": "List: {url}\nWhat is wrong:"
+		"reportBody": "List: {url}\nWhat is wrong:",
+		"send": "Send…"
 	},
-	"save": {
-		"button": "Save",
-		"heading": "Save the list",
+	"shareDialog": {
+		"button": "Share",
+		"heading": "Share the list",
 		"close": "Close",
-		"asPage": "Save as a page with a title",
-		"asPageHint": "This makes a view-only page that nobody can change. The links' titles and pictures are kept as they are now. A page unopened for a year is deleted.",
+		"linkHeading": "A link to this list",
+		"linkHint": "The list opens to be changed further, as it is now.",
+		"send": "Send…",
+		"sendHint": "Messengers, mail and other apps",
+		"pageHeading": "Publish as a page with a title",
+		"pageHint": "This makes a view-only page that nobody can change. The links' titles and pictures are kept as they are now. A page unopened for a year is deleted.",
 		"titleLabel": "Title",
 		"descriptionLabel": "Description (optional)",
 		"count": "{count} / {max}",
-		"submit": "Save the page",
-		"saving": "Saving…",
-		"saved": "Saved. The link to the page:",
-		"link": "Link to the saved page",
+		"publish": "Publish",
+		"publishing": "Publishing…",
+		"published": "Published. The link to the page:",
+		"pageLink": "Link to the published page",
 		"copy": "Copy",
 		"copied": "Copied",
 		"open": "Open",
-		"failed": "Could not save. Try again in a moment.",
-		"tooMany": "Too many saves from your address. Try again in a minute.",
-		"linkOnly": "Or just a link to this list",
-		"linkOnlyHint": "The list opens to be changed further, as it is now."
+		"failed": "Could not publish. Try again in a moment.",
+		"tooMany": "Too many pages published from your address. Try again in a minute."
 	},
 	"privacy": {
 		"title": "Privacy",
@@ -383,8 +386,8 @@
 			"text": "The list of links, the view, the advanced option and the language are part of the page address, so it can be shared. A short link (/c/…) is made with a button and stores only these four things on our server, with no IP address and no account; anyone who has it sees the list. A short link nobody opened for 90 days is deleted, and it leaves the daily backups 14 days later."
 		},
 		"saved": {
-			"title": "Saved lists (pages with a title)",
-			"text": "With “Save” you can save a list as a page (/l/…). Our server then stores the title and description you give, the links, the view, the language, the date, and the pages' titles, descriptions and picture addresses as they were when saved – with no IP address and no account. We do this at your request, to provide that page (performance of the service, art. 6(1)(b) GDPR). Anyone who has the link sees the page; it is kept out of search engines. A saved page cannot be changed or deleted on the site, so do not put personal data in its title or description. A page nobody opened for a year is deleted, and it leaves the daily backups 14 days later. To have your page deleted or to report illegal content, write to {email} (the “Report abuse” link is on every saved page)."
+			"title": "Published lists (pages with a title)",
+			"text": "In the “Share” dialog you can publish a list as a page (/l/…). Our server then stores the title and description you give, the links, the view, the language, the date, and the pages' titles, descriptions and picture addresses as they were at that moment – with no IP address and no account. We do this at your request, to provide that page (performance of the service, art. 6(1)(b) GDPR). Anyone who has the link sees the page; it is kept out of search engines. A published page cannot be changed or deleted on the site, so do not put personal data in its title or description. A page nobody opened for a year is deleted, and it leaves the daily backups 14 days later. To have your page deleted or to report illegal content, write to {email} (the “Report abuse” link is on every published page)."
 		},
 		"storage": {
 			"title": "Cookies and browser storage",
