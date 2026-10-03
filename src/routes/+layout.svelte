@@ -5,6 +5,7 @@
 	import { LANGS, provideI18n, translator } from '$lib/i18n';
 	import { COPYRIGHT_HOLDER } from '$lib/privacy';
 	import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
+	import BackButton from '$lib/components/BackButton.svelte';
 
 	let { children, data } = $props();
 
@@ -35,12 +36,20 @@
 	<!-- Tiles in a grid, as on the share picture (static/og.png); favicon.ico for programs that ask for it by name -->
 	<link rel="icon" href={favicon} type="image/svg+xml" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	<!-- Added to the home screen, urlhub opens as an app (static/manifest.webmanifest); its bar takes the page's colour -->
+	<link rel="manifest" href="/manifest.webmanifest" />
+	<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+	<meta name="theme-color" content="#161615" media="(prefers-color-scheme: dark)" />
+	<meta name="mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-title" content="urlhub" />
 </svelte:head>
 
 <!-- Links within the site, with ?lang= when one was chosen: nothing to resolve -->
 <!-- eslint-disable svelte/no-navigation-without-resolve -->
 <header class="site-header">
 	<div class="shell site-header__inner">
+		{#if !isHome}<BackButton />{/if}
 		<svelte:element this={isHome ? 'h1' : 'p'} class="site-header__brand">
 			<a href={hrefTo('/')}>urlhub</a>
 		</svelte:element>

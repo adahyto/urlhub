@@ -346,7 +346,8 @@
 	"header": {
 		"tagline": "Zbieraj linki w zestawy i dziel się nimi",
 		"nav": "Język",
-		"theme": "Przełącz jasny i ciemny motyw"
+		"theme": "Przełącz jasny i ciemny motyw",
+		"back": "Wróć"
 	},
 	"footer": {
 		"privacy": "Prywatność"
