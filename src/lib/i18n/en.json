@@ -324,6 +324,12 @@
 			"text": "One link opens the whole set, such as a gift list or a gear comparison. Send it to friends – messengers show a preview."
 		}
 	},
+	"featured": {
+		"title": "Featured sets",
+		"seasonal": "In season",
+		"more": "More sets ({count})",
+		"less": "Fewer sets"
+	},
 	"privacy": {
 		"title": "Privacy",
 		"intro": "urlhub uses no cookies, analytics or ads. Below we describe which data arises when you use it and what happens to it.",
