@@ -23,7 +23,8 @@ test('the featured sets are well formed, in both languages', () => {
 		const sets = FEATURED.filter((s) => s.lang === lang);
 		// Something to offer on every day of the year
 		expect(sets.filter((s) => !s.season).length).toBeGreaterThanOrEqual(1);
-		expect(new Set(sets.map((s) => s.id)).size).toBe(sets.length);
+		const addresses = sets.flatMap((s) => [s.id, ...(s.aliases ?? [])]);
+		expect(new Set(addresses).size).toBe(addresses.length);
 	}
 	for (const set of FEATURED) {
 		expect(set.id).toMatch(/^[a-z0-9-]+$/);
@@ -117,6 +118,13 @@ test('the empty page offers featured sets; each opens as a page with its title a
 	await expect(page.getByLabel('Linki', { exact: true })).toHaveValue(set.urls.join('\n'));
 	await page.getByRole('button', { name: /^Ostatnie/ }).click();
 	await expect(page.locator('.recent__open').first()).toContainText(`${set.urls.length} link`);
+});
+
+test('an earlier address of a set leads to its address now', async ({ page }) => {
+	const set = FEATURED.find((s) => s.lang === 'pl' && s.aliases?.length)!;
+	const res = await page.request.get(`/s/pl/${set.aliases![0]}?lang=pl`, { maxRedirects: 0 });
+	expect(res.status()).toBe(301);
+	expect(res.headers()['location']).toBe(`/s/pl/${set.id}?lang=pl`);
 });
 
 test('a featured set that is gone says so', async ({ page }) => {

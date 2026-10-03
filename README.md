@@ -34,7 +34,9 @@ Menus open with Enter, move with ↑ ↓ and close with Escape (`src/lib/compone
 The empty page also offers **featured sets** (`src/lib/featured.json`, read by `src/lib/featured.ts`): ready
 lists of links, separate for each language. Each card leads to the set's own page, `/s/<lang>/<id>`, shown like a
 published list (`src/lib/components/ListPage.svelte`: the title as the heading, no form, "Edit a copy"), with the
-links' details fetched when it opens, in the view that shows them best (tiles, or the table). Six show at first, the rest behind **More sets**. A set with a `season`
+links' details fetched when it opens, in the view that shows them best (tiles, or the table). A set redone each year has the
+year in its id (`halloween-2026`), so next year's set gets a new address and this one stays; `aliases` lists a set's
+earlier ids, whose addresses redirect (301) to the current one. Six show at first, the rest behind **More sets**. A set with a `season`
 (`"MM-DD"` to `"MM-DD"`, may run over the new year) shows only then, first; the day is taken in Poland. Before
 adding links, and from time to time after, check them with the real ldb-api on the server:
 `npm run featured:check` (ldb-api at `LDB_API_URL`, by default `http://127.0.0.1:84/json`) lists the links that
