@@ -10,6 +10,7 @@
 	import RecentMenu from '$lib/components/RecentMenu.svelte';
 	import Menu from '$lib/components/Menu.svelte';
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
+	import SaveDialog from '$lib/components/SaveDialog.svelte';
 	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
 	import { featuredFor, type FeaturedSet } from '$lib/featured';
 	import { copyText, download } from '$lib/files';
@@ -405,30 +406,14 @@
 						{/each}
 					</div>
 					<span class="toolbar__spacer"></span>
-					<Menu label={i18n.t('toolbar.share')}>
-						{#snippet children(close)}
-							<button
-								type="button"
-								class="menu__item"
-								onclick={() => {
-									close();
-									share();
-								}}
-								>{i18n.t('toolbar.copyLink')}<small>{i18n.t('toolbar.copyLinkHint')}</small></button
-							>
-							<button
-								type="button"
-								class="menu__item"
-								disabled={query.loading}
-								onclick={() => {
-									close();
-									shortLink();
-								}}
-								>{i18n.t('toolbar.shortLink')}<small>{i18n.t('toolbar.shortLinkHint')}</small
-								></button
-							>
-						{/snippet}
-					</Menu>
+					<SaveDialog
+						urls={query.rows.map((r) => r.url)}
+						{view}
+						lang={i18n.lang}
+						disabled={query.loading}
+						oncopylink={share}
+						onshortlink={shortLink}
+					/>
 					<Menu label={i18n.t('toolbar.export')}>
 						{#snippet children(close)}
 							<button

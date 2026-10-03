@@ -92,3 +92,37 @@ test('a saved list has a way to report it', async ({ page }) => {
 		/^mailto:.+\?subject=Report%20of%20a%20urlhub%20list/
 	);
 });
+
+test('Save makes the list a page: title, link, open; Escape closes and gives the focus back', async ({
+	page
+}) => {
+	await page.goto('/');
+	await page.getByLabel('Links', { exact: true }).fill(`${link('/a')} ${link('/b')}`);
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
+	await expect(page.locator('.toolbar__summary')).toHaveText('2 links');
+
+	const button = page.getByRole('button', { name: 'Save', exact: true });
+	await button.click();
+	const dialog = page.getByRole('dialog', { name: 'Save the list' });
+	await expect(dialog).toBeVisible();
+	await expect(dialog.getByLabel('Title', { exact: true })).toBeFocused();
+	await page.keyboard.press('Escape');
+	await expect(dialog).toBeHidden();
+	await expect(button).toBeFocused();
+
+	await button.click();
+	const save = dialog.getByRole('button', { name: 'Save the page' });
+	await expect(save).toBeDisabled();
+	await dialog.getByLabel('Title', { exact: true }).fill('My two links');
+	await dialog.getByLabel('Description (optional)').fill('Saved from the page');
+	await expect(dialog.getByText('12 / 80')).toBeVisible();
+	await save.click();
+	await expect(dialog.getByText('Saved. The link to the page:')).toBeVisible();
+	const saved = await dialog.getByLabel('Link to the saved page').inputValue();
+	expect(saved).toMatch(/\/l\/[0-9A-Za-z]{8}$/);
+
+	await dialog.getByRole('link', { name: 'Open' }).click();
+	await expect(page).toHaveURL(saved);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('My two links');
+	await expect(page.getByText('Saved from the page')).toBeVisible();
+});
