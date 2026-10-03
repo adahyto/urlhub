@@ -14,7 +14,7 @@ The address of the page holds the links, the view and the option (`?urls=...&vie
 result can be shared; shared links load by themselves. Results fill in as each link is ready; Stop cancels.
 
 The list can be edited without fetching again: × removes a tile or row (with Undo), ← → and ↑ ↓ or dragging
-change the order (not while the table is sorted or filtered); the address and the field follow, so Share gives
+change the order (not while the table is sorted or filtered); the address and the field follow, so Save gives
 the edited list.
 
 The interface is in English and Polish (`src/lib/i18n/en.json`, `pl.json`; forms by number through
@@ -24,7 +24,7 @@ stored on the device. SEO warnings and link errors from ldb-api are translated b
 `params`). `npm run check` fails when pl.json misses a key of en.json; an end-to-end test compares placeholders.
 
 The page has one column: a header (name, PL | EN), the field with Fetch and **Recent ▾** next to it,
-the results with **Share ▾** (copy the link, or a short link) and **Export ▾** (copy JSON, download JSON or CSV),
+the results with **Save** (a titled page, or a link to copy) and **Export ▾** (copy JSON, download JSON or CSV),
 and a footer (© doner.cloud, Privacy). `/privacy` is the GDPR information, on the pattern of kosmos.info.pl;
 its facts (controller, contact, authority, date) are in `src/lib/privacy.ts`. `/status` is not linked from the
 pages. An empty field offers **Try an example**: six working links (YouTube, Vimeo, GitHub, Wikipedia and
@@ -40,13 +40,22 @@ adding links, and from time to time after, check them with the real ldb-api on t
 fail, are blocked by their site or have no picture, and exits with 1 on the first two. Charities link only to
 their official sites.
 
-**Share** copies the address of the results. **Short link** keeps the list on the server and copies an address
+**Copy link** (under Save) copies the address of the results. **Short link** keeps the list on the server and copies an address
 like `/c/k7Qm2xAb`, which opens the list with its view, option and language (`src/lib/server/collections.ts`): one
 JSON file per list in `DATA_DIR` (the `data` volume, `/var/lib/docker/volumes/urlhub_data` on the server, in its
 daily backup). Only the links, the view, the option and the language are kept (no address, account or cookie);
 the same list always gets the same id; a list nobody opened for 90 days is deleted; 10 short links a minute per
 visitor. The notice after the click says so. The dark theme follows the system setting (colours in
 `src/app.css`; no switch, which would have to remember the choice on the device).
+
+**Save** opens a dialog (`src/lib/components/SaveDialog.svelte`): save the list as a page with a title, or just copy
+a link (the address, or a short link) to keep changing it. A saved list (`/l/<id>`, `src/lib/server/lists.ts`) has
+its title as the heading, an optional description, tiles or the table, export, "Edit a copy" (the links as an
+ordinary list) and "Report abuse" (a mailto to the privacy contact, as the DSA asks of hosts). Nobody can change
+it: its id comes from its content, so any change makes a new address. The server reads the links' details from
+ldb-api when the list is saved and keeps that snapshot; details from the browser are not taken. One JSON file per
+list in `DATA_DIR/lists`; a list unopened for a year is deleted; 10 saves a minute per visitor; noindex. To take
+one down after a report: `sudo docker compose exec nodeserver rm /data/lists/<id>.json`.
 
 Recent queries can be remembered on the visitor's device: off by default, turned on with a switch under the
 form (`src/lib/history.svelte.ts`). Until then the page stores nothing in the browser, turning it off deletes

@@ -10,8 +10,10 @@
 	import RecentMenu from '$lib/components/RecentMenu.svelte';
 	import Menu from '$lib/components/Menu.svelte';
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
+	import SaveDialog from '$lib/components/SaveDialog.svelte';
 	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
 	import { featuredFor, type FeaturedSet } from '$lib/featured';
+	import { copyText, download } from '$lib/files';
 	import { recent, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
@@ -220,29 +222,14 @@
 		if (message) noticeTimer = setTimeout(() => (notice = ''), ms);
 	}
 
-	// navigator.clipboard needs HTTPS; this site is plain HTTP, so fall back to the old way
 	async function copy(content: string, done: string) {
-		try {
-			await navigator.clipboard.writeText(content);
-		} catch {
-			const area = Object.assign(document.createElement('textarea'), { value: content });
-			document.body.append(area);
-			area.select();
-			document.execCommand('copy');
-			area.remove();
-		}
+		await copyText(content);
 		if (done) flash(done);
 	}
 
 	const copyJson = () => copy(json, i18n.t('notices.jsonCopied'));
 	// The address already holds the links, the view and the option: it is the link to share
 	const share = () => copy(page.url.href, i18n.t('notices.linkCopied'));
-
-	function download(content: string, type: string, name: string) {
-		const url = URL.createObjectURL(new Blob([content], { type }));
-		Object.assign(document.createElement('a'), { href: url, download: name }).click();
-		URL.revokeObjectURL(url);
-	}
 
 	// A short address for the list, kept on the server (lib/server/collections.ts); the notice says so
 	async function shortLink() {
@@ -419,30 +406,14 @@
 						{/each}
 					</div>
 					<span class="toolbar__spacer"></span>
-					<Menu label={i18n.t('toolbar.share')}>
-						{#snippet children(close)}
-							<button
-								type="button"
-								class="menu__item"
-								onclick={() => {
-									close();
-									share();
-								}}
-								>{i18n.t('toolbar.copyLink')}<small>{i18n.t('toolbar.copyLinkHint')}</small></button
-							>
-							<button
-								type="button"
-								class="menu__item"
-								disabled={query.loading}
-								onclick={() => {
-									close();
-									shortLink();
-								}}
-								>{i18n.t('toolbar.shortLink')}<small>{i18n.t('toolbar.shortLinkHint')}</small
-								></button
-							>
-						{/snippet}
-					</Menu>
+					<SaveDialog
+						urls={query.rows.map((r) => r.url)}
+						{view}
+						lang={i18n.lang}
+						disabled={query.loading}
+						oncopylink={share}
+						onshortlink={shortLink}
+					/>
 					<Menu label={i18n.t('toolbar.export')}>
 						{#snippet children(close)}
 							<button

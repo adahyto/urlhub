@@ -56,7 +56,6 @@
 		"allTypes": "Wszystkie rodzaje",
 		"typeGroup": "Rodzaj",
 		"siteGroup": "Serwis",
-		"share": "Udostępnij",
 		"copyJson": "Kopiuj JSON",
 		"downloadJson": "Pobierz JSON",
 		"downloadCsv": "Pobierz CSV",
@@ -312,7 +311,9 @@
 	"errorPage": {
 		"shortLinkTitle": "Ten krótki link nie istnieje",
 		"shortLinkText": "Mógł wygasnąć: krótkie linki nieużywane przez 90 dni są usuwane. Poproś osobę, która go udostępniła, o nowy.",
-		"other": "Coś poszło nie tak."
+		"other": "Coś poszło nie tak.",
+		"savedListTitle": "Ta zapisana lista nie istnieje",
+		"savedListText": "Mogła zostać usunięta po zgłoszeniu albo wygasnąć: listy nieotwierane przez rok są usuwane."
 	},
 	"og": {
 		"title": {
@@ -369,6 +370,37 @@
 		"more": "Więcej zestawów ({count})",
 		"less": "Mniej zestawów"
 	},
+	"saved": {
+		"savedOn": "zapisano {date}",
+		"copyLink": "Kopiuj link",
+		"linkCopied": "Skopiowano link do tej listy",
+		"editCopy": "Edytuj kopię",
+		"fixed": "Tę listę zapisano na stałe: nikt jej nie zmieni. „Edytuj kopię” otwiera jej linki jako nową listę.",
+		"report": "Zgłoś nadużycie",
+		"reportSubject": "Zgłoszenie listy urlhub",
+		"reportBody": "Lista: {url}\nCo jest nie tak:"
+	},
+	"save": {
+		"button": "Zapisz",
+		"heading": "Zapisz listę",
+		"close": "Zamknij",
+		"asPage": "Zapisz jako stronę z tytułem",
+		"asPageHint": "Powstanie strona tylko do oglądania, której nikt nie zmieni. Tytuły i obrazki linków zapiszemy takie, jak są teraz. Strona nieotwierana przez rok zostanie usunięta.",
+		"titleLabel": "Tytuł",
+		"descriptionLabel": "Opis (opcjonalnie)",
+		"count": "{count} / {max}",
+		"submit": "Zapisz stronę",
+		"saving": "Zapisuję…",
+		"saved": "Zapisano. Link do strony:",
+		"link": "Link do zapisanej strony",
+		"copy": "Kopiuj",
+		"copied": "Skopiowano",
+		"open": "Otwórz",
+		"failed": "Nie udało się zapisać. Spróbuj za chwilę.",
+		"tooMany": "Za dużo zapisów z Twojego adresu. Spróbuj za minutę.",
+		"linkOnly": "Albo tylko link do tej listy",
+		"linkOnlyHint": "Lista otworzy się do dalszej edycji, tak jak teraz."
+	},
 	"privacy": {
 		"title": "Prywatność",
 		"intro": "urlhub nie używa ciasteczek, analityki ani reklam. Poniżej opisujemy, jakie dane powstają podczas korzystania z niego i co się z nimi dzieje.",
@@ -388,9 +420,13 @@
 			"title": "Adres strony i krótkie linki",
 			"text": "Lista linków, widok, opcja zaawansowana i język są częścią adresu strony, żeby dało się go udostępnić. Krótki link (/c/…) tworzysz przyciskiem i zapisuje on na naszym serwerze tylko te cztery rzeczy, bez adresu IP i bez konta; każdy, kto go zna, zobaczy listę. Krótki link, którego nikt nie otworzył przez 90 dni, jest usuwany, a z codziennych kopii zapasowych znika po kolejnych 14 dniach."
 		},
+		"saved": {
+			"title": "Zapisane listy (strony z tytułem)",
+			"text": "Przyciskiem „Zapisz” możesz zapisać listę jako stronę (/l/…). Na naszym serwerze zapisujemy wtedy podany tytuł i opis, linki, widok, język, datę zapisu oraz tytuły, opisy i adresy obrazków stron z chwili zapisu – bez adresu IP i bez konta. Robimy to na Twoją prośbę, żeby udostępnić tę stronę (wykonanie usługi, art. 6 ust. 1 lit. b RODO). Każdy, kto zna link, zobaczy stronę; nie trafia ona do wyszukiwarek. Zapisanej strony nie da się zmienić ani usunąć w serwisie, więc nie wpisuj w tytule ani opisie danych osobowych. Strona, której nikt nie otworzył przez rok, jest usuwana, a z codziennych kopii zapasowych znika po kolejnych 14 dniach. Jeśli chcesz usunąć swoją stronę albo zgłosić treść niezgodną z prawem, napisz na {email} (link „Zgłoś nadużycie” jest na każdej zapisanej stronie)."
+		},
 		"storage": {
 			"title": "Ciasteczka i pamięć przeglądarki",
-			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa."
+			"text": "urlhub nie zapisuje ciasteczek. Historia ostatnich zapytań trafia do pamięci Twojej przeglądarki (localStorage) dopiero na Twoją prośbę, po włączeniu przełącznika „Zapamiętuj ostatnie zapytania na tym urządzeniu”. Nie jest nigdzie wysyłana, a wyłączenie przełącznika ją usuwa. Bez przełącznika „Ostatnie” pokazuje tylko zapytania z bieżącej wizyty: są w pamięci otwartej karty i znikają po jej zamknięciu albo odświeżeniu."
 		},
 		"logs": {
 			"title": "Logi serwera",

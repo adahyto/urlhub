@@ -87,6 +87,36 @@ test('Polish', async ({ page }) => {
 	await expectAccessible(page);
 });
 
+test('the Save dialog', async ({ page }) => {
+	await page.goto(results());
+	await settled(page);
+	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	await expectAccessible(page, '.save');
+	await page.getByLabel('Title', { exact: true }).fill('A list');
+	await page.getByRole('button', { name: 'Save the page' }).click();
+	await expect(page.getByText('Saved. The link to the page:')).toBeVisible();
+	await expectAccessible(page, '.save');
+});
+
+test('a saved list: tiles and table, light and dark', async ({ page }) => {
+	const res = await page.request.post('/api/lists', {
+		data: {
+			title: 'A saved list',
+			description: 'Five links',
+			urls: LIST,
+			view: 'tiles',
+			lang: 'en'
+		}
+	});
+	const { path } = await res.json();
+	await page.goto(path);
+	await expectAccessible(page);
+	await page.getByRole('button', { name: 'Table' }).click();
+	await expectAccessible(page);
+	await page.emulateMedia({ colorScheme: 'dark' });
+	await expectAccessible(page);
+});
+
 test('/status, /privacy and a missing short link', async ({ page }) => {
 	await page.goto('/status');
 	await expectAccessible(page);

@@ -1,6 +1,6 @@
-import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
 import { withImages } from '$lib/server/images';
+import { ldbApiUrl } from '$lib/server/ldb';
 import type { ApiUrl } from '$lib/types';
 import type { RequestHandler } from './$types';
 
@@ -36,10 +36,6 @@ function addImagesToStream(body: ReadableStream<Uint8Array>): ReadableStream<Uin
 	);
 }
 
-// ldb-api is called from this server, so the browser needs no CORS and never sees its address.
-// In Docker LDB_API_URL points at it through the host (docker-compose.yaml); `npm run dev` uses the public one.
-const apiUrl = () => env.LDB_API_URL || 'http://51.75.116.68:84/json';
-
 // Plenty for 200 links with text around them; ldb-api itself refuses more than 200 links (413)
 const MAX_TEXT = 100_000;
 
@@ -66,7 +62,7 @@ export const POST: RequestHandler = async ({ request, fetch, getClientAddress })
 
 	let response: Response;
 	try {
-		response = await fetch(apiUrl(), {
+		response = await fetch(ldbApiUrl(), {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
