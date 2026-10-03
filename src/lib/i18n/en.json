@@ -116,6 +116,7 @@
 		"remove": "Remove from recent queries",
 		"clear": "Clear all",
 		"empty": "Nothing yet: your next queries will show up here.",
+		"visitOnly": "These queries are gone when you close or reload the tab.",
 		"button": "Recent"
 	},
 	"tiles": {

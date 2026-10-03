@@ -54,9 +54,12 @@ test('the table with a row open', async ({ page }) => {
 test('JSON and recent queries', async ({ page }) => {
 	await page.goto(results('&view=json'));
 	await settled(page);
+	await expectAccessible(page);
+	// An open menu covers the filters under it, so the menus are checked on their own
 	await page.getByRole('button', { name: /^Recent/ }).click();
 	await page.getByLabel('Remember recent queries on this device').check();
-	await expectAccessible(page);
+	await expectAccessible(page, '.menu__list');
+	await page.keyboard.press('Escape');
 	await page.getByRole('button', { name: 'Export' }).click();
 	await expectAccessible(page, '.menu__list');
 });

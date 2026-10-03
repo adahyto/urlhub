@@ -52,7 +52,9 @@ Recent queries can be remembered on the visitor's device: off by default, turned
 form (`src/lib/history.svelte.ts`). Until then the page stores nothing in the browser, turning it off deletes
 the list, and the list is never sent anywhere. Storing on a device needs consent unless the visitor asked for it
 (ePrivacy art. 5(3), in Poland art. 399 Prawo komunikacji elektronicznej); the switch is that request, so no
-consent banner is needed. The app sets no cookies.
+consent banner is needed. The app sets no cookies. **Recent** always lists the queries of this visit, kept only
+in the page's memory (gone when the tab is closed or reloaded), so the logo, which leads back to the empty home
+page, does not lose the list. The home page follows its address: Back and Forward bring a list back or empty it.
 
 For search engines (`src/lib/seo.ts`): the home page and `/privacy` have a canonical address and language
 versions (`?lang=pl`, `?lang=en`, x-default without `?lang=`), the home page a JSON-LD `WebApplication`;

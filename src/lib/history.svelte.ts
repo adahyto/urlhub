@@ -1,10 +1,12 @@
 import type { View } from './types';
 
 /*
- * Recent queries, kept in this browser's localStorage only when the visitor turns it on. Storing anything on the
- * visitor's device needs consent unless the visitor asked for it (ePrivacy art. 5(3); in Poland art. 399 of
- * Prawo komunikacji elektronicznej): so nothing at all is written until the switch is turned on (not even "off"),
- * turning it off deletes everything, and nothing here is ever sent to a server.
+ * Recent queries. The queries of this visit are kept in the page's memory, so Recent can take the visitor back
+ * to a list after the logo or another list; nothing is written on the device for that, and they are gone when
+ * the tab is closed or reloaded. They are kept in this browser's localStorage only when the visitor turns it on.
+ * Storing anything on the visitor's device needs consent unless the visitor asked for it (ePrivacy art. 5(3); in
+ * Poland art. 399 of Prawo komunikacji elektronicznej): so nothing at all is written until the switch is turned on
+ * (not even "off"), turning it off deletes everything, and nothing here is ever sent to a server.
  * Every access may throw (private windows, blocked site data): the feature then simply is not offered.
  */
 
@@ -26,23 +28,28 @@ export class RecentQueries {
 	enabled = $state(false);
 	entries = $state<Recent[]>([]);
 
-	/** Reads what is stored; call in the browser (onMount) */
+	#loaded = false;
+
+	/** Reads what is stored, once per visit; call in the browser (onMount) */
 	load(): void {
+		if (this.#loaded) return;
+		this.#loaded = true;
 		try {
 			const raw = localStorage.getItem(KEY);
 			this.available = true;
 			this.enabled = raw !== null;
 			const parsed = raw ? JSON.parse(raw) : [];
-			this.entries = Array.isArray(parsed)
-				? parsed.filter((e) => Array.isArray(e?.urls) && typeof e.at === 'number').slice(0, MAX)
+			const stored: Recent[] = Array.isArray(parsed)
+				? parsed.filter((e) => Array.isArray(e?.urls) && typeof e.at === 'number')
 				: [];
+			this.entries = [...this.entries, ...stored].slice(0, MAX);
 		} catch {
 			this.available = false;
 			this.enabled = false;
-			this.entries = [];
 		}
 	}
 
+	/** Turning it on keeps this visit's queries too; turning it off deletes them all */
 	setEnabled(on: boolean): void {
 		this.enabled = on;
 		if (!on) this.entries = [];
@@ -55,9 +62,9 @@ export class RecentQueries {
 		}
 	}
 
-	/** Puts a query on top (the same list of links only once); does nothing unless turned on */
+	/** Puts a query on top (the same list of links only once); stored on the device only when turned on */
 	add(urls: string[], view: View, advanced: boolean): void {
-		if (!this.enabled || !urls.length) return;
+		if (!urls.length) return;
 		const same = (e: Recent) =>
 			e.urls.length === urls.length && e.urls.every((u, i) => u === urls[i]);
 		this.entries = [
@@ -86,3 +93,9 @@ export class RecentQueries {
 		}
 	}
 }
+
+/**
+ * One list for the whole visit, so it survives going to another page and back. Only the browser changes it
+ * (load and add run from the page's events), so the server never holds anyone's queries.
+ */
+export const recent = new RecentQueries();

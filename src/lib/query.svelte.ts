@@ -203,6 +203,15 @@ export class LinkQuery {
 		this.#settlePending('stopped');
 	}
 
+	/** Back to no results (the home page without a list): the query in progress is dropped */
+	clear(): void {
+		this.#controller?.abort();
+		this.#controller = null;
+		this.loading = false;
+		this.error = null;
+		this.rows = [];
+	}
+
 	#settlePending(error: string): void {
 		this.rows = this.rows.map((r) => (r.pending ? { ...r, pending: false, error } : r));
 	}
