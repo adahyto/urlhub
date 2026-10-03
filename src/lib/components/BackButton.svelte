@@ -33,8 +33,7 @@
 		justify-content: center;
 		width: 2.25rem;
 		height: 2.25rem;
-		align-self: center;
-		margin: 0 -0.6rem 0 -0.5rem;
+		margin: 0 0.15rem 0 -0.5rem;
 		padding: 0;
 		color: var(--ink);
 		background: none;
