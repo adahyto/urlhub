@@ -11,8 +11,10 @@ import data from './featured.json' with { type: 'json' };
  */
 
 export interface FeaturedSet {
-	/** Unique within its language */
+	/** Unique within its language; the set's address /s/<lang>/<id>, with the year for a set that is redone each year */
 	id: string;
+	/** Earlier ids: their addresses lead here, so links already shared keep working */
+	aliases?: string[];
 	lang: Lang;
 	season?: { from: string; to: string };
 	view: 'tiles' | 'table';

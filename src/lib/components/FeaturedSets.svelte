@@ -145,23 +145,29 @@
 		outline-offset: 2px;
 	}
 
-	/* Up to three square pictures in a row across the top of the card, edge to edge */
+	/* Up to three pictures in a row across the top of the card, edge to edge (square when there are three) */
 	.card__covers {
 		display: grid;
 		grid-template-columns: repeat(var(--covers, 3), 1fr);
+		/* The same height on every card, however many pictures share it */
+		aspect-ratio: 3;
 		gap: 2px;
 		margin: -1rem -1rem 0.5rem;
 		background: var(--border-soft);
 	}
 
 	.card__cover {
+		position: relative;
 		display: block;
-		aspect-ratio: 1;
+		min-width: 0;
 		overflow: hidden;
 		background: var(--surface-3);
 	}
 
+	/* Out of the flow, so a tall picture cannot make the row taller */
 	.card__cover img {
+		position: absolute;
+		inset: 0;
 		display: block;
 		width: 100%;
 		height: 100%;
