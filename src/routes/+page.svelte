@@ -514,7 +514,7 @@
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
 			{/each}
 		</ul>
-		<FeaturedSets sets={featured} onopen={openSet} />
+		<FeaturedSets sets={featured} covers={data.covers} onopen={openSet} />
 	{/if}
 </main>
 

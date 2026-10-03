@@ -34,6 +34,8 @@ test('the featured sets are well formed, in both languages', () => {
 		expect(set.urls.length).toBeLessThanOrEqual(200);
 		expect(new Set(set.urls).size).toBe(set.urls.length);
 		for (const url of set.urls) expect(url).toMatch(/^https:\/\/[^\s]+$/);
+		expect(set.covers?.length ?? 0).toBeLessThanOrEqual(3);
+		for (const src of set.covers ?? []) expect(src).toMatch(/^https?:\/\/[^\s]+$/);
 		if (set.season) {
 			expect(set.season.from).toMatch(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/);
 			expect(set.season.to).toMatch(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/);
@@ -84,6 +86,15 @@ test('the empty page offers featured sets; one opens in its view and can be shar
 			'aria-expanded',
 			'true'
 		);
+	}
+
+	// The cards' pictures come through /img, small, never straight from other sites
+	for (const set of featuredFor('pl', todayInPoland()).slice(0, SHOWN_FIRST)) {
+		const card = region.getByRole('button', { name: named(set.title) });
+		const pictures = card.locator('img');
+		await expect(pictures).toHaveCount(set.covers?.length ?? 0);
+		for (const src of await pictures.evaluateAll((all) => all.map((i) => i.getAttribute('src'))))
+			expect(src).toMatch(/^\/img\?u=.+&w=240&s=/);
 	}
 
 	const set = featuredFor('pl', todayInPoland()).at(-1)!;

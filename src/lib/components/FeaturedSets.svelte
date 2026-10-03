@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SHOWN_FIRST, type FeaturedSet } from '$lib/featured';
+	import { SHOWN_FIRST, setKey, type FeaturedSet } from '$lib/featured';
 	import { useI18n } from '$lib/i18n';
 
 	const i18n = useI18n();
@@ -7,11 +7,16 @@
 	interface Props {
 		/** In the order to show them (lib/featured.ts) */
 		sets: FeaturedSet[];
+		/** The cards' pictures through /img, by setKey (signed on the server) */
+		covers: Record<string, string[]>;
 		/** Puts the set's links in the field and fetches them */
 		onopen: (set: FeaturedSet) => void;
 	}
 
-	let { sets, onopen }: Props = $props();
+	let { sets, covers, onopen }: Props = $props();
+
+	// A picture that does not load leaves its plain tile
+	const hide = (event: Event) => ((event.currentTarget as HTMLElement).style.visibility = 'hidden');
 
 	let all = $state(false);
 	const shown = $derived(all ? sets : sets.slice(0, SHOWN_FIRST));
@@ -34,6 +39,28 @@
 			{#each shown as set (set.id)}
 				<li>
 					<button type="button" class="card" onclick={() => onopen(set)}>
+						{#if covers[setKey(set)]?.length}
+							<!-- Pictures of the set's links: the text says what it is, so they are decoration -->
+							<span
+								class="card__covers"
+								style:--covers={covers[setKey(set)].length}
+								aria-hidden="true"
+							>
+								{#each covers[setKey(set)] as src (src)}
+									<span class="card__cover">
+										<img
+											{src}
+											alt=""
+											width="240"
+											height="240"
+											loading="lazy"
+											decoding="async"
+											onerror={hide}
+										/>
+									</span>
+								{/each}
+							</span>
+						{/if}
 						<span class="card__title"
 							>{set.title}{#if set.season}<span class="card__badge"
 									>{i18n.t('featured.seasonal')}</span
@@ -88,6 +115,7 @@
 		flex: 1;
 		flex-direction: column;
 		gap: 0.35rem;
+		overflow: hidden;
 		padding: 1rem;
 		font: inherit;
 		text-align: left;
@@ -105,6 +133,29 @@
 	.card:focus-visible {
 		outline: 2px solid var(--accent);
 		outline-offset: 2px;
+	}
+
+	/* Up to three square pictures in a row across the top of the card, edge to edge */
+	.card__covers {
+		display: grid;
+		grid-template-columns: repeat(var(--covers, 3), 1fr);
+		gap: 2px;
+		margin: -1rem -1rem 0.5rem;
+		background: var(--border-soft);
+	}
+
+	.card__cover {
+		display: block;
+		aspect-ratio: 1;
+		overflow: hidden;
+		background: var(--surface-3);
+	}
+
+	.card__cover img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.card__title {

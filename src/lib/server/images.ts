@@ -14,8 +14,8 @@ import type { ApiUrl } from '$lib/types';
 // Signs the picture addresses; set IMAGE_PROXY_SECRET so they keep working after a restart (e.g. in recent queries)
 const secret = env.IMAGE_PROXY_SECRET || randomBytes(32).toString('hex');
 
-/** Widths the pictures come in: tiles and the table, and favicons (16 px, sharp on any screen) */
-export const WIDTHS = [480, 64] as const;
+/** Widths the pictures come in: tiles and the table, the featured sets' cards, and favicons (16 px, sharp on any screen) */
+export const WIDTHS = [480, 240, 64] as const;
 const IMAGE_RE = /\.(jpe?g|png|gif|webp|avif|svg)(\?.*)?$/i;
 
 const sign = (src: string, width: number) =>
@@ -29,7 +29,8 @@ export function verify(src: string, width: number, signature: string): boolean {
 	);
 }
 
-const proxyUrl = (src: string, width: number) =>
+/** The address of a picture through /img, signed so that only pictures this server hands out can be fetched */
+export const proxyUrl = (src: string, width: number) =>
 	`/img?u=${encodeURIComponent(src)}&w=${width}&s=${sign(src, width)}`;
 
 const absolute = (value: string | undefined, base: string) => {
