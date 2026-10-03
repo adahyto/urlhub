@@ -124,6 +124,7 @@
 		"remove": "Usuń z ostatnich zapytań",
 		"clear": "Wyczyść wszystko",
 		"empty": "Jeszcze nic: tu pojawią się Twoje następne zapytania.",
+		"visitOnly": "Te zapytania znikną po zamknięciu lub odświeżeniu karty.",
 		"button": "Ostatnie"
 	},
 	"tiles": {

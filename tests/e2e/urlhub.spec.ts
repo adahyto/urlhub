@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { API_PORT } from '../../playwright.config';
 
 // The behaviour checked by hand before each release: sharing, live results, failures, the table and its tools,
-// the 200-link limit, recent queries (nothing stored before the switch) and phones
+// the 200-link limit, recent queries (nothing stored before the switch), the logo and Back, and phones
 
 const API = `http://127.0.0.1:${API_PORT}`;
 const link = (path: string) => `https://example.test${path}`;
@@ -138,7 +138,7 @@ test('more than 200 links: the form says so and the request is refused clearly',
 	await expect(page.getByRole('alert')).toHaveText('At most 200 links per request, got 201.');
 });
 
-test('recent queries: nothing stored before the switch, deleted when it is turned off', async ({
+test('recent queries: this visit only in memory, stored after the switch, deleted when it is turned off', async ({
 	page
 }) => {
 	await page.goto('/');
@@ -148,21 +148,56 @@ test('recent queries: nothing stored before the switch, deleted when it is turne
 
 	const recentMenu = page.getByRole('button', { name: /^Recent/ });
 	await recentMenu.click();
+	await expect(page.locator('.recent__open')).toHaveCount(1);
+	await expect(
+		page.getByText('These queries are gone when you close or reload the tab.')
+	).toBeVisible();
 	await page.getByLabel('Remember recent queries on this device').check();
 	await fetchLinks(page, `${link('/b')} ${link('/c')}`);
 	await recentMenu.click();
-	await expect(page.locator('.recent__open')).toHaveCount(1);
-	await expect(page.locator('.recent__open')).toContainText('2 links · example.test');
+	await expect(page.locator('.recent__open')).toHaveCount(2);
+	await expect(page.locator('.recent__open').first()).toContainText('2 links · example.test');
 
 	await page.reload();
 	await recentMenu.click();
-	await page.locator('.recent__open').click();
+	await expect(page.locator('.recent__open')).toHaveCount(2);
+	await page.locator('.recent__open').first().click();
 	await expect(field(page)).toHaveValue(`${link('/b')}\n${link('/c')}`);
 	await expect(summary(page)).toHaveText('2 links');
 
 	await recentMenu.click();
 	await page.getByLabel('Remember recent queries on this device').uncheck();
 	expect(await page.evaluate(() => localStorage.length)).toBe(0);
+	await expect(page.locator('.recent__open')).toHaveCount(0);
+});
+
+test('the logo leads back to the empty home page, the list waits in Recent, Back brings it again', async ({
+	page
+}) => {
+	await page.goto('/');
+	await fetchLinks(page, `${link('/a')} ${link('/b')}`);
+	await expect(summary(page)).toHaveText('2 links');
+
+	await page.getByRole('link', { name: 'urlhub', exact: true }).click();
+	await expect(page).toHaveURL(/\/$/);
+	await expect(field(page)).toHaveValue('');
+	await expect(summary(page)).toHaveCount(0);
+	await expect(page.getByRole('region', { name: 'Featured sets' })).toBeVisible();
+
+	const recentMenu = page.getByRole('button', { name: /^Recent/ });
+	await recentMenu.click();
+	await expect(page.locator('.recent__open')).toHaveCount(1);
+	await expect(page.locator('.recent__open')).toContainText('2 links · example.test');
+	expect(await page.evaluate(() => localStorage.length)).toBe(0);
+	await page.keyboard.press('Escape');
+
+	await page.goBack();
+	await expect(field(page)).toHaveValue(`${link('/a')}\n${link('/b')}`);
+	await expect(summary(page)).toHaveText('2 links');
+
+	await page.goForward();
+	await expect(field(page)).toHaveValue('');
+	await expect(summary(page)).toHaveCount(0);
 });
 
 test('on a phone the table does not scroll sideways', async ({ page }) => {

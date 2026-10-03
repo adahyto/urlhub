@@ -3,7 +3,7 @@
 	import type { Recent, RecentQueries } from '$lib/history.svelte';
 	import { useI18n } from '$lib/i18n';
 
-	/* Recent queries in a menu next to Fetch (lib/history.svelte.ts: stored only once the switch is on) */
+	/* Recent queries in a menu next to Fetch (lib/history.svelte.ts: this visit's always, stored only once the switch is on) */
 	let { recent, onopen }: { recent: RecentQueries; onopen: (entry: Recent) => void } = $props();
 
 	const i18n = useI18n();
@@ -28,10 +28,10 @@
 {#if recent.available}
 	<Menu
 		label={i18n.t('recent.button')}
-		badge={recent.enabled && recent.entries.length ? String(recent.entries.length) : ''}
+		badge={recent.entries.length ? String(recent.entries.length) : ''}
 	>
 		{#snippet children(close)}
-			{#if recent.enabled && recent.entries.length}
+			{#if recent.entries.length}
 				<ul class="recent">
 					{#each recent.entries as entry (entry.at)}
 						<li class="recent__item">
@@ -62,7 +62,10 @@
 				<button type="button" class="menu__item" onclick={() => recent.clear()}
 					>{i18n.t('recent.clear')}</button
 				>
-			{:else if recent.enabled}
+				{#if !recent.enabled}
+					<p class="recent__note">{i18n.t('recent.visitOnly')}</p>
+				{/if}
+			{:else}
 				<p class="recent__note">{i18n.t('recent.empty')}</p>
 			{/if}
 			<label class="recent__switch">

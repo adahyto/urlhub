@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { onMount } from 'svelte';
 	import Tiles from '$lib/components/Tiles.svelte';
@@ -12,7 +12,7 @@
 	import SeoLinks from '$lib/components/SeoLinks.svelte';
 	import FeaturedSets from '$lib/components/FeaturedSets.svelte';
 	import { featuredFor, type FeaturedSet } from '$lib/featured';
-	import { RecentQueries, type Recent } from '$lib/history.svelte';
+	import { recent, type Recent } from '$lib/history.svelte';
 	import { LinkQuery, asCsv, asJson, isFailed } from '$lib/query.svelte';
 	import { toTileUrl } from '$lib/tiles';
 	import type { Row, View } from '$lib/types';
@@ -41,12 +41,12 @@
 	const viewInAddress = params.get('view');
 
 	const query = new LinkQuery();
-	const recent = new RecentQueries();
 	// Old shared links put "-" between the links; one per line reads better (ldb-api splits them either way)
-	let text = $state(linksInAddress.replace(/[\s,;-]+(?=https?:\/\/)/gi, '\n').trim());
-	let view = $state<View>(
-		VIEWS.includes(viewInAddress as View) ? (viewInAddress as View) : 'tiles'
-	);
+	const asLines = (links: string) => links.replace(/[\s,;-]+(?=https?:\/\/)/gi, '\n').trim();
+	const viewOf = (value: string | null): View =>
+		VIEWS.includes(value as View) ? (value as View) : 'tiles';
+	let text = $state(asLines(linksInAddress));
+	let view = $state<View>(viewOf(viewInAddress));
 	let advanced = $state(params.get('advanced') === '1');
 	let filter = $state('');
 	let only = $state<'all' | 'failed' | 'warnings' | 'ok'>('all');
@@ -136,6 +136,34 @@
 		fetchLinks();
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
+
+	/** The empty home page: no list, no results, the options as they start */
+	function reset() {
+		query.clear();
+		text = '';
+		view = 'tiles';
+		advanced = false;
+		filter = '';
+		only = 'all';
+		kind = '';
+		removed = null;
+		flash('');
+	}
+
+	// The logo and the browser's Back and Forward come to this same page with another address, so the page is not
+	// made anew: it follows the address. Without a list it is the empty home page (the list left is in Recent);
+	// another list is fetched. The page's own changes to the address (goto) and a new language leave it as it is.
+	afterNavigate(({ type, from }) => {
+		// Coming from another page, the page is new and onMount reads the address
+		if ((type !== 'link' && type !== 'popstate') || from?.route.id !== '/') return;
+		const links = asLines(page.url.searchParams.get('urls') ?? '');
+		if (!links) return reset();
+		if (links === query.rows.map((r) => r.url).join('\n')) return;
+		text = links;
+		view = viewOf(page.url.searchParams.get('view'));
+		advanced = page.url.searchParams.get('advanced') === '1';
+		fetchLinks();
+	});
 
 	/** A recent query comes back with its links, view and option, and is fetched again */
 	function reopen(entry: Recent) {
