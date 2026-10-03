@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { proxied } from '$lib/images';
 	import { SvelteSet } from 'svelte/reactivity';
 	import RowDetails from './RowDetails.svelte';
 	import type { Row } from '$lib/types';
@@ -196,9 +197,9 @@
 						{/if}
 						{#if item.pending}
 							<span class="table__skeleton" aria-hidden="true"></span>
-						{:else if item.ogImg?.ogImg}
+						{:else if proxied(item, item.ogImg?.ogImg)}
 							<img
-								src={item.ogImg.ogImg}
+								src={proxied(item, item.ogImg?.ogImg)}
 								alt={item.ogImg.ogImgAlt || ''}
 								loading="lazy"
 								referrerpolicy="no-referrer"
@@ -208,10 +209,10 @@
 					</td>
 					<td class="table__main">
 						<p class="table__site">
-							{#if item.favicon}
+							{#if proxied(item, item.favicon, item.finalUrl || item.url)}
 								<img
 									class="table__favicon"
-									src={item.favicon}
+									src={proxied(item, item.favicon, item.finalUrl || item.url)}
 									alt=""
 									width="16"
 									height="16"

@@ -49,6 +49,8 @@ export interface ApiUrl {
 	duration?: string;
 	/** Why the link could not be read: "timeout", "host not found", "HTTP 404", "video unavailable", ... */
 	error?: string;
+	/** Added by this server: each picture of the result (absolute address) → its address through /img */
+	images?: Record<string, string>;
 
 	// Advanced answers
 	keywords?: string;
@@ -78,6 +80,8 @@ export interface TileUrl {
 	channel: string;
 	duration: string;
 	error: string;
+	/** Pictures through this server, as in ApiUrl.images */
+	images: Record<string, string>;
 	/** The site's or shop's name (ldb-api siteName) */
 	site?: string;
 	/** Still being fetched */

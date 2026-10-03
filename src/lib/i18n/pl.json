@@ -375,7 +375,7 @@
 		},
 		"pictures": {
 			"title": "Obrazki podglądów",
-			"text": "Obrazki w kafelkach i tabeli Twoja przeglądarka pobiera bezpośrednio z serwerów stron, do których prowadzą linki, i przekazuje im przy tym swój adres IP. Serwery te mogą działać poza Unią Europejską i ustawiać własne ciasteczka na zasadach swoich polityk prywatności; nie mamy na to wpływu."
+			"text": "Obrazki w kafelkach i tabeli pobiera nasz serwer – z serwerów stron, do których prowadzą linki – zmniejsza je i dopiero wtedy pokazuje Twojej przeglądarce. Te serwery widzą więc adres naszego serwera, nie Twój, i nie mogą ustawić Ci ciasteczek. Pomniejszone obrazki trzymamy krótko w pamięci serwera (znikają przy restarcie), a Twoja przeglądarka – do doby. Linki prowadzące prosto do plików wideo pokazujemy bez podglądu, bo film odtwarzałby się z obcego serwera."
 		},
 		"address": {
 			"title": "Adres strony i krótkie linki",

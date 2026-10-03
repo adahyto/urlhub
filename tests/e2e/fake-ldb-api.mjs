@@ -6,6 +6,7 @@
 //   /flaky...  fails once, then works     /video...  a YouTube video (duration, channel)
 //   /stars...  a GitHub repository        /seo...    a page with an SEO warning (advanced)
 //   /blocked...  a shop that refuses servers (403, title from the address)
+//   /picture...  a page with an og:image and a favicon, served by this server (/__image.png, /__favicon.png)
 import http from 'node:http';
 
 const PORT = Number(process.env.FAKE_API_PORT || 13901);
@@ -82,6 +83,14 @@ function details(url, advanced) {
 			error: 'blocked'
 		};
 	}
+	if (path.startsWith('/picture')) {
+		return {
+			...base,
+			...more,
+			ogImg: { ogImg: `http://127.0.0.1:${PORT}/__image.png`, ogImgAlt: 'A red picture' },
+			favicon: `http://127.0.0.1:${PORT}/__favicon.png`
+		};
+	}
 	if (path.startsWith('/video')) {
 		return {
 			...base,
@@ -156,6 +165,16 @@ http
 		const { pathname } = new URL(req.url, 'http://localhost');
 		if (req.method === 'GET' && pathname === '/health') return send(res, 200, health());
 		if (req.method === 'GET' && pathname === '/__requests') return send(res, 200, requests);
+		// A 2×2 red PNG, as a page's picture and favicon (urlhub shows them through its /img)
+		if (req.method === 'GET' && (pathname === '/__image.png' || pathname === '/__favicon.png')) {
+			res.writeHead(200, { 'content-type': 'image/png' });
+			return res.end(
+				Buffer.from(
+					'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEElEQVR4nGM4oKAARAwQCgAejgQBl4tBnAAAAABJRU5ErkJggg==',
+					'base64'
+				)
+			);
+		}
 		if (req.method === 'POST' && pathname === '/__reset') {
 			requests = [];
 			attempts = new Map();

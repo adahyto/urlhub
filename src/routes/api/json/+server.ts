@@ -1,6 +1,40 @@
 import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
+import { withImages } from '$lib/server/images';
+import type { ApiUrl } from '$lib/types';
 import type { RequestHandler } from './$types';
+
+// Each result gets the addresses of its pictures through /img (src/lib/server/images.ts), line by line as the
+// NDJSON stream goes past, so the browser never fetches pictures from other sites
+function addImagesToStream(body: ReadableStream<Uint8Array>): ReadableStream<Uint8Array> {
+	const decoder = new TextDecoder();
+	const encoder = new TextEncoder();
+	let rest = '';
+	const line = (text: string) => {
+		if (!text.trim()) return '';
+		try {
+			const message = JSON.parse(text);
+			if (message?.result) message.result = withImages(message.result as ApiUrl);
+			return `${JSON.stringify(message)}\n`;
+		} catch {
+			return `${text}\n`;
+		}
+	};
+	return body.pipeThrough(
+		new TransformStream<Uint8Array, Uint8Array>({
+			transform(chunk, controller) {
+				const lines = (rest + decoder.decode(chunk, { stream: true })).split('\n');
+				rest = lines.pop() ?? '';
+				const out = lines.map(line).join('');
+				if (out) controller.enqueue(encoder.encode(out));
+			},
+			flush(controller) {
+				const out = line(rest + decoder.decode());
+				if (out) controller.enqueue(encoder.encode(out));
+			}
+		})
+	);
+}
 
 // ldb-api is called from this server, so the browser needs no CORS and never sees its address.
 // In Docker LDB_API_URL points at it through the host (docker-compose.yaml); `npm run dev` uses the public one.
@@ -50,11 +84,19 @@ export const POST: RequestHandler = async ({ request, fetch, getClientAddress })
 			{ status: 502 }
 		);
 	}
-	return new Response(response.body, {
+	const type = response.headers.get('content-type') ?? 'application/json';
+	const headers = { 'content-type': type, 'cache-control': 'no-store' };
+	if (/ndjson/.test(type) && response.body) {
+		return new Response(addImagesToStream(response.body), { status: response.status, headers });
+	}
+	// a plain JSON answer: { urls: [...] } or { error }
+	const answer = await response.json().catch(() => null);
+	if (Array.isArray(answer?.urls))
+		answer.urls = answer.urls.map((r: ApiUrl | string) =>
+			typeof r === 'object' && r ? withImages(r) : r
+		);
+	return new Response(JSON.stringify(answer ?? { error: 'Bad answer from the link service.' }), {
 		status: response.status,
-		headers: {
-			'content-type': response.headers.get('content-type') ?? 'application/json',
-			'cache-control': 'no-store'
-		}
+		headers
 	});
 };
