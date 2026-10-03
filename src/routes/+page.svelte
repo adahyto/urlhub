@@ -501,11 +501,12 @@
 			{/if}
 		</section>
 	{:else if !query.loading}
-		<ul class="features" aria-label={i18n.t('features.label')}>
-			{#each ['tiles', 'share', 'seo'] as const as f (f)}
+		<!-- How urlhub is used, in the order it is used -->
+		<ol class="features" aria-label={i18n.t('features.label')}>
+			{#each ['paste', 'arrange', 'share'] as const as f (f)}
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
 			{/each}
-		</ul>
+		</ol>
 		<FeaturedSets sets={featured} covers={data.covers} />
 	{/if}
 </main>

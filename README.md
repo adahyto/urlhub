@@ -56,7 +56,7 @@ visitor. The notice after the click says so. The dark theme follows the system s
 **Share** opens a dialog (`src/lib/components/ShareDialog.svelte`): first a link to the list as it is, to keep
 changing it (the address, a short link, or "Send…", the phone's own sharing, where the browser has it), then
 "Publish as a page with a title". A published list (`/l/<id>`, `src/lib/server/lists.ts`) has its title as the
-heading, an optional description, tiles or the table, export, copy link and Send…, "Edit a copy" (the links as an
+heading, an optional description, tiles or the table, export, Share (the system's own sharing where there is one, otherwise it copies the link), "Edit a copy" (the links as an
 ordinary list) and "Report abuse" (a mailto to the privacy contact, as the DSA asks of hosts). Nobody can change
 it: its id comes from its content, so any change makes a new address. The server reads the links' details from
 ldb-api when the list is published and keeps that snapshot; details from the browser are not taken. One JSON file

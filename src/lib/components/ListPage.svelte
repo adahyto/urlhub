@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import Tiles from './Tiles.svelte';
@@ -78,22 +77,24 @@
 	});
 
 	let noticeTimer: ReturnType<typeof setTimeout> | undefined;
-	async function copyLink() {
+
+	/**
+	 * One button: the system's own sharing where there is one (phones, some browsers: messengers, mail, ...),
+	 * otherwise the link is copied. Closing the share sheet is not a failure; a sheet that cannot open copies.
+	 */
+	async function share() {
+		if (typeof navigator.share === 'function') {
+			try {
+				await navigator.share({ title, url: address });
+				return;
+			} catch (err) {
+				if ((err as Error).name === 'AbortError') return;
+			}
+		}
 		await copyText(address);
 		notice = i18n.t('saved.linkCopied');
 		clearTimeout(noticeTimer);
 		noticeTimer = setTimeout(() => (notice = ''), 2500);
-	}
-
-	// Phones offer their own sharing (messengers, mail); known only in the browser
-	let canSend = $state(false);
-	onMount(() => (canSend = typeof navigator.share === 'function'));
-	async function send() {
-		try {
-			await navigator.share({ title, url: address });
-		} catch {
-			// cancelled
-		}
 	}
 </script>
 
@@ -135,12 +136,7 @@
 			{/each}
 		</div>
 		<span class="toolbar__spacer"></span>
-		<button type="button" class="toolbar__button" onclick={copyLink}
-			>{i18n.t('saved.copyLink')}</button
-		>
-		{#if canSend}
-			<button type="button" class="toolbar__button" onclick={send}>{i18n.t('saved.send')}</button>
-		{/if}
+		<button type="button" class="toolbar__button" onclick={share}>{i18n.t('saved.share')}</button>
 		<Menu label={i18n.t('toolbar.export')}>
 			{#snippet children(close)}
 				<button

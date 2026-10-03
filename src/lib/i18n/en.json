@@ -130,7 +130,6 @@
 		"picture": "Picture",
 		"title": "Title and details",
 		"issues": "Issues",
-		"type": "Type",
 		"duration": "Duration",
 		"fetching": "Fetching…",
 		"nothing": "Nothing matches the filter.",
@@ -314,18 +313,18 @@
 		"privacy": "Privacy"
 	},
 	"features": {
-		"label": "What urlhub is for",
-		"tiles": {
-			"title": "A set of links in one place",
-			"text": "Paste links to products, videos or articles – or a whole text, such as an email, and urlhub finds the links in it. Each shows with its picture, title and description."
+		"label": "How it works",
+		"paste": {
+			"title": "1. Paste links",
+			"text": "To products, videos, articles – or a whole email or note. urlhub picks out the links and shows each with its picture, title and description."
 		},
-		"seo": {
-			"title": "Arrange and compare",
-			"text": "Set the order, remove what you do not need, compare items in the table or download the set as CSV. Site owners can use “Check SEO”."
+		"arrange": {
+			"title": "2. Arrange the set",
+			"text": "Change the order, drop what you don't need and compare it all in a table. Download the set as CSV, or check a site's SEO if it is yours."
 		},
 		"share": {
-			"title": "Send sets with one link",
-			"text": "One link opens the whole set, such as a gift list or a gear comparison. Send it to friends – messengers show a preview."
+			"title": "3. Share",
+			"text": "Send one link to the whole list, or publish it as a page with its own title, like “Gifts for Dad”. Messengers show a preview."
 		}
 	},
 	"featured": {
@@ -338,14 +337,13 @@
 	},
 	"saved": {
 		"savedOn": "published {date}",
-		"copyLink": "Copy link",
+		"share": "Share",
 		"linkCopied": "Link to this list copied",
 		"editCopy": "Edit a copy",
 		"fixed": "This page is published for good: nobody can change it. “Edit a copy” opens its links as a new list.",
 		"report": "Report abuse",
 		"reportSubject": "Report of a urlhub list",
-		"reportBody": "List: {url}\nWhat is wrong:",
-		"send": "Send…"
+		"reportBody": "List: {url}\nWhat is wrong:"
 	},
 	"shareDialog": {
 		"button": "Share",
