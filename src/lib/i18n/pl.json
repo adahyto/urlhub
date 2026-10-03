@@ -387,7 +387,7 @@
 		},
 		"logs": {
 			"title": "Logi serwera",
-			"text": "Serwer zapisuje w logach technicznych skrócony adres IP (bez ostatniej części, więc nie wskazuje konkretnego urządzenia), datę i godzinę oraz rodzaj zapytania, bez wpisanych linków. Służą one wyłącznie do zapewnienia działania i bezpieczeństwa strony (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO) i są nadpisywane nowszymi po zapełnieniu 30 MB, zwykle po kilku tygodniach. Pełny adres IP jest trzymany wyłącznie w pamięci serwera, tylko do ograniczania liczby zapytań z jednego adresu, i usuwany zwykle po kilkunastu minutach, najpóźniej przy restarcie."
+			"text": "Serwer zapisuje w logach technicznych skrócony adres IP (bez ostatniej części, więc nie wskazuje konkretnego urządzenia), datę i godzinę oraz rodzaj zapytania, bez wpisanych linków. Służą one wyłącznie do zapewnienia działania i bezpieczeństwa strony (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO) i są nadpisywane nowszymi po zapełnieniu 30 MB, zwykle po kilku tygodniach. Pełny adres IP jest trzymany wyłącznie w pamięci serwera, tylko do ograniczania liczby zapytań z jednego adresu, i usuwany zwykle po kilkunastu minutach, najpóźniej przy restarcie. Serwer pośredniczący (Apache) nie zapisuje logów odwiedzin; tylko przy błędach technicznych jego dziennik błędów może zawierać adres IP i adres strony i jest usuwany po 30 dniach."
 		},
 		"where": {
 			"title": "Gdzie są dane i kto je otrzymuje",
@@ -397,6 +397,11 @@
 			"title": "Twoje prawa",
 			"text": "Masz prawo do dostępu do swoich danych, ich sprostowania, usunięcia i ograniczenia przetwarzania oraz do wniesienia sprzeciwu. Możesz też złożyć skargę do organu nadzorczego: {authority}."
 		},
-		"updated": "Ostatnia aktualizacja: {date}"
+		"updated": "Ostatnia aktualizacja: {date}",
+		"cloudflare": {
+			"title": "Cloudflare",
+			"text": "Ruch do strony przechodzi przez sieć Cloudflare, która chroni ją przed atakami i przyspiesza (prawnie uzasadniony interes, art. 6 ust. 1 lit. f RODO). Cloudflare przetwarza przy tym adres IP i dane techniczne zapytania na zasadach opisanych w swojej polityce prywatności. Firma ma siedzibę w USA i przekazuje dane na podstawie unijno-amerykańskich ram ochrony danych (EU-US Data Privacy Framework)."
+		},
+		"cloudflareLink": "Polityka prywatności Cloudflare"
 	}
 }

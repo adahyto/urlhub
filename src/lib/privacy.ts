@@ -13,7 +13,7 @@ export const PRIVACY = {
 		en: 'the President of the Personal Data Protection Office of Poland, UODO (uodo.gov.pl)'
 	},
 	/** Date of the last change to this information, YYYY-MM-DD */
-	updated: '2026-10-02'
+	updated: '2026-10-03'
 } as const;
 
 /** Shown in the footer copyright, as a link */

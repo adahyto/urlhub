@@ -15,17 +15,23 @@ services:
     # /status also checks ldb-api's /health next to it (src/lib/server/status.ts)
     environment:
       - LDB_API_URL=http://host.docker.internal:84/json
-      # The public address: without it the server takes every request for https, and the share preview
-      # (og:url, og:image) would point to https://, which this site does not serve
-      - ORIGIN=http://51.75.116.68:98
+      # The public address, for the share preview (og:url, og:image), canonical links and the sitemap
+      - ORIGIN=https://urlhub.cloud
+      # Apache in front (Cloudflare → Apache → here) puts the visitor's address last in X-Forwarded-For; the per-address
+      # limits (short links here, requests in ldb-api) need it. Only Apache can reach the port (127.0.0.1 below), so
+      # nobody can send a made-up header past it
+      - ADDRESS_HEADER=X-Forwarded-For
+      - XFF_DEPTH=1
     # Short links: one JSON file per list, kept across deploys; in the server's daily backup
     # (/usr/local/sbin/server-backup: /var/lib/docker/volumes/urlhub_data)
     volumes:
       - data:/data
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    # Only on this host: visitors come through Apache (urlhub.cloud); Apache also answers old links to
+    # http://51.75.116.68:98 with a redirect to the domain
     ports:
-      - '98:3000'
+      - '127.0.0.1:98:3000'
 
 volumes:
   data:

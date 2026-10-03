@@ -504,7 +504,12 @@ test('the footer has the copyright and the privacy page, in both languages', asy
 	await expect(page.getByRole('main')).toContainText('Prezes Urzędu Ochrony Danych Osobowych');
 	await expect(page.getByRole('main')).toContainText('OVHcloud we Francji');
 	await expect(page.getByRole('main')).toContainText('14 dniach');
-	await expect(page.locator('time')).toHaveText('Ostatnia aktualizacja: 2 października 2026');
+	await expect(page.getByRole('main')).toContainText('przez sieć Cloudflare');
+	await expect(page.getByRole('link', { name: 'Polityka prywatności Cloudflare' })).toHaveAttribute(
+		'href',
+		'https://www.cloudflare.com/privacypolicy/'
+	);
+	await expect(page.locator('time')).toHaveText('Ostatnia aktualizacja: 3 października 2026');
 });
 
 test('a shop that refuses servers shows the product from its address, not as a failure', async ({

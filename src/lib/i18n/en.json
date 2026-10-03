@@ -349,7 +349,7 @@
 		},
 		"logs": {
 			"title": "Server logs",
-			"text": "The server logs a shortened IP address (without its last part, so it does not point to a particular device), the date and time and the kind of request, without the links you entered. They are used only to keep the site running and secure (legitimate interest, Art. 6(1)(f) GDPR) and are overwritten by newer ones once they fill 30 MB, usually after a few weeks. The full IP address is held in the server's memory only, just to limit the number of requests from one address, and is deleted usually within a quarter of an hour, at the latest when the server restarts."
+			"text": "The server logs a shortened IP address (without its last part, so it does not point to a particular device), the date and time and the kind of request, without the links you entered. They are used only to keep the site running and secure (legitimate interest, Art. 6(1)(f) GDPR) and are overwritten by newer ones once they fill 30 MB, usually after a few weeks. The full IP address is held in the server's memory only, just to limit the number of requests from one address, and is deleted usually within a quarter of an hour, at the latest when the server restarts. The web server in front (Apache) keeps no log of visits; only on technical errors its error log may hold an IP address and the page's address, and it is deleted after 30 days."
 		},
 		"where": {
 			"title": "Where the data is and who receives it",
@@ -359,6 +359,11 @@
 			"title": "Your rights",
 			"text": "You have the right to access, rectify and erase your data, to restrict its processing and to object to it. You can also lodge a complaint with the supervisory authority: {authority}."
 		},
-		"updated": "Last updated: {date}"
+		"updated": "Last updated: {date}",
+		"cloudflare": {
+			"title": "Cloudflare",
+			"text": "Traffic to the site goes through Cloudflare's network, which protects it from attacks and speeds it up (legitimate interest, Art. 6(1)(f) GDPR). Cloudflare processes the IP address and technical request data as described in its privacy policy. The company is based in the USA and transfers data under the EU-US Data Privacy Framework."
+		},
+		"cloudflareLink": "Cloudflare's privacy policy"
 	}
 }
