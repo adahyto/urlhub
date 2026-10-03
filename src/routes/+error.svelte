@@ -6,6 +6,7 @@
 	const i18n = useI18n();
 	const missing = $derived(page.error?.message === 'short-link-missing');
 	const listMissing = $derived(page.error?.message === 'saved-list-missing');
+	const setMissing = $derived(page.error?.message === 'featured-missing');
 </script>
 
 <svelte:head>
@@ -20,6 +21,9 @@
 	{:else if listMissing}
 		<h1>{i18n.t('errorPage.savedListTitle')}</h1>
 		<p>{i18n.t('errorPage.savedListText')}</p>
+	{:else if setMissing}
+		<h1>{i18n.t('errorPage.featuredTitle')}</h1>
+		<p>{i18n.t('errorPage.featuredText')}</p>
 	{:else}
 		<h1>{page.status}</h1>
 		<p>{i18n.t('errorPage.other')}</p>

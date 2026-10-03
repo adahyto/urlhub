@@ -68,7 +68,7 @@ test('a seasonal set shows only in its season, first; a season may run over the 
 	}
 });
 
-test('the empty page offers featured sets; one opens in its view and can be shared', async ({
+test('the empty page offers featured sets; each opens as a page with its title and no form', async ({
 	page
 }) => {
 	await page.goto('/?lang=pl');
@@ -90,7 +90,7 @@ test('the empty page offers featured sets; one opens in its view and can be shar
 
 	// The cards' pictures come through /img, small, never straight from other sites
 	for (const set of featuredFor('pl', todayInPoland()).slice(0, SHOWN_FIRST)) {
-		const card = region.getByRole('button', { name: named(set.title) });
+		const card = region.getByRole('link', { name: named(set.title) });
 		const pictures = card.locator('img');
 		await expect(pictures).toHaveCount(set.covers?.length ?? 0);
 		for (const src of await pictures.evaluateAll((all) => all.map((i) => i.getAttribute('src'))))
@@ -98,23 +98,38 @@ test('the empty page offers featured sets; one opens in its view and can be shar
 	}
 
 	const set = featuredFor('pl', todayInPoland()).at(-1)!;
-	await region.getByRole('button', { name: named(set.title) }).click();
-	await expect(page.locator('.toolbar__summary')).toHaveText(`${set.urls.length} linków`);
+	await region.getByRole('link', { name: named(set.title) }).click();
+	await expect(page).toHaveURL(new RegExp(`/s/pl/${set.id}\\?lang=pl$`));
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(set.title);
+	await expect(page.getByText(set.description)).toBeVisible();
+	await expect(page.getByLabel('Linki', { exact: true })).toHaveCount(0);
 	await expect(
 		page.getByRole('button', { name: set.view === 'table' ? 'Tabela' : 'Kafelki' })
 	).toHaveAttribute('aria-pressed', 'true');
+	// The details are read now, through the same proxy as the home page
+	await expect(page.getByText(`Title of ${new URL(set.urls[0]).pathname}`).first()).toBeVisible();
 	const sent = (await (await page.request.get(`${API}/__requests`)).json()).at(-1);
 	expect(sent.text.split('\n')).toEqual(set.urls);
-	if (set.view === 'table') await expect(page).toHaveURL(/view=table/);
-	expect(new URL(page.url()).searchParams.get('urls')?.split(' ')).toEqual(set.urls);
-	await expect(region).toHaveCount(0);
+	await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', set.title);
+
+	// It joins Recent, and "Edit a copy" makes it an ordinary list on the home page
+	await page.getByRole('link', { name: 'Edytuj kopię' }).click();
+	await expect(page.getByLabel('Linki', { exact: true })).toHaveValue(set.urls.join('\n'));
+	await page.getByRole('button', { name: /^Ostatnie/ }).click();
+	await expect(page.locator('.recent__open').first()).toContainText(`${set.urls.length} link`);
+});
+
+test('a featured set that is gone says so', async ({ page }) => {
+	const res = await page.goto('/s/pl/nie-ma-takiego?lang=pl');
+	expect(res?.status()).toBe(404);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tego zestawu już nie ma');
 });
 
 test('the English page has its own sets', async ({ page }) => {
 	await page.goto('/?lang=en');
 	const region = page.getByRole('region', { name: 'Featured sets' });
 	const first = featuredFor('en', todayInPoland())[0];
-	await expect(region.getByRole('button', { name: named(first.title) })).toBeVisible();
+	await expect(region.getByRole('link', { name: named(first.title) })).toBeVisible();
 	const english = FEATURED.filter((s) => s.lang === 'en').map((s) => s.title);
 	for (const set of FEATURED.filter((s) => s.lang === 'pl' && !english.includes(s.title))) {
 		await expect(region.getByText(set.title, { exact: true })).toHaveCount(0);

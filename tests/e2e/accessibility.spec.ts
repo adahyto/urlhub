@@ -87,6 +87,14 @@ test('Polish', async ({ page }) => {
 	await expectAccessible(page);
 });
 
+test('a featured set as a page', async ({ page }) => {
+	await page.goto('/');
+	await page.getByRole('region', { name: 'Featured sets' }).getByRole('link').first().click();
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+	await expect(page.locator('.is-pending')).toHaveCount(0);
+	await expectAccessible(page);
+});
+
 test('the Share dialog', async ({ page }) => {
 	await page.goto(results());
 	await settled(page);

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 	import { SHOWN_FIRST, setKey, type FeaturedSet } from '$lib/featured';
 	import { useI18n } from '$lib/i18n';
 
@@ -10,10 +12,16 @@
 		/** The cards' pictures through /img, by setKey (signed on the server) */
 		covers: Record<string, string[]>;
 		/** Puts the set's links in the field and fetches them */
-		onopen: (set: FeaturedSet) => void;
 	}
 
-	let { sets, covers, onopen }: Props = $props();
+	let { sets, covers }: Props = $props();
+
+	/** A set is a page of its own (/s/<lang>/<id>), in the interface language chosen in the address */
+	const hrefOf = (set: FeaturedSet) => {
+		const lang = page.url.searchParams.get('lang');
+		const path = resolve('/s/[lang]/[id]', { lang: set.lang, id: set.id });
+		return lang ? `${path}?lang=${lang}` : path;
+	};
 
 	// A picture that does not load leaves its plain tile
 	const hide = (event: Event) => ((event.currentTarget as HTMLElement).style.visibility = 'hidden');
@@ -38,7 +46,8 @@
 		<ul class="featured__list">
 			{#each shown as set (set.id)}
 				<li>
-					<button type="button" class="card" onclick={() => onopen(set)}>
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- hrefOf uses resolve() -->
+					<a class="card" href={hrefOf(set)}>
 						{#if covers[setKey(set)]?.length}
 							<!-- Pictures of the set's links: the text says what it is, so they are decoration -->
 							<span
@@ -73,7 +82,7 @@
 							)}</span
 						>
 						<span class="card__sites">{sitesOf(set)}</span>
-					</button>
+					</a>
 				</li>
 			{/each}
 		</ul>
@@ -120,6 +129,7 @@
 		font: inherit;
 		text-align: left;
 		color: var(--ink);
+		text-decoration: none;
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: 0.75rem;
