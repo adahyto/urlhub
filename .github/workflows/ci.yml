@@ -56,7 +56,9 @@ jobs:
       # There is no ldb-api here: the app's /api/json must still answer with a JSON error instead of failing
       - name: The API route answers without ldb-api
         run: |
+          # X-Forwarded-For as Apache sends it on the server (ADDRESS_HEADER in docker-compose.yaml)
           code=$(curl -s -o "$RUNNER_TEMP/answer.json" -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
+            -H 'X-Forwarded-For: 203.0.113.1' \
             -d '{"urls":["https://example.com"]}' http://localhost:98/api/json)
           cat "$RUNNER_TEMP/answer.json"
           test "$code" = 502

@@ -14,6 +14,7 @@
 		'storage',
 		'logs',
 		'where',
+		'cloudflare',
 		'rights'
 	] as const;
 
@@ -45,6 +46,17 @@
 		<section>
 			<h2>{i18n.t(`privacy.${section}.title` as Key)}</h2>
 			<p>{i18n.t(`privacy.${section}.text` as Key, params)}</p>
+			{#if section === 'cloudflare'}
+				<p>
+					<a
+						href="https://www.cloudflare.com/privacypolicy/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{i18n.t('privacy.cloudflareLink')}
+					</a>
+				</p>
+			{/if}
 		</section>
 	{/each}
 	<p class="privacy__updated">
