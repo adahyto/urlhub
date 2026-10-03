@@ -2,18 +2,89 @@
 	{
 		"id": "halloween",
 		"lang": "pl",
-		"season": { "from": "10-01", "to": "11-02" },
+		"season": {
+			"from": "10-01",
+			"to": "10-31"
+		},
 		"view": "tiles",
-		"title": "Halloween i Zaduszki",
-		"description": "Skąd się wzięło Halloween, polskie Zaduszki i klasyka grozy: Frankenstein, Drakula, Poe.",
+		"title": "Halloween: przebrania i dekoracje",
+		"description": "Kostiumy, koszyk na cukierki, poduszka-dynia, kapcie-pająki i piżama, która świeci w ciemności.",
 		"urls": [
-			"https://pl.wikipedia.org/wiki/Halloween",
-			"https://pl.wikipedia.org/wiki/Zaduszki",
-			"https://pl.wikipedia.org/wiki/Wszystkich_Świętych",
-			"https://pl.wikipedia.org/wiki/Frankenstein_(powieść)",
-			"https://pl.wikipedia.org/wiki/Drakula_(powieść)",
-			"https://pl.wikipedia.org/wiki/Legenda_o_Sennej_Kotlinie",
-			"https://pl.wikipedia.org/wiki/Edgar_Allan_Poe"
+			"https://www.reserved.com/pl/pl/kostium-na-halloween-243kz-99x",
+			"https://www.reserved.com/pl/pl/kostium-na-halloween-248kz-22x",
+			"https://www.reserved.com/pl/pl/kostium-na-halloween-246kz-00x",
+			"https://www.reserved.com/pl/pl/koszyk-na-halloween-154fq-22x",
+			"https://www.reserved.com/pl/pl/poduszka-dynia-z-zabawkami-252kz-22x",
+			"https://www.reserved.com/pl/pl/poduszka-czaszka-255kz-00x",
+			"https://www.reserved.com/pl/pl/maskotka-nietoperz-260kz-90x",
+			"https://www.reserved.com/pl/pl/kapcie-w-ksztalcie-pajakow-689li-99x",
+			"https://www.reserved.com/pl/pl/pizama-swiecaca-w-ciemnosci-312ks-99x",
+			"https://www.cropp.com/pl/pl/3-pack-skarpet-miasteczko-halloween-132fy-mlc",
+			"https://www.housebrand.com/pl/pl/czarny-sweter-ze-szkieletem-klatki-piersiowej-0950x-99x"
+		]
+	},
+	{
+		"id": "premiery",
+		"lang": "pl",
+		"season": {
+			"from": "10-01",
+			"to": "01-31"
+		},
+		"view": "tiles",
+		"title": "Premiery kinowe: jesień i zima 2026",
+		"description": "Street Fighter, Godzilla, nowe Igrzyska śmierci, Avengers: Doomsday i Diuna: Część trzecia – plakaty i opisy z Filmwebu.",
+		"urls": [
+			"https://www.filmweb.pl/film/Street+Fighter.+Uliczny+wojownik-2026-10055813",
+			"https://www.filmweb.pl/film/Clayface-2026-10089272",
+			"https://www.filmweb.pl/film/Matchbox%3A+Film-2026-10067271",
+			"https://www.filmweb.pl/film/Godzilla+0.0-2026-10102012",
+			"https://www.filmweb.pl/film/Igrzyska+%C5%9Bmierci%3A+Wsch%C3%B3d+s%C5%82o%C5%84ca+w+dniu+do%C5%BCynek-2026-10077927",
+			"https://www.filmweb.pl/film/Hokus%3A+Kr%C3%B3lestwo+magii-2026-10093042",
+			"https://www.filmweb.pl/film/Avengers%3A+Doomsday-2026-10016660",
+			"https://www.filmweb.pl/film/Diuna%3A+Cz%C4%99%C5%9B%C4%87+trzecia-2026-10068059",
+			"https://www.filmweb.pl/film/Asteriks+i+Obeliks%3A+Kr%C3%B3lestwo+Nubii-2026-10053410",
+			"https://www.filmweb.pl/film/Angry+Birds+3+Film-2026-10120792"
+		]
+	},
+	{
+		"id": "wednesday",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "W stylu Wednesday",
+		"description": "Czerń, biały kołnierzyk, plisy, paski i botki na platformie – ubrania w stylu Wednesday Addams z polskich sieciówek.",
+		"urls": [
+			"https://www.mohito.com/pl/pl/sukienka-mini-z-kolnierzem-polo-073ip-99x",
+			"https://www.cropp.com/pl/pl/czarna-sukienka-mini-ze-stojka-456ka-99x",
+			"https://www.reserved.com/pl/pl/biala-koszula-z-krawatem-467fw-01x",
+			"https://www.mohito.com/pl/pl/plisowana-spodnica-midi-547gg-99x",
+			"https://www.cropp.com/pl/pl/czarna-plisowana-spodnica-mini-134hx-99x",
+			"https://www.cropp.com/pl/pl/sweter-w-czarno-biale-paski-632ka-99m",
+			"https://www.mohito.com/pl/pl/dopasowana-marynarka-942jh-99x",
+			"https://www.cropp.com/pl/pl/biale-zakolanowki-107fy-00x",
+			"https://www.housebrand.com/pl/pl/botki-na-platformie-czarne-6482x-99x"
+		]
+	},
+	{
+		"id": "zima",
+		"lang": "pl",
+		"season": {
+			"from": "10-01",
+			"to": "02-28"
+		},
+		"view": "tiles",
+		"title": "Co robić zimą 2026/27",
+		"description": "Jarmarki świąteczne, Puchar Świata w skokach w Wiśle i Zakopanem, Geminidy, najkrótszy dzień roku, Turniej Czterech Skoczni i mistrzostwa świata w piłce ręcznej.",
+		"urls": [
+			"https://www.zakopane.pl/strefa-miejska/aktualnosci/aktualnosci-zwykle/wrzesien-2026/znamy-date-jarmarku-bozonarodzeniowego-w-zakopanem",
+			"https://www.jarmarkbozonarodzeniowy.wroclaw.pl/",
+			"https://www.christkindlmarkt.at/",
+			"https://www.ebilet.pl/sport/pozostale/skoki-narciarskie",
+			"https://www.skijumping.pl/wiadomosci/37947/wstepny-kalendarz-pucharu-swiata-na-sezon-20262027/",
+			"https://pl.wikipedia.org/wiki/Geminidy",
+			"https://pl.wikipedia.org/wiki/Przesilenie_zimowe",
+			"https://slonce.info.pl/",
+			"https://www.vierschanzentournee.com/",
+			"https://pl.wikipedia.org/wiki/Mistrzostwa_Świata_w_Piłce_Ręcznej_Mężczyzn_2027"
 		]
 	},
 	{
@@ -32,41 +103,6 @@
 			"https://www.youtube.com/watch?v=wupToqz1e2g",
 			"https://polsa.gov.pl/",
 			"https://www.spaceweatherlive.com/"
-		]
-	},
-	{
-		"id": "filmy",
-		"lang": "pl",
-		"view": "tiles",
-		"title": "Filmy, które uczą",
-		"description": "Fizyka, matematyka i kosmos w kilkanaście minut: znane filmy i polskie kanały popularnonaukowe.",
-		"urls": [
-			"https://www.youtube.com/watch?v=DxL2HoqLbyA",
-			"https://www.youtube.com/watch?v=aircAruvnKk",
-			"https://www.youtube.com/watch?v=MBRqu0YOH14",
-			"https://www.youtube.com/watch?v=BxV14h0kFs0",
-			"https://www.youtube.com/watch?v=libKVRa01L8",
-			"https://www.youtube.com/@Astrofaza",
-			"https://www.youtube.com/@Polimaty",
-			"https://www.youtube.com/@NaukaToLubie",
-			"https://www.youtube.com/@kosmonauta"
-		]
-	},
-	{
-		"id": "ciekawe-strony",
-		"lang": "pl",
-		"view": "tiles",
-		"title": "Dziwne i ciekawe strony",
-		"description": "Radia z całego świata na globusie, widok z cudzego okna, wiatr na żywo i strony, które po prostu bawią.",
-		"urls": [
-			"https://radio.garden/",
-			"https://www.window-swap.com/",
-			"https://earth.nullschool.net/",
-			"https://thetruesize.com/",
-			"https://quickdraw.withgoogle.com/",
-			"https://pointerpointer.com/",
-			"https://www.drawastickman.com/",
-			"https://theuselessweb.com/"
 		]
 	},
 	{
@@ -91,6 +127,41 @@
 			"https://github.com/LibreOffice/core",
 			"https://github.com/keepassxreboot/keepassxc",
 			"https://github.com/localsend/localsend"
+		]
+	},
+	{
+		"id": "ciekawe-strony",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Dziwne i ciekawe strony",
+		"description": "Radia z całego świata na globusie, widok z cudzego okna, wiatr na żywo i strony, które po prostu bawią.",
+		"urls": [
+			"https://radio.garden/",
+			"https://www.window-swap.com/",
+			"https://earth.nullschool.net/",
+			"https://thetruesize.com/",
+			"https://quickdraw.withgoogle.com/",
+			"https://pointerpointer.com/",
+			"https://www.drawastickman.com/",
+			"https://theuselessweb.com/"
+		]
+	},
+	{
+		"id": "filmy",
+		"lang": "pl",
+		"view": "tiles",
+		"title": "Filmy, które uczą",
+		"description": "Fizyka, matematyka i kosmos w kilkanaście minut: znane filmy i polskie kanały popularnonaukowe.",
+		"urls": [
+			"https://www.youtube.com/watch?v=DxL2HoqLbyA",
+			"https://www.youtube.com/watch?v=aircAruvnKk",
+			"https://www.youtube.com/watch?v=MBRqu0YOH14",
+			"https://www.youtube.com/watch?v=BxV14h0kFs0",
+			"https://www.youtube.com/watch?v=libKVRa01L8",
+			"https://www.youtube.com/@Astrofaza",
+			"https://www.youtube.com/@Polimaty",
+			"https://www.youtube.com/@NaukaToLubie",
+			"https://www.youtube.com/@kosmonauta"
 		]
 	},
 	{
@@ -148,19 +219,85 @@
 	{
 		"id": "halloween",
 		"lang": "en",
-		"season": { "from": "10-01", "to": "11-02" },
+		"season": {
+			"from": "10-01",
+			"to": "10-31"
+		},
 		"view": "tiles",
-		"title": "Halloween classics",
-		"description": "Where Halloween comes from, and free classics to read on the night: Frankenstein, Dracula, Poe.",
+		"title": "Halloween: costumes and decorations",
+		"description": "Costumes, a trick-or-treat basket, pumpkin and skull cushions, spider slippers and glow-in-the-dark pyjamas.",
 		"urls": [
-			"https://en.wikipedia.org/wiki/Halloween",
-			"https://en.wikipedia.org/wiki/Day_of_the_Dead",
-			"https://www.gutenberg.org/ebooks/84",
-			"https://www.gutenberg.org/ebooks/345",
-			"https://www.gutenberg.org/ebooks/41",
-			"https://www.gutenberg.org/ebooks/2148",
-			"https://www.gutenberg.org/ebooks/43",
-			"https://www.gutenberg.org/ebooks/209"
+			"https://www.reserved.com/gb/en/halloween-costume-243kz-99x",
+			"https://www.reserved.com/gb/en/halloween-costume-248kz-22x",
+			"https://www.reserved.com/gb/en/halloween-costume-246kz-00x",
+			"https://www.reserved.com/gb/en/halloween-basket-154fq-22x",
+			"https://www.reserved.com/gb/en/pumpkin-cushion-with-toys-252kz-22x",
+			"https://www.reserved.com/gb/en/skull-cushion-255kz-00x",
+			"https://www.reserved.com/gb/en/bat-plush-toy-260kz-90x",
+			"https://www.reserved.com/gb/en/spider-shaped-slippers-689li-99x",
+			"https://www.reserved.com/gb/en/glow-in-the-dark-pyjamas-312ks-99x"
+		]
+	},
+	{
+		"id": "premieres",
+		"lang": "en",
+		"season": {
+			"from": "10-01",
+			"to": "01-31"
+		},
+		"view": "tiles",
+		"title": "In cinemas: autumn and winter 2026",
+		"description": "Street Fighter, Godzilla Minus Zero, the new Hunger Games, Avengers: Doomsday and Dune: Part Three – posters and details from Letterboxd.",
+		"urls": [
+			"https://letterboxd.com/film/street-fighter-2026/",
+			"https://letterboxd.com/film/clayface/",
+			"https://letterboxd.com/film/matchbox-the-movie/",
+			"https://letterboxd.com/film/godzilla-minus-zero/",
+			"https://letterboxd.com/film/the-cat-in-the-hat-2026/",
+			"https://letterboxd.com/film/the-hunger-games-sunrise-on-the-reaping/",
+			"https://letterboxd.com/film/avengers-doomsday/",
+			"https://letterboxd.com/film/dune-part-three/",
+			"https://letterboxd.com/film/jumanji-3/",
+			"https://letterboxd.com/film/the-angry-birds-movie-3/"
+		]
+	},
+	{
+		"id": "wednesday",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Dress like Wednesday",
+		"description": "Black, a white collar, pleats, knee socks and loafers – clothes in the style of Wednesday Addams.",
+		"urls": [
+			"https://www.reserved.com/gb/en/collar-dress-407ib-99x",
+			"https://www.reserved.com/gb/en/dress-with-pleated-skirt-181ex-99x",
+			"https://www.reserved.com/gb/en/white-shirt-with-tie-467fw-01x",
+			"https://www.reserved.com/gb/en/pleated-skirt-546ib-99x",
+			"https://www.reserved.com/gb/en/pleated-midi-skirt-707ke-99x",
+			"https://www.reserved.com/gb/en/blazer-with-collar-264ky-99x",
+			"https://www.reserved.com/gb/en/knee-socks-3-pack-129fq-00x",
+			"https://www.reserved.com/gb/en/black-tights-60-denier-268ge-99x",
+			"https://www.reserved.com/gb/en/classic-loafers-304jx-99x"
+		]
+	},
+	{
+		"id": "winter",
+		"lang": "en",
+		"season": {
+			"from": "10-01",
+			"to": "02-28"
+		},
+		"view": "tiles",
+		"title": "What's on this winter (2026/27)",
+		"description": "Christmas markets, the Geminids, the shortest day, the Four Hills ski jumping, the handball world championship and the Australian Open.",
+		"urls": [
+			"https://www.christkindlmarkt.at/",
+			"https://en.wikipedia.org/wiki/Geminids",
+			"https://en.wikipedia.org/wiki/Winter_solstice",
+			"https://slonce.info.pl/en",
+			"https://www.vierschanzentournee.com/en/",
+			"https://www.fis-ski.com/",
+			"https://handball2027.com/en",
+			"https://ausopen.com/"
 		]
 	},
 	{
@@ -178,42 +315,6 @@
 			"https://www.youtube.com/watch?v=GoW8Tf7hTGA",
 			"https://www.youtube.com/watch?v=wupToqz1e2g",
 			"https://science.nasa.gov/"
-		]
-	},
-	{
-		"id": "videos",
-		"lang": "en",
-		"view": "tiles",
-		"title": "Videos that teach",
-		"description": "Physics, maths and space in a few minutes each: well-known videos and the channels behind them.",
-		"urls": [
-			"https://www.youtube.com/watch?v=DxL2HoqLbyA",
-			"https://www.youtube.com/watch?v=aircAruvnKk",
-			"https://www.youtube.com/watch?v=MBRqu0YOH14",
-			"https://www.youtube.com/watch?v=BxV14h0kFs0",
-			"https://www.youtube.com/watch?v=libKVRa01L8",
-			"https://www.youtube.com/@kurzgesagt",
-			"https://www.youtube.com/@veritasium",
-			"https://www.youtube.com/@smartereveryday",
-			"https://www.youtube.com/@3blue1brown",
-			"https://www.youtube.com/@minutephysics"
-		]
-	},
-	{
-		"id": "curious-websites",
-		"lang": "en",
-		"view": "tiles",
-		"title": "Strange and wonderful websites",
-		"description": "Radio stations on a spinning globe, the view from a stranger's window, live winds and pages made just for fun.",
-		"urls": [
-			"https://radio.garden/",
-			"https://www.window-swap.com/",
-			"https://earth.nullschool.net/",
-			"https://thetruesize.com/",
-			"https://quickdraw.withgoogle.com/",
-			"https://pointerpointer.com/",
-			"https://www.drawastickman.com/",
-			"https://theuselessweb.com/"
 		]
 	},
 	{
@@ -238,6 +339,42 @@
 			"https://github.com/LibreOffice/core",
 			"https://github.com/keepassxreboot/keepassxc",
 			"https://github.com/localsend/localsend"
+		]
+	},
+	{
+		"id": "curious-websites",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Strange and wonderful websites",
+		"description": "Radio stations on a spinning globe, the view from a stranger's window, live winds and pages made just for fun.",
+		"urls": [
+			"https://radio.garden/",
+			"https://www.window-swap.com/",
+			"https://earth.nullschool.net/",
+			"https://thetruesize.com/",
+			"https://quickdraw.withgoogle.com/",
+			"https://pointerpointer.com/",
+			"https://www.drawastickman.com/",
+			"https://theuselessweb.com/"
+		]
+	},
+	{
+		"id": "videos",
+		"lang": "en",
+		"view": "tiles",
+		"title": "Videos that teach",
+		"description": "Physics, maths and space in a few minutes each: well-known videos and the channels behind them.",
+		"urls": [
+			"https://www.youtube.com/watch?v=DxL2HoqLbyA",
+			"https://www.youtube.com/watch?v=aircAruvnKk",
+			"https://www.youtube.com/watch?v=MBRqu0YOH14",
+			"https://www.youtube.com/watch?v=BxV14h0kFs0",
+			"https://www.youtube.com/watch?v=libKVRa01L8",
+			"https://www.youtube.com/@kurzgesagt",
+			"https://www.youtube.com/@veritasium",
+			"https://www.youtube.com/@smartereveryday",
+			"https://www.youtube.com/@3blue1brown",
+			"https://www.youtube.com/@minutephysics"
 		]
 	},
 	{

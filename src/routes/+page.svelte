@@ -510,12 +510,12 @@
 			{/if}
 		</section>
 	{:else if !query.loading}
-		<FeaturedSets sets={featured} onopen={openSet} />
 		<ul class="features" aria-label={i18n.t('features.label')}>
 			{#each ['tiles', 'share', 'seo'] as const as f (f)}
 				<li><b>{i18n.t(`features.${f}.title`)}</b>{i18n.t(`features.${f}.text`)}</li>
 			{/each}
 		</ul>
+		<FeaturedSets sets={featured} onopen={openSet} />
 	{/if}
 </main>
 
