@@ -138,7 +138,6 @@
 		"picture": "Obrazek",
 		"title": "Tytuł i szczegóły",
 		"issues": "Problemy",
-		"type": "Rodzaj",
 		"duration": "Czas",
 		"fetching": "Wczytuję…",
 		"nothing": "Nic nie pasuje do filtra.",
@@ -352,18 +351,18 @@
 		"privacy": "Prywatność"
 	},
 	"features": {
-		"label": "Do czego służy urlhub",
-		"tiles": {
-			"title": "Zestaw linków w jednym miejscu",
-			"text": "Wklej linki do produktów, filmów czy artykułów – albo cały tekst, np. maila, a urlhub sam znajdzie w nim linki. Każdy pokaże się z obrazkiem, tytułem i opisem."
+		"label": "Jak to działa",
+		"paste": {
+			"title": "1. Wklej linki",
+			"text": "Do produktów, filmów, artykułów – albo cały mail czy notatkę. urlhub sam wyłowi z nich linki i pokaże każdy z obrazkiem, tytułem i opisem."
 		},
-		"seo": {
-			"title": "Porządkuj i porównuj",
-			"text": "Ustaw kolejność, usuń zbędne, porównaj pozycje w tabeli albo pobierz zestaw jako CSV. Właścicielom stron pomoże „Sprawdź SEO”."
+		"arrange": {
+			"title": "2. Ułóż zestaw",
+			"text": "Zmień kolejność, usuń zbędne i porównaj wszystko w tabeli. Zestaw pobierzesz też jako CSV, a jeśli to Twoja strona, sprawdzisz jej SEO."
 		},
 		"share": {
-			"title": "Wysyłaj zestawy jednym linkiem",
-			"text": "Jeden link otwiera cały zestaw, np. listę prezentów albo porównanie sprzętu. Wyślij go znajomym – w komunikatorze pokaże się podgląd."
+			"title": "3. Udostępnij",
+			"text": "Wyślij jeden link do całej listy albo opublikuj ją jako stronę z własnym tytułem, np. „Prezenty dla taty”. W komunikatorze pokaże się podgląd."
 		}
 	},
 	"featured": {
@@ -376,14 +375,13 @@
 	},
 	"saved": {
 		"savedOn": "opublikowano {date}",
-		"copyLink": "Kopiuj link",
+		"share": "Udostępnij",
 		"linkCopied": "Skopiowano link do tej listy",
 		"editCopy": "Edytuj kopię",
 		"fixed": "Tę stronę opublikowano na stałe: nikt jej nie zmieni. „Edytuj kopię” otwiera jej linki jako nową listę.",
 		"report": "Zgłoś nadużycie",
 		"reportSubject": "Zgłoszenie listy urlhub",
-		"reportBody": "Lista: {url}\nCo jest nie tak:",
-		"send": "Wyślij…"
+		"reportBody": "Lista: {url}\nCo jest nie tak:"
 	},
 	"shareDialog": {
 		"button": "Udostępnij",

@@ -3,11 +3,10 @@
 	import { SvelteSet } from 'svelte/reactivity';
 	import RowDetails from './RowDetails.svelte';
 	import type { Row } from '$lib/types';
-	import { has, useI18n, type Key } from '$lib/i18n';
+	import { useI18n } from '$lib/i18n';
 	import { linkError } from '$lib/i18n/messages';
 
 	const i18n = useI18n();
-	const typeName = (type: string) => (has(`types.${type}`) ? i18n.t(`types.${type}` as Key) : type);
 
 	interface Props {
 		rows: Row[];
@@ -61,7 +60,9 @@
 		);
 
 	// Columns sort on click: ascending, descending, then back to the order of the list
-	type SortKey = 'title' | 'type' | 'duration' | 'warnings';
+	// No column for the kind of link (page, video, ...): each row names its site, durations mark videos, and the
+	// toolbar filters by kind and site
+	type SortKey = 'title' | 'duration' | 'warnings';
 	let sortKey = $state<SortKey | null>(null);
 	let descending = $state(false);
 
@@ -69,7 +70,6 @@
 		(hms ?? '').split(':').reduce((total, part) => total * 60 + (Number(part) || 0), 0);
 	const KEYS: Record<SortKey, (r: Row) => string | number> = {
 		title: (r) => (r.title || r.url).toLowerCase(),
-		type: (r) => `${r.type} ${r.service ?? ''}`,
 		duration: (r) => seconds(r.duration),
 		warnings: (r) =>
 			(r.error ? (r.error === 'blocked' ? 2 : 1000) : 0) +
@@ -154,9 +154,6 @@
 				{#if hasIssues}<th class="table__seo" aria-sort={ariaSort('warnings')}
 						>{@render sortButton('warnings', i18n.t('table.issues'))}</th
 					>{/if}
-				<th class="table__type" aria-sort={ariaSort('type')}
-					>{@render sortButton('type', i18n.t('table.type'))}</th
-				>
 				{#if hasDuration}<th class="table__dur" aria-sort={ariaSort('duration')}
 						>{@render sortButton('duration', i18n.t('table.duration'))}</th
 					>{/if}
@@ -283,13 +280,6 @@
 						{/if}
 					</td>
 					{#if hasIssues}<td class="table__seo">{@render badges(item)}</td>{/if}
-					<td class="table__type">
-						{item.pending
-							? ''
-							: typeName(item.type)}{#if item.service && item.service !== item.type}<br /><span
-								class="table__service">{item.service}</span
-							>{/if}
-					</td>
 					{#if hasDuration}<td class="table__dur">{item.duration ?? ''}</td>{/if}
 				</tr>
 			{/each}
@@ -559,16 +549,10 @@
 		background: var(--row-open);
 	}
 
-	.table__type,
 	.table__dur {
 		width: 5.5rem;
 		white-space: nowrap;
 		font-variant-numeric: tabular-nums;
-	}
-
-	.table__service {
-		font-size: 0.75rem;
-		color: var(--muted);
 	}
 
 	.table__dur-inline,
@@ -584,7 +568,6 @@
 
 	/* Phones: picture and text only; the duration moves into the text */
 	@media (max-width: 40rem) {
-		.table__type,
 		.table__dur,
 		.table__seo {
 			display: none;

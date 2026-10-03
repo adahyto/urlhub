@@ -490,15 +490,15 @@ test('the empty page explains itself, and "Try an example" fetches working examp
 }) => {
 	await page.goto('/?lang=pl');
 	await expect(page.getByLabel('Linki', { exact: true })).toHaveValue('');
-	await expect(
-		page.getByRole('list', { name: 'Do czego służy urlhub' }).getByRole('listitem')
-	).toHaveCount(3);
+	await expect(page.getByRole('list', { name: 'Jak to działa' }).getByRole('listitem')).toHaveCount(
+		3
+	);
 	await page.getByRole('button', { name: 'Wypróbuj przykład' }).click();
 	await expect(summary(page)).toHaveText('6 linków');
 	const sent = (await lastRequest(page)).text.split('\n');
 	expect(sent).toContain('https://pl.wikipedia.org/wiki/Mars');
 	expect(sent).toContain('https://kosmos.info.pl/pl/home');
-	await expect(page.getByRole('list', { name: 'Do czego służy urlhub' })).toHaveCount(0);
+	await expect(page.getByRole('list', { name: 'Jak to działa' })).toHaveCount(0);
 });
 
 test('menus open with the keyboard, move with the arrows and close with Escape', async ({

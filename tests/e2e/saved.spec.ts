@@ -126,3 +126,18 @@ test('Share: a link first, then publish the list as a page; Escape closes and gi
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('My two links');
 	await expect(page.getByText('Saved from the page')).toBeVisible();
 });
+
+test('Share on a list page copies its link where the system has no sharing of its own', async ({
+	page,
+	context
+}) => {
+	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+	const { path } = await (await save(page, { title: 'Share me', urls: [link('/a')] })).json();
+	await page.goto(path);
+	await page.evaluate(() => Object.defineProperty(navigator, 'share', { value: undefined }));
+	await page.getByRole('button', { name: 'Share', exact: true }).click();
+	await expect(page.getByRole('status')).toHaveText('Link to this list copied');
+	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+		new URL(path, page.url()).href
+	);
+});
